@@ -8,11 +8,14 @@ specifiers:
   echarts: ^5.3.0
   eslint: ^8.9.0
   eslint-plugin-react: ^7.28.0
+  i18next: ^21.6.14
+  i18next-intervalplural-postprocessor: ^3.0.0
   less: ^4.1.2
   moment: ^2.29.1
   prettier: ^2.5.1
   react: ^17.0.2
   react-dom: ^17.0.2
+  react-i18next: ^11.15.7
   react-router-dom: ^5.2.0
   react-scripts: 3.4.4
   recoil: ^0.6.1
@@ -24,9 +27,12 @@ dependencies:
   antd: 4.19.2_react-dom@17.0.2+react@17.0.2
   axios: 0.25.0
   echarts: 5.3.1
+  i18next: 21.6.14
+  i18next-intervalplural-postprocessor: 3.0.0
   moment: 2.29.1
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-i18next: 11.15.7_f94be6b4dd1edc1d8608af374b838bd6
   react-router-dom: 5.3.0_react@17.0.2
   react-scripts: 3.4.4
   recoil: 0.6.1_react-dom@17.0.2+react@17.0.2
@@ -6211,6 +6217,12 @@ packages:
       terser: 4.8.0
     dev: false
 
+  /html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /html-webpack-plugin/4.0.0-beta.11_webpack@4.42.0:
     resolution: {integrity: sha512-4Xzepf0qWxf8CGg7/WQM5qBB2Lc/NFI7MhU59eUDTkuQp3skZczH4UA1d6oQyDEIoMDgERVhRyTdtUPZ5s5HBg==}
     engines: {node: '>=6.9'}
@@ -6299,6 +6311,16 @@ packages:
 
   /https-browserify/1.0.0:
     resolution: {integrity: sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=}
+    dev: false
+
+  /i18next-intervalplural-postprocessor/3.0.0:
+    resolution: {integrity: sha512-ZJWg2Gcb0kQqVI7kygLj9wVwQHK3mzRAg94uLsdoHqss0M9n0HSPr1pThd2AttkBsJFWR26G18hnKCqcTB8shQ==}
+    dev: false
+
+  /i18next/21.6.14:
+    resolution: {integrity: sha512-XL6WyD+xlwQwbieXRlXhKWoLb/rkch50/rA+vl6untHnJ+aYnkQ0YDZciTWE78PPhOpbi2gR0LTJCJpiAhA+uQ==}
+    dependencies:
+      '@babel/runtime': 7.17.7
     dev: false
 
   /iconv-lite/0.4.24:
@@ -10271,6 +10293,27 @@ packages:
     resolution: {integrity: sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==}
     dev: false
 
+  /react-i18next/11.15.7_f94be6b4dd1edc1d8608af374b838bd6:
+    resolution: {integrity: sha512-zSWZ+21LhaG4T155GcvLdepG1j/qJqD9hUGztVtD1MGBc4/l9ft/LMbUX7oKXdVVLyKWjUhUFoDNAwB2402BIQ==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.17.7
+      html-escaper: 2.0.2
+      html-parse-stringify: 3.0.1
+      i18next: 21.6.14
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -12155,6 +12198,11 @@ packages:
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
+    dev: false
+
+  /void-elements/3.1.0:
+    resolution: {integrity: sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /w3c-hr-time/1.0.2:
