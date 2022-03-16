@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { ConfigProvider as AntdConfigProvider } from 'antd';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import { RouteGuard, CssBaseLine } from '@/components/common';
 
 import { useEventListener, useCreation } from 'ahooks';
-import { localStorage } from '@/utils';
+import { localStorage, getAntdLocale } from '@/utils';
 
 import { useRecoilValue } from 'recoil';
 import { userAtom, pageAtom } from '@/store';
@@ -26,16 +27,23 @@ export default function App() {
 
 	// Theme object
 	const theme = useCreation(() => getTheme(), []);
+	// Locale object
+	const locale = useCreation(() => getAntdLocale(page.locale), [page.locale]);
 
 	return (
 		// styled 主题
 		<StyledThemeProvider theme={theme}>
-			<BrowserRouter>
-				{/* 全局样式 */}
-				<CssBaseLine />
-				{/* 路由守卫 */}
-				<RouteGuard routes={routes} />
-			</BrowserRouter>
+			<AntdConfigProvider
+				prefixCls="dms"
+				iconPrefixCls="dms-icon"
+				locale={locale}>
+				<BrowserRouter>
+					{/* 全局样式 */}
+					<CssBaseLine />
+					{/* 路由守卫 */}
+					<RouteGuard routes={routes} />
+				</BrowserRouter>
+			</AntdConfigProvider>
 		</StyledThemeProvider>
 	);
 }
