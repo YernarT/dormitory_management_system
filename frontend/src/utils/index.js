@@ -9,3 +9,5 @@ export { default as sleep } from './sleep';
 export { default as generateI18nPluralIntervalRule } from './generateI18nPluralIntervalRule';
 
 export { default as getHtmlLang } from './getHtmlLang';
+
+export { default as getAntdLocale } from './getAntdLocale';
