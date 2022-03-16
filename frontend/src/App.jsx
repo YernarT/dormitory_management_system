@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
-import { RouteGuard, CssBaseLine } from '@/components';
+import { RouteGuard, CssBaseLine } from '@/components/common';
 
 import { useEventListener, useCreation } from 'ahooks';
 import { localStorage } from '@/utils';
