@@ -3,7 +3,7 @@ import { container } from '@/assets/style';
 
 export const HeaderStyledBox = styled.div`
 	height: 72px;
-	background-color: ${({ theme }) => theme.navigationArea.background};
+	background-color: 'green';
 
 	.header {
 		${container};
@@ -29,7 +29,7 @@ export const HeaderStyledBox = styled.div`
 			color: #fff;
 
 			.options-list {
-				background-color: ${({ theme }) => theme.navigationArea.background};
+				background-color: 'green';
 			}
 		}
 	}
