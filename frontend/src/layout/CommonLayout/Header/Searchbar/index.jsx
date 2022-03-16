@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeState } from 'ahooks';
 
-import { IconButton } from '@mui/material';
-import { SearchOutlined } from '@mui/icons-material';
+// import { IconButton } from '@mui/material';
+// import { SearchOutlined } from '@mui/icons-material';
 import { SearchbarStyledBox } from './style';
 
 export default memo(function Searchbar() {
@@ -30,12 +30,12 @@ export default memo(function Searchbar() {
 				onKeyDown={handleKeyDown}
 				placeholder={t('header_search')}
 			/>
-			<IconButton
+			{/* <IconButton
 				aria-label="search"
 				className="search-btn"
 				onClick={handleSearch}>
 				<SearchOutlined />
-			</IconButton>
+			</IconButton> */}
 		</SearchbarStyledBox>
 	);
 });
