@@ -7,7 +7,7 @@ const commonRoutes = [
 	{
 		path: '/',
 		component: lazy(async () => {
-			await sleep(420);
+			await sleep(560);
 			return import('@/pages/common/LandingPage');
 		}),
 		fallback: <CommonLoading />,
@@ -16,7 +16,10 @@ const commonRoutes = [
 	},
 	{
 		path: '/404',
-		component: lazy(() => import('@/pages/common/PageNotFoundPage')),
+		component: lazy(async () => {
+			await sleep(150);
+			return import('@/pages/common/PageNotFoundPage');
+		}),
 		fallback: <CommonLoading />,
 		auth: false,
 		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
