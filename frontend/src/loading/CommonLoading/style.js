@@ -1,10 +1,21 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+
+const bigAndSmall = keyframes`
+	from {
+		transform: scale(0.75);
+	}
+
+	to {
+		transform: scale(1.1);
+	}
+`;
 
 export const CommonLoadingStyledBox = styled.div`
 	width: 200px;
 	height: 200px;
 
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 
@@ -15,4 +26,12 @@ export const CommonLoadingStyledBox = styled.div`
 
 	user-select: none;
 	pointer-events: none;
+
+	.favicon {
+		animation: ${bigAndSmall} 0.85s ease alternate-reverse infinite;
+	}
+
+	.help-text {
+		${({ theme }) => theme.typography.title};
+	}
 `;
