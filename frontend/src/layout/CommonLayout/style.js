@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { container } from '@/assets/style';
 
 export const CommonLayoutStyledBox = styled.div`
 	height: inherit;
@@ -6,4 +7,77 @@ export const CommonLayoutStyledBox = styled.div`
 	position: relative;
 
 	overflow: hidden auto;
+
+	.common-layout {
+		height: inherit;
+
+		.header,
+		.content,
+		.footer {
+			${container};
+		}
+
+		.header {
+			display: flex;
+			align-items: center;
+
+			user-select: none;
+
+			background-color: #fff;
+
+			.logo {
+				width: 54px;
+				height: 54px;
+				object-fit: cover;
+			}
+
+			.title {
+				${({ theme }) => theme.typography.title};
+
+				margin-left: 10px;
+			}
+
+			.toolbar,
+			.user-action {
+				margin-left: auto;
+			}
+
+			.user-action {
+				box-sizing: content-box;
+
+				padding: 2px 10px;
+			}
+		}
+
+		.content {
+			height: 100%;
+
+			overflow: hidden;
+		}
+
+		.footer {
+			${({ theme }) => theme.typography.secondary};
+			text-align: center;
+
+			position: relative;
+
+			&::before {
+				content: '';
+
+				width: 100%;
+				height: 1px;
+
+				background: linear-gradient(
+					to right,
+					transparent,
+					rgba(0, 0, 0, 0.06),
+					transparent
+				);
+
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+	}
 `;
