@@ -14,6 +14,7 @@ import { SafeArea } from './components/common';
 import App from './App';
 
 import 'antd/dist/antd.less';
+import '@/assets/style/antd-mod.less';
 
 // Initialize language, get it from LocalStorage
 const [, page] = getLatestState(localStorage.get('page', {}), defaultPageState);
