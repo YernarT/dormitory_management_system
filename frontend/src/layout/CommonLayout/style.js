@@ -39,7 +39,18 @@ export const CommonLayoutStyledBox = styled.div`
 
 			.toolbar,
 			.user-action {
+				width: 100%;
 				margin-left: auto;
+
+				justify-content: flex-end;
+
+				@media screen and (max-width: 760px) {
+					width: 260px;
+				}
+
+				@media screen and (max-width: 540px) {
+					width: 20px;
+				}
 			}
 		}
 
@@ -64,7 +75,7 @@ export const CommonLayoutStyledBox = styled.div`
 				background: linear-gradient(
 					to right,
 					transparent,
-					rgba(0, 0, 0, 0.06),
+					rgba(0, 0, 0, 0.15),
 					transparent
 				);
 
