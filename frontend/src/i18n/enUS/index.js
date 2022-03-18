@@ -6,6 +6,10 @@ export default {
 	commonLoadingHelpText: 'Loading...',
 
 	// Header
-	'header_search': 'Search...',
-	'header_login': 'Login / Register',
+	'header_site_name_short': 'DMS',
+	'header_publish': 'Dormitory publication',
+	'header_seek': 'Search dormitory',
+
+	// Footer
+	'footer_site_name': 'Dormitory Management System',
 };

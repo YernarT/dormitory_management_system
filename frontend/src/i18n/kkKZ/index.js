@@ -6,6 +6,10 @@ export default {
 	commonLoadingHelpText: 'Жүктелуде...',
 
 	// Header
-	'header_search': 'Іздеу...',
-	'header_login': 'Кіру / Тіркелу',
+	'header_site_name_short': 'ЖБЖ',
+	'header_publish': 'Жатақхана жариялау',
+	'header_seek': 'Жатақхана іздеу',
+
+	// Footer
+	'footer_site_name': 'Жатақхананы Басқару Жүйесі',
 };
