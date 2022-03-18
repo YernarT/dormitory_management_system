@@ -28,7 +28,7 @@ export default memo(function CommonLayout({ children }) {
 	const isLogin = useCreation(() => Boolean(user.jwt), [user.jwt]);
 
 	const handleToolbarClick = ({ key }) => {
-		history.push(`/auth/login/${key}`);
+		history.push(`/auth/login?form=${key}`);
 	};
 
 	const handleTranslate = () => {
