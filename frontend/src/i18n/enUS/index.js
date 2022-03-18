@@ -2,6 +2,14 @@ export default {
 	'kkKZ': 'Kazakh',
 	'enUS': 'English',
 
+	// common route
+	'route_/': 'Dormitory Management System',
+	'route_/404': '404 | DMS',
+
+	// auth route
+	'route_/auth/login': 'Login',
+	'route_/auth/register': 'Register',
+
 	// Loading
 	commonLoadingHelpText: 'Loading...',
 
