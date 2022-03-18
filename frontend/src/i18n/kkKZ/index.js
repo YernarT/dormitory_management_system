@@ -12,4 +12,8 @@ export default {
 
 	// Footer
 	'footer_site_name': 'Жатақхананы Басқару Жүйесі',
+
+	// Landing Page
+	'landingP_welcome_subTitle':
+		'Жоғары оқу орны мен жатақханалы мекемелерге жарамды',
 };

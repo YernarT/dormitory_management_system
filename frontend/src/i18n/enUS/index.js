@@ -12,4 +12,8 @@ export default {
 
 	// Footer
 	'footer_site_name': 'Dormitory Management System',
+
+	// Landing Page
+	'landingP_welcome_subTitle':
+		'Suitable for universities and institutions with dormitories',
 };
