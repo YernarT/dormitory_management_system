@@ -1,5 +1,6 @@
 import React, { memo, Suspense } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useTitle } from 'ahooks';
 import { useRecoilValue } from 'recoil';
@@ -18,7 +19,9 @@ export default memo(function RouteGuard({ routes }) {
 		return routeConfig.path === pathname;
 	});
 
-	useTitle(targetConfig?.title || document.title);
+	const { t } = useTranslation();
+	let siteTitle = t(targetConfig?.title || document.title);
+	useTitle(siteTitle);
 
 	// Registered route
 	if (targetConfig) {

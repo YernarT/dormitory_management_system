@@ -13,7 +13,9 @@ const commonRoutes = [
 		fallback: <CommonLoading />,
 		auth: false,
 		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
+		title: 'route_/',
 	},
+
 	{
 		path: '/404',
 		component: lazy(async () => {
@@ -23,7 +25,7 @@ const commonRoutes = [
 		fallback: <CommonLoading />,
 		auth: false,
 		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
-		title: '404 | React Template',
+		title: 'route_/404',
 	},
 ];
 
