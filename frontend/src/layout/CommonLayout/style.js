@@ -41,12 +41,6 @@ export const CommonLayoutStyledBox = styled.div`
 			.user-action {
 				margin-left: auto;
 			}
-
-			.user-action {
-				box-sizing: content-box;
-
-				padding: 2px 10px;
-			}
 		}
 
 		.content {
