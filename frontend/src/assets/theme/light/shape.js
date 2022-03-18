@@ -1,5 +1,5 @@
 export default {
-	borderRadius: '12px',
+	borderRadius: '4px',
 	borderColor: '#e5e5e5',
 
 	boxShadow: '0 0 2px #999',

@@ -35,7 +35,7 @@ export default defineConfig({
 					'@font-size-base': '1rem', // major text font size
 					'@heading-color': 'rgba(0, 0, 0, 0.85)', // heading text color
 					'@disabled-color': 'rgba(0, 0, 0, 0.25)', // disable state color
-					'@border-radius-base': '10px', // major border radius
+					'@border-radius-base': '4px', // major border radius
 					'@border-color-base': '#a2a5b9', // major border color
 					'@box-shadow-base': '0 0 4px rgba(0, 0, 0, 0.85)', // major shadow for layers
 				},
