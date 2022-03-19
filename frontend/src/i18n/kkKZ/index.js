@@ -4,11 +4,11 @@ export default {
 
 	// common route
 	'route_/': 'Жатақхананы Басқару Жүйесі',
-	'route_/404': '404 | ЖБЖ',
+	'route_/404': '404 - ЖБЖ',
 
 	// auth route
-	'route_/auth/login': 'Login',
-	'route_/auth/register': 'Register',
+	'route_/auth/login': 'Кіру - ЖБЖ',
+	'route_/auth/register': 'Тіркелу - ЖБЖ',
 
 	// Loading
 	commonLoadingHelpText: 'Жүктелуде...',

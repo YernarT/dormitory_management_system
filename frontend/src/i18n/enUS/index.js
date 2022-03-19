@@ -4,11 +4,11 @@ export default {
 
 	// common route
 	'route_/': 'Dormitory Management System',
-	'route_/404': '404 | DMS',
+	'route_/404': '404 - DMS',
 
 	// auth route
-	'route_/auth/login': 'Login',
-	'route_/auth/register': 'Register',
+	'route_/auth/login': 'Login - DMS',
+	'route_/auth/register': 'Register - DMS',
 
 	// Loading
 	commonLoadingHelpText: 'Loading...',
