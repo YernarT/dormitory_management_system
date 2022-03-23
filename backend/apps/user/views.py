@@ -4,24 +4,33 @@ from django.contrib.auth.hashers import check_password, make_password
 
 
 from user.models import User
-from user.data import verify_login, serializer_login
-from user.verify import verify_register
+from user.verify import verify_register, verify_login
 
-from utils.auth import generate_token, verify_token
-from utils.data import verify_data, get_data, serializer_data
+from utils.auth import generate_token
+from utils.data import get_data, serializer_data
 
 
 class LoginView(View):
 
     def post(self, request):
         data = get_data(request)
+
         is_valid, response = verify_login(data)
         if not is_valid:
             return response
 
-        # generate_token(user)
+        try:
+            user = User.objects.get(email=data.get('email'))
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'авторизация сәтсіз болды'}, status=400)
 
-        return serializer_login(data)
+        if check_password(data['password'], user.password):
+            return JsonResponse({'message': 'авторизация сәтті болды',
+                                 'token': generate_token(user.id),
+                                 'user': serializer_data(user, False)
+                                 }, status=200)
+
+        return JsonResponse({'message': 'авторизация сәтсіз болды'}, status=400)
 
 
 class RegisterView(View):
