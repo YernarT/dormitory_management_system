@@ -56,7 +56,7 @@ def verify_data(data: Any, required: bool = True, data_type: Any = str,
     return True, None
 
 
-def serializer(data: Any, multiple: bool = True) -> Union[dict, list]:
+def serializer_data(data: Any, multiple: bool = True) -> Union[dict, list]:
     data = serializers.serialize('json', [data])
     data = json_loads(data)
 
