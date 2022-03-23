@@ -1,6 +1,7 @@
 from pathlib import Path
-from sys import path as sys_path
 from os import path as os_path
+from sys import path as sys_path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +15,18 @@ SECRET_KEY = 'django-insecure-91(zs45uho&#d$qtplq2d#f0(e+nh8&&03fhq%nj6f_6)9p94x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+APPEND_SLASH = False
+
+ALLOWED_HOSTS = ['.localhost', '127.0.0.1']
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "X-AUTH-TOKEN",
+]
 
 
 # Application definition
@@ -27,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
-    'django_filters',
+    'corsheaders',
 
     'user',
     'dorm'
@@ -37,8 +48,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -114,12 +126,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+STATICFILES_DIRS = [
+    os_path.join(BASE_DIR, 'static')
+]
+
+MEDIA_ROOT = os_path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# DRF Gloabl Config
-REST_FRAMEWORK = {
-
-}
