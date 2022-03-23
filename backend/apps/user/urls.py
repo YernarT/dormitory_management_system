@@ -1,11 +1,13 @@
-from rest_framework.routers import DefaultRouter
+from django.conf.urls import url
+from user.views import LoginView, RegisterView
 
-from user.views import UserView
+urlpatterns = [
+    url(r'^user/login/$', LoginView.as_view()),
+    url(r'^user/register/$', RegisterView.as_view()),
 
 
-# 创建路由器
-router = DefaultRouter()
-# 注册路由
-router.register(r'users', UserView)
+    # url(r'^edit/$', EditView.as_view()),
+    # url(r'^edit/avatar/$', EditAvatarView.as_view()),
+]
 
-urlpatterns = router.urls
+app_name = 'user'
