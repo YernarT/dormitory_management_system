@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { userAtom, pageAtom } from '@/store';
-import { useCreation } from 'ahooks';
+import { useCreation, useSafeState } from 'ahooks';
 
 import { Layout, Menu, Button } from 'antd';
 import {
@@ -26,6 +26,19 @@ export default memo(function CommonLayout({ children }) {
 	const setPage = useSetRecoilState(pageAtom);
 
 	const isLogin = useCreation(() => Boolean(user.jwt), [user.jwt]);
+
+	const [selectedKeys, setSelectedKeys] = useSafeState([]);
+	useEffect(() => {
+		if (history.location.pathname.includes('auth')) {
+			if (history.location.search.includes('publish')) {
+				setSelectedKeys('publish');
+			}
+
+			if (history.location.search.includes('seek')) {
+				setSelectedKeys('seek');
+			}
+		}
+	}, [history.location]);
 
 	const handleToolbarClick = ({ key }) => {
 		// 是否在 auth 相关页面
@@ -69,11 +82,18 @@ export default memo(function CommonLayout({ children }) {
 							<Menu
 								className="toolbar"
 								mode="horizontal"
-								onClick={handleToolbarClick}>
-								<Menu.Item key="publish" icon={<NotificationOutlined />}>
+								onClick={handleToolbarClick}
+								selectedKeys={selectedKeys}>
+								<Menu.Item
+									key="publish"
+									icon={<NotificationOutlined />}
+									title={t('header_publish')}>
 									{t('header_publish')}
 								</Menu.Item>
-								<Menu.Item key="seek" icon={<CompassOutlined />}>
+								<Menu.Item
+									key="seek"
+									icon={<CompassOutlined />}
+									title={t('header_seek')}>
 									{t('header_seek')}
 								</Menu.Item>
 							</Menu>
