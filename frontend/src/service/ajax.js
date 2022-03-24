@@ -2,17 +2,17 @@ import axios from 'axios';
 import { localStorage } from '@/utils';
 
 export const apiServerInstance = axios.create({
-	baseURL: 'http://localhost:8000',
+	baseURL: 'http://localhost:8000/api',
 	validateStatus: status => status >= 200 && status < 300,
 });
 
 // Request interceptor
 apiServerInstance.interceptors.request.use(config => {
-	// Every time the jwt is updated in the page, the localstorage needs to be updated together
-	const { jwt } = localStorage.get('user');
+	// Every time the token is updated in the page, the localstorage needs to be updated together
+	const { token } = localStorage.get('user');
 
-	if (jwt && config.headers) {
-		config.headers['Authorization'] = `Bearer ${jwt}`;
+	if (token && config.headers) {
+		config.headers['X-AUTH-TOKEN'] = token;
 	}
 
 	return config;
