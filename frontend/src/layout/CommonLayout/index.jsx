@@ -28,7 +28,13 @@ export default memo(function CommonLayout({ children }) {
 	const isLogin = useCreation(() => Boolean(user.jwt), [user.jwt]);
 
 	const handleToolbarClick = ({ key }) => {
-		history.push(`/auth/login?form=${key}`);
+		// 是否在 auth 相关页面
+		let inAuthPage = history.location.pathname.includes('auth');
+		if (inAuthPage) {
+			history.replace({ search: `?form=${key}` });
+		} else {
+			history.push(`/auth/login?form=${key}`);
+		}
 	};
 
 	const handleTranslate = () => {
