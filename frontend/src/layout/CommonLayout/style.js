@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { container } from '@/assets/style';
+import { container } from '@/assets/style/common-style';
 
 export const CommonLayoutStyledBox = styled.div`
 	height: inherit;
