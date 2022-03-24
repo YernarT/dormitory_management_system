@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Form, Input, Button } from 'antd';
@@ -10,6 +10,7 @@ import './index.less';
 
 export default function LoginPage() {
 	const { t } = useTranslation();
+	const history = useHistory();
 
 	const onFinish = values => {
 		console.log('Received values of form: ', values);
@@ -44,7 +45,7 @@ export default function LoginPage() {
 							message: '密码min',
 						},
 						{
-							min: 40,
+							max: 40,
 							message: '密码max',
 						},
 					]}>
@@ -66,7 +67,14 @@ export default function LoginPage() {
 
 						<span>немесе</span>
 
-						<Link to="/auth/register">Тіркелу</Link>
+						<a
+							href="/auth/register"
+							onClick={e => {
+								e.preventDefault();
+								history.push(`/auth/register${history.location.search}`);
+							}}>
+							Тіркелу
+						</a>
 					</div>
 				</Form.Item>
 			</Form>
