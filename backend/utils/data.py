@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Union, Dict
+from typing import Any, Literal, Tuple, Union, Dict, List
 from django.core.handlers.wsgi import WSGIRequest
 
 from django.core import serializers
@@ -19,6 +19,42 @@ def get_data(request: WSGIRequest) -> Dict[str, Any]:
         body = '{}'
 
     return json_loads(body)
+
+
+def verify_dict(_dict: Dict[str, Any], rules: List[Dict[str, Any]] = [], absolutely_consisten: bool = True) -> Union[Tuple[Literal[True], None], Tuple[str, Literal['DoesNotExist']], Tuple[str, Literal['EXTRA']]]:
+    '''
+    检测字典内是否存在指定的 keys
+    存在返回 True, None
+    不存在则返回不存在的 key_name, 'DoesNotExist'
+
+    rules 定义如下
+    [{ key_name: 'username', required: True }, ... }]
+
+    required 默认为 True
+
+    绝对一致模式下 (absolutely_consisten) 
+    _dict的 keys 不能够比 rules 指定的 keys 多或少, 除了标记为 required=False 的项
+    不满足绝对一致模式时返回 key_name, 'EXTRA'
+    '''
+    _dict_keys = _dict.keys()
+
+    for rule in rules:
+        # 无需校验 或者 校验成功
+        if (rule.get('required', True) == False or rule['key_name'] in _dict_keys):
+            continue
+
+        return rule['key_name'], 'DoesNotExist'
+
+    # 查找多余的 key, 保证绝对一致性 (absolutely_consisten)
+    if absolutely_consisten:
+        # 规则指定需要有的 keys
+        rule_keys = [rule['key_name'] for rule in rules]
+
+        for key_name in _dict_keys:
+            if key_name not in rule_keys:
+                return key_name, 'EXTRA'
+
+    return True, None
 
 
 def verify_data(data: Any, required: bool = True, data_type: Any = str,
