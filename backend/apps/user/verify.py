@@ -3,7 +3,7 @@ from typing import Dict, Union, Tuple, Any
 from django.http import JsonResponse
 
 from user.models import User
-from utils.data import verify_data
+from utils.data import verify_data, verify_dict
 
 
 def verify_login(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
@@ -30,6 +30,12 @@ def verify_login(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, J
 
 
 def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
+    is_valid_or_key_name, reason_or_none = verify_dict(data, [{'key_name': 'email'}, {'key_name': 'fullname', 'required': False}, {
+        'key_name': 'password'}, {'key_name': 'role'}])
+
+    if is_valid_or_key_name != True:
+        return False, JsonResponse({'message': reason_or_none}, status=400)
+
     email = data.get('email')
     fullname = data.get('fullname')
     password = data.get('password')
