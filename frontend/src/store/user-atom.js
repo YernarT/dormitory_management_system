@@ -2,9 +2,12 @@ import { atom } from 'recoil';
 import { getLatestState, localStorage } from '@/utils';
 
 export const defaultUserState = {
-	username: '',
+	email: '',
 	role: 'guest',
-	jwt: '',
+	fullname: '',
+	createTime: null,
+	id: -1,
+	token: '',
 };
 
 const [isValid, state] = getLatestState(
