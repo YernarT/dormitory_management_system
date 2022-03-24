@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -11,6 +11,14 @@ import './index.less';
 export default function LoginPage() {
 	const { t } = useTranslation();
 	const history = useHistory();
+
+	// 初始化 search params
+	useEffect(() => {	
+		let searchParams = history.location.search;
+		if (!searchParams.includes('publish') && !searchParams.includes('seek')) {
+			history.replace({ search: '?form=seek' });
+		}
+	}, []);
 
 	const onFinish = values => {
 		console.log('Received values of form: ', values);
