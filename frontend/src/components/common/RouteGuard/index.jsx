@@ -26,7 +26,7 @@ export default memo(function RouteGuard({ routes }) {
 	// Registered route
 	if (targetConfig) {
 		// Require authorization, but user not authorized
-		if (targetConfig.auth && Boolean(user.jwt) === false) {
+		if (targetConfig.auth && Boolean(user.token) === false) {
 			return <Redirect to="/auth/login" />;
 		}
 
