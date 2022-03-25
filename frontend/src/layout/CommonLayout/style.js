@@ -39,9 +39,7 @@ export const CommonLayoutStyledBox = styled.div`
 
 			.toolbar,
 			.user-action {
-				width: 100%;
 				margin-left: auto;
-
 				justify-content: flex-end;
 
 				@media screen and (max-width: 760px) {
@@ -51,6 +49,10 @@ export const CommonLayoutStyledBox = styled.div`
 				@media screen and (max-width: 540px) {
 					width: 20px;
 				}
+			}
+
+			.toolbar {
+				width: 100%;
 			}
 		}
 
