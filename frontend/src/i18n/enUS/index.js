@@ -27,7 +27,7 @@ export default {
 
 	// Related Auth
 	'auth_missing_email': 'Email is a required field',
-	'auth_incorrect format_email': 'Email format is incorrect',
+	'auth_incorrect_format_email': 'Email format is incorrect',
 
 	'auth_password': 'Password',
 	'auth_missing_password': 'Password is a required field',

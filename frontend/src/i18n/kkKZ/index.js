@@ -27,7 +27,7 @@ export default {
 
 	// Related Auth
 	'auth_missing_email': 'Email міндетті өріс',
-	'auth_incorrect format_email': 'Email форматы дұрыс емес',
+	'auth_incorrect_format_email': 'Email форматы дұрыс емес',
 
 	'auth_password': 'Құпия сөз',
 	'auth_missing_password': 'Құпия сөз міндетті өріс',
