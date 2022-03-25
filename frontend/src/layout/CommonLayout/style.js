@@ -83,7 +83,7 @@ export const CommonLayoutStyledBox = styled.div`
 				background: linear-gradient(
 					to right,
 					transparent,
-					rgba(0, 0, 0, 0.15),
+					rgba(0, 0, 0, 0.05),
 					transparent
 				);
 
