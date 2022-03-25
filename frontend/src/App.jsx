@@ -1,7 +1,11 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { ConfigProvider as AntdConfigProvider } from 'antd';
+import {
+	ConfigProvider as AntdConfigProvider,
+	message,
+	notification,
+} from 'antd';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import { RouteGuard, CssBaseLine } from '@/components/common';
@@ -13,7 +17,19 @@ import { useRecoilValue } from 'recoil';
 import { userAtom, pageAtom } from '@/store';
 
 import getTheme from '@/assets/theme';
+import { AntdComponentStyleModify } from '@/assets/style/antd-mod-style';
 import routes from '@/routes';
+
+// global config for antd message
+message.config({
+	prefixCls: 'dms-message',
+});
+
+// global config for notification
+notification.config({
+	prefixCls: 'dms-notification',
+	placement: 'bottomRight',
+});
 
 export default function App() {
 	const user = useRecoilValue(userAtom);
@@ -40,6 +56,8 @@ export default function App() {
 				<BrowserRouter>
 					{/* 全局样式 */}
 					<CssBaseLine />
+					{/* Antd design 组件样式重写 */}
+					<AntdComponentStyleModify />
 					{/* 路由守卫 */}
 					<RouteGuard routes={routes} />
 				</BrowserRouter>
