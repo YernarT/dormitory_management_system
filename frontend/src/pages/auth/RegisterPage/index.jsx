@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@/store';
+import { useRequest } from 'ahooks';
 
-import { Form, Input, Button } from 'antd';
+import { reqRegister } from '@/service/api/auth-api';
+import { localStorage } from '@/utils';
+
+import { Form, Input, Button, message as antdMessage } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthLayout } from '@/layout';
 
@@ -11,6 +17,7 @@ import './index.less';
 export default function RegisterPage() {
 	const { t } = useTranslation();
 	const history = useHistory();
+	const setUser = useSetRecoilState(userAtom);
 
 	// 初始化 search params
 	useEffect(() => {
@@ -20,8 +27,53 @@ export default function RegisterPage() {
 		}
 	}, []);
 
+	const { runAsync: runReqRegister, loading: loadingReqRegister } = useRequest(
+		data => reqRegister(data),
+		{
+			manual: true,
+		},
+	);
 	const onFinish = values => {
-		console.log('Received values of form: ', values);
+		if (history.location.search.includes('seek')) {
+			values.role = 'tenant';
+		} else {
+			values.role = 'dorm manager';
+		}
+		// 不发送 confirm password
+		values.rePassword = undefined;
+
+		runReqRegister(values)
+			/**
+			 * TODO:
+			 *
+			 * 注册后 跳转到主页
+			 * 再刷新页面 localStorage 值会消失
+			 */
+			.then(data => {
+				let {
+					message,
+					token,
+					user: { email, role, fullname, create_time: createTime, id },
+				} = data;
+				let newUser = {
+					email,
+					role,
+					fullname,
+					create_time: createTime,
+					id,
+					token,
+				};
+
+				antdMessage.success(message);
+
+				localStorage.set('user', newUser);
+				setUser(newUser);
+
+				history.push('/');
+			})
+			.catch(err => {
+				antdMessage.error(err.message);
+			});
 	};
 
 	return (
@@ -32,11 +84,11 @@ export default function RegisterPage() {
 					rules={[
 						{
 							required: true,
-							message: 'Email міндетті өріс',
+							message: t('auth_missing_email'),
 						},
 						{
 							type: 'email',
-							message: 'Email форматы дұрыс емес',
+							message: t('auth_incorrect format_email'),
 						},
 					]}>
 					<Input type="email" prefix={<UserOutlined />} placeholder="Email" />
@@ -46,21 +98,21 @@ export default function RegisterPage() {
 					rules={[
 						{
 							required: true,
-							message: 'Құпия сөз міндетті өріс',
+							message: t('auth_missing_password'),
 						},
 						{
 							min: 4,
-							message: 'Құпия сөз ұзындығы 4-ден кем',
+							message: t('auth_password_less_than_rule'),
 						},
 						{
 							max: 40,
-							message: 'Құпия сөз ұзындығы 40-ден артық',
+							message: t('auth_password_more_than_rule'),
 						},
 					]}>
 					<Input
 						prefix={<LockOutlined />}
 						type="password"
-						placeholder="Password"
+						placeholder={t('auth_password')}
 					/>
 				</Form.Item>
 				<Form.Item
@@ -69,31 +121,29 @@ export default function RegisterPage() {
 					rules={[
 						{
 							required: true,
-							message: 'Құпия сөз міндетті өріс',
+							message: t('auth_missing_password'),
 						},
 						{
 							min: 4,
-							message: 'Құпия сөз ұзындығы 4-ден кем',
+							message: t('auth_password_less_than_rule'),
 						},
 						{
 							max: 40,
-							message: 'Құпия сөз ұзындығы 254-ден артық',
+							message: t('auth_password_more_than_rule'),
 						},
 						({ getFieldValue }) => ({
 							validator(_, value) {
 								if (!value || getFieldValue('password') === value) {
 									return Promise.resolve();
 								}
-								return Promise.reject(
-									new Error('Енгізілген құпия сөздер сәйкес келмейді'),
-								);
+								return Promise.reject(new Error(t('auth_rePassword_noMatch')));
 							},
 						}),
 					]}>
 					<Input
 						prefix={<LockOutlined />}
 						type="password"
-						placeholder="RePassword"
+						placeholder={t('auth_rePassword')}
 					/>
 				</Form.Item>
 
@@ -102,11 +152,12 @@ export default function RegisterPage() {
 						<Button
 							type="primary"
 							htmlType="submit"
-							className="form-submit-button">
-							Тіркелу
+							className="form-submit-button"
+							loading={loadingReqRegister}>
+							{t('auth_register')}
 						</Button>
 
-						<span>немесе</span>
+						<span>{t('auth_or')}</span>
 
 						<a
 							href="/auth/login"
@@ -114,7 +165,7 @@ export default function RegisterPage() {
 								e.preventDefault();
 								history.push(`/auth/login${history.location.search}`);
 							}}>
-							Кіру
+							{t('auth_login')}
 						</a>
 					</div>
 				</Form.Item>
