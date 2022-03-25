@@ -54,6 +54,12 @@ export const CommonLayoutStyledBox = styled.div`
 			.toolbar {
 				width: 100%;
 			}
+
+			.user-action {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+			}
 		}
 
 		.content {
