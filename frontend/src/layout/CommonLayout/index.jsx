@@ -25,7 +25,7 @@ export default memo(function CommonLayout({ children }) {
 	const user = useRecoilValue(userAtom);
 	const setPage = useSetRecoilState(pageAtom);
 
-	const isLogin = useCreation(() => Boolean(user.jwt), [user.jwt]);
+	const isLogin = useCreation(() => Boolean(user.token), [user.token]);
 
 	const [selectedKeys, setSelectedKeys] = useSafeState([]);
 	useEffect(() => {
@@ -70,13 +70,17 @@ export default memo(function CommonLayout({ children }) {
 					<h2 className="title">{t('header_site_name_short')}</h2>
 
 					{isLogin ? (
-						<Button
-							className="user-action"
-							onClick={() => {
-								history.push('/profile');
-							}}>
-							<UserOutlined />
-						</Button>
+						<div className="user-action">
+							<Button onClick={handleTranslate}>
+								<TranslationOutlined />
+							</Button>
+							<Button
+								onClick={() => {
+									history.push('/profile');
+								}}>
+								<UserOutlined />
+							</Button>
+						</div>
 					) : (
 						<>
 							<Menu
