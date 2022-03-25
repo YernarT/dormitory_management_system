@@ -43,12 +43,6 @@ export default function RegisterPage() {
 		values.rePassword = undefined;
 
 		runReqRegister(values)
-			/**
-			 * TODO:
-			 *
-			 * 注册后 跳转到主页
-			 * 再刷新页面 localStorage 值会消失
-			 */
 			.then(data => {
 				let {
 					message,
@@ -88,7 +82,7 @@ export default function RegisterPage() {
 						},
 						{
 							type: 'email',
-							message: t('auth_incorrect format_email'),
+							message: t('auth_incorrect_format_email'),
 						},
 					]}>
 					<Input type="email" prefix={<UserOutlined />} placeholder="Email" />

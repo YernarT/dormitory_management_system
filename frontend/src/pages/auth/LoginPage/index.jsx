@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@/store';
+import { useRequest } from 'ahooks';
 
-import { Form, Input, Button } from 'antd';
+import { reqLogin } from '@/service/api/auth-api';
+import { localStorage } from '@/utils';
+
+import { Form, Input, Button, message as antdMessage } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthLayout } from '@/layout';
 
@@ -11,17 +17,31 @@ import './index.less';
 export default function LoginPage() {
 	const { t } = useTranslation();
 	const history = useHistory();
+	const setUser = useSetRecoilState(userAtom);
 
 	// 初始化 search params
-	useEffect(() => {	
+	useEffect(() => {
 		let searchParams = history.location.search;
 		if (!searchParams.includes('publish') && !searchParams.includes('seek')) {
 			history.replace({ search: '?form=seek' });
 		}
 	}, []);
 
+	const { runAsync: runReqLogin, loading: loadingReqLogin } = useRequest(
+		data => reqLogin(data),
+		{
+			manual: true,
+		},
+	);
+
 	const onFinish = values => {
-		console.log('Received values of form: ', values);
+		runReqLogin(values)
+			.then(data => {
+				console.log(data);
+			})
+			.catch(err => {
+				antdMessage.error(err.message);
+			});
 	};
 
 	return (
@@ -32,11 +52,11 @@ export default function LoginPage() {
 					rules={[
 						{
 							required: true,
-							message: 'Please input your Email!',
+							message: t('auth_missing_email'),
 						},
 						{
 							type: 'email',
-							message: '邮箱不对',
+							message: t('auth_incorrect_format_email'),
 						},
 					]}>
 					<Input type="email" prefix={<UserOutlined />} placeholder="Email" />
@@ -46,21 +66,28 @@ export default function LoginPage() {
 					rules={[
 						{
 							required: true,
-							message: 'Please input your Password!',
+							message: t('auth_missing_password'),
 						},
 						{
 							min: 4,
-							message: '密码min',
+							message: t('auth_password_less_than_rule'),
 						},
+
+						/**
+						 * TODO:
+						 *
+						 * min, max 限制 翻译 使用变量
+						 */
+
 						{
 							max: 40,
-							message: '密码max',
+							message: t('auth_password_more_than_rule'),
 						},
 					]}>
 					<Input
 						prefix={<LockOutlined />}
 						type="password"
-						placeholder="Password"
+						placeholder={t('auth_password')}
 					/>
 				</Form.Item>
 
@@ -69,11 +96,12 @@ export default function LoginPage() {
 						<Button
 							type="primary"
 							htmlType="submit"
-							className="form-submit-button">
-							Кіру
+							className="form-submit-button"
+							loading={loadingReqLogin}>
+							{t('auth_login')}
 						</Button>
 
-						<span>немесе</span>
+						<span>{t('auth_or')}</span>
 
 						<a
 							href="/auth/register"
@@ -81,7 +109,7 @@ export default function LoginPage() {
 								e.preventDefault();
 								history.push(`/auth/register${history.location.search}`);
 							}}>
-							Тіркелу
+							{t('auth_register')}
 						</a>
 					</div>
 				</Form.Item>
