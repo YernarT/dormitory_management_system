@@ -88,3 +88,24 @@ def verify_edit(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, Js
             return False, JsonResponse({'message': error_message}, status=400)
 
     return True, None
+
+
+def verify_change_password(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
+    old_password = data.get('oldPassword')
+    new_password = data.get('newPassword')
+
+    for is_valid, error_message in (verify_data(data=old_password, required=True, data_type=str, min_length=4, max_length=254, error_messages={
+        'required': 'Ескі құпия сөз міндетті өріс',
+        'data_type': 'Құпия сөз string типінде болу керек',
+        'min_length': 'Құпия сөз ұзындығы 4-ден кем',
+        'max_length': 'Құпия сөз ұзындығы 254-ден артық',
+    }), verify_data(data=new_password, required=True, data_type=str, min_length=4, max_length=254, error_messages={
+        'required': 'Жаңа құпия сөз міндетті өріс',
+        'data_type': 'Құпия сөз string типінде болу керек',
+        'min_length': 'Құпия сөз ұзындығы 4-ден кем',
+        'max_length': 'Құпия сөз ұзындығы 254-ден артық',
+    })):
+        if not is_valid:
+            return False, JsonResponse({'message': error_message}, status=400)
+
+    return True, None
