@@ -96,11 +96,17 @@ export default function RegisterPage() {
 						},
 						{
 							min: 4,
-							message: t('auth_password_less_than_rule'),
+							message: t('auth_password_less_than_rule', {
+								postProcess: 'interval',
+								min: 4,
+							}),
 						},
 						{
 							max: 40,
-							message: t('auth_password_more_than_rule'),
+							message: t('auth_password_more_than_rule', {
+								postProcess: 'interval',
+								max: 40,
+							}),
 						},
 					]}>
 					<Input
