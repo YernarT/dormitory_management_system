@@ -46,4 +46,14 @@ export default {
 
 	'auth_register': 'Тіркелу',
 	'auth_login': 'Кіру',
+
+	'auth_fullname': 'Аты-жөн',
+	'auth_missing_fullname': 'Аты-жөн міндетті өріс',
+	'auth_fullname_less_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Аты-жөн ұзындығы {{ min }}-ден кем',
+	}),
+	'auth_fullname_more_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Аты-жөн ұзындығы {{ max }}-ден артық',
+	}),
+	'auth_save_changes': 'Өзгерісті сақтау',
 };

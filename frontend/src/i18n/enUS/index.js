@@ -35,10 +35,10 @@ export default {
 	'auth_password': 'Password',
 	'auth_missing_password': 'Password is a required field',
 	'auth_password_less_than_rule': generateI18nPluralIntervalRule({
-		'0-inf': 'Құпия сөз ұзындығы {{ min }}-ден кем',
+		'0-inf': 'The password is less than {{ min }}',
 	}),
 	'auth_password_more_than_rule': generateI18nPluralIntervalRule({
-		'0-inf': 'Құпия сөз ұзындығы {{ max }}-ден артық',
+		'0-inf': 'The password is more than {{ max }}',
 	}),
 	'auth_rePassword': 'Repeat password',
 	'auth_rePassword_noMatch': 'The passwords entered do not match',
@@ -46,4 +46,14 @@ export default {
 
 	'auth_register': 'Register',
 	'auth_login': 'Login',
+
+	'auth_fullname': 'Fullname',
+	'auth_missing_fullname': 'Fullname is a required field',
+	'auth_fullname_less_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'The fullname length is less than {{ min }}',
+	}),
+	'auth_fullname_more_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'The fullname length is more than {{ min }}',
+	}),
+	'auth_save_changes': 'Save changes',
 };
