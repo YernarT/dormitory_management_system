@@ -9,7 +9,7 @@ import { reqRegister } from '@/service/api/auth-api';
 import { localStorage } from '@/utils';
 
 import { Form, Input, Button, message as antdMessage } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthLayout } from '@/layout';
 
 import './index.less';
@@ -85,7 +85,7 @@ export default function RegisterPage() {
 							message: t('auth_incorrect_format_email'),
 						},
 					]}>
-					<Input type="email" prefix={<UserOutlined />} placeholder="Email" />
+					<Input type="email" prefix={<MailOutlined />} placeholder="Email" />
 				</Form.Item>
 				<Form.Item
 					name="password"
