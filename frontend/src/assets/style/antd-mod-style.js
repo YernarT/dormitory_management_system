@@ -5,6 +5,9 @@ export const AntdComponentStyleModify = createGlobalStyle`
 		box-sizing: content-box;
 		padding: 5px 10px;
 	}
+	.dms-btn-block {
+		padding: 5px 0;
+	}
 
 	.dms-message {
 		.dms-message-notice-content {
@@ -43,6 +46,12 @@ export const AntdComponentStyleModify = createGlobalStyle`
 					color: ${({ theme }) => theme.palette.primary};
 				}
 			}
+		}
+	}
+
+	.dms-card {
+		&-head {
+			${({ theme }) => theme.typography.title};
 		}
 	}
 `;
