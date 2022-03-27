@@ -68,3 +68,23 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
         return False, JsonResponse({'message': 'Қолдау көрсетілмейтін рөл түрі'}, status=400)
 
     return True, None
+
+
+def verify_edit(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
+    email = data.get('email')
+    fullname = data.get('fullname')
+
+    for is_valid, error_message in (verify_data(data=email, required=False, data_type=str, min_length=5, max_length=254, regex=r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', error_messages={
+        'data_type': 'Email string типінде болу керек',
+        'min_length': 'Email ұзындығы 5-ден кем',
+        'max_length': 'Email ұзындығы 254-ден артық',
+        'regex': 'Email форматы дұрыс емес'
+    }), verify_data(data=fullname, required=False, data_type=str, min_length=1, max_length=50, error_messages={
+        'data_type': 'Аты жөн string типінде болу керек',
+        'min_length': 'Аты жөн ұзындығы 1-ден кем',
+        'max_length': 'Аты жөн ұзындығы 50-ден артық',
+    })):
+        if not is_valid:
+            return False, JsonResponse({'message': error_message}, status=400)
+
+    return True, None
