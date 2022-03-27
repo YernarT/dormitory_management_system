@@ -34,3 +34,12 @@ export const container = css`
 		}
 	}
 `;
+
+export const hideScrollbar = css`
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+
+		background-color: transparent;
+	}
+`;
