@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export const AntdComponentStyleModify = createGlobalStyle`
 	.dms-btn {
 		box-sizing: content-box;
-		padding: 2px 10px;
+		padding: 5px 10px;
 	}
 
 	.dms-message {
