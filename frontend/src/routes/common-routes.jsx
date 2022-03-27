@@ -27,6 +27,18 @@ const commonRoutes = [
 		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
 		title: 'route_/404',
 	},
+
+	{
+		path: '/profile',
+		component: lazy(async () => {
+			await sleep(265);
+			return import('@/pages/common/ProfilePage');
+		}),
+		fallback: <CommonLoading />,
+		auth: true,
+		role: ['tenant', 'dorm manager', 'site admin'],
+		title: 'route_/profile',
+	},
 ];
 
 export default commonRoutes;
