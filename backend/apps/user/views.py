@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password, make_password
 
 
 from user.models import User
-from user.verify import verify_register, verify_login, verify_edit
+from user.verify import verify_register, verify_login, verify_edit, verify_change_password
 
 from utils.auth import generate_token, verify_token
 from utils.data import get_data, serializer_data
@@ -94,3 +94,25 @@ class EditView(View):
         return JsonResponse({'message': 'өзгерту сәтті болды',
                              'user': serializer_data(user_or_response_content, False)
                              }, status=200)
+
+
+class ChangePasswordView(View):
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        data = get_data(request)
+
+        is_valid, response = verify_change_password(data)
+        if not is_valid:
+            return response
+
+        if check_password(data['oldPassword'], user_or_response_content.password):
+            user_or_response_content.password = data['newPassword']
+            user_or_response_content.save()
+
+            return JsonResponse({'message': 'Құпия сөз сәтті өзгертілді'}, status=200)
+
+        return JsonResponse({'message': 'Ескі құпия сөз қате'}, status=400)
