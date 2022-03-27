@@ -1,7 +1,11 @@
 import styled from 'styled-components';
+import { hideScrollbar } from '@/assets/style/common-style';
 
 export const ProfilePageStyledBox = styled.div`
 	height: inherit;
+	overflow: hidden auto;
+
+	${hideScrollbar};
 
 	.profile-tabs {
 		margin-top: 15px;
@@ -9,8 +13,6 @@ export const ProfilePageStyledBox = styled.div`
 
 	form {
 		.form-submit-button {
-			width: 100%;
-			padding: 5px 0;
 			margin-top: 12px;
 		}
 
