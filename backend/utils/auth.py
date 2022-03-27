@@ -20,7 +20,7 @@ def verify_token(request: WSGIRequest):
         if (now - token_expire_date).days < 0:
             user = User.objects.get(id=id)
 
-            return True, {'message': 'авторизация сәтті болды', 'user': user}
+            return True, user
         else:
             return False, {'message': 'авторизация мерзімі аяқталды'}
 
