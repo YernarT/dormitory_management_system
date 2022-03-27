@@ -102,7 +102,7 @@ export default function LoginPage() {
 							}),
 						},
 					]}>
-					<Input
+					<Input.Password
 						prefix={<LockOutlined />}
 						type="password"
 						placeholder={t('auth_password')}

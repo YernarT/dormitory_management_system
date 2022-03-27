@@ -109,7 +109,7 @@ export default function RegisterPage() {
 							}),
 						},
 					]}>
-					<Input
+					<Input.Password
 						prefix={<LockOutlined />}
 						type="password"
 						placeholder={t('auth_password')}
@@ -146,7 +146,7 @@ export default function RegisterPage() {
 							},
 						}),
 					]}>
-					<Input
+					<Input.Password
 						prefix={<LockOutlined />}
 						type="password"
 						placeholder={t('auth_rePassword')}
