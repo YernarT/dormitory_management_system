@@ -18,7 +18,12 @@ def get_data(request: WSGIRequest) -> Dict[str, Any]:
     except:
         body = '{}'
 
-    return json_loads(body)
+    try:
+        data = json_loads(body)
+    except:
+        data = {}
+
+    return data
 
 
 def verify_dict(_dict: Dict[str, Any], rules: List[Dict[str, Any]] = [], absolutely_consisten: bool = True) -> Union[Tuple[Literal[True], None], Tuple[str, Literal['DoesNotExist']], Tuple[str, Literal['EXTRA']]]:
