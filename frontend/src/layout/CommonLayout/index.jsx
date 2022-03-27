@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { userAtom, pageAtom } from '@/store';
 import { useCreation, useSafeState } from 'ahooks';
 
+import { getHtmlLang } from '@/utils';
+
 import { Layout, Menu, Button } from 'antd';
 import {
 	UserOutlined,
@@ -53,10 +55,12 @@ export default memo(function CommonLayout({ children }) {
 	const handleTranslate = () => {
 		setPage(prevState => {
 			if (prevState.locale === 'kkKZ') {
+				document.documentElement.lang = getHtmlLang('enUS');
 				i18next.changeLanguage('enUS');
 				return { ...prevState, locale: 'enUS' };
 			}
 
+			document.documentElement.lang = getHtmlLang('kkKZ');
 			i18next.changeLanguage('kkKZ');
 			return { ...prevState, locale: 'kkKZ' };
 		});
