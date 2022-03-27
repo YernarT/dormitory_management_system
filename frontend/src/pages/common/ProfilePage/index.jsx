@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useCreation, useResponsive, useSafeState } from 'ahooks';
+import { useCreation, useResponsive } from 'ahooks';
 
 import { Tabs } from 'antd';
-import {
-	UserOutlined,
-	LaptopOutlined,
-	NotificationOutlined,
-} from '@ant-design/icons';
 import { CommonLayout } from '@/layout';
 import BasicInfo from './BasicInfo';
+import ChangePassword from './ChangePassword';
+import Other from './Other';
 import { ProfilePageStyledBox } from './style';
 
 const { TabPane } = Tabs;
@@ -29,9 +26,9 @@ export default function ProfilePage() {
 			{
 				key: 'change_password',
 				tabName: 'Құпия сөзді өзгерту',
-				tabContent: <BasicInfo />,
+				tabContent: <ChangePassword />,
 			},
-			{ key: 'other', tabName: 'Басқа', tabContent: <BasicInfo /> },
+			{ key: 'other', tabName: 'Басқа', tabContent: <Other /> },
 		],
 		[],
 	);
