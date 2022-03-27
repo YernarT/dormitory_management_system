@@ -37,7 +37,26 @@ export default function LoginPage() {
 	const onFinish = values => {
 		runReqLogin(values)
 			.then(data => {
-				console.log(data);
+				let {
+					message,
+					token,
+					user: { email, role, fullname, create_time: createTime, id },
+				} = data;
+				let newUser = {
+					email,
+					role,
+					fullname,
+					create_time: createTime,
+					id,
+					token,
+				};
+
+				antdMessage.success(message);
+
+				localStorage.set('user', newUser);
+				setUser(newUser);
+
+				history.push('/');
 			})
 			.catch(err => {
 				antdMessage.error(err.message);
@@ -70,18 +89,17 @@ export default function LoginPage() {
 						},
 						{
 							min: 4,
-							message: t('auth_password_less_than_rule'),
+							message: t('auth_password_less_than_rule', {
+								postProcess: 'interval',
+								min: 4,
+							}),
 						},
-
-						/**
-						 * TODO:
-						 *
-						 * min, max 限制 翻译 使用变量
-						 */
-
 						{
 							max: 40,
-							message: t('auth_password_more_than_rule'),
+							message: t('auth_password_more_than_rule', {
+								postProcess: 'interval',
+								max: 40,
+							}),
 						},
 					]}>
 					<Input
