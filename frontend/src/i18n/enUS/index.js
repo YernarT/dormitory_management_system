@@ -1,3 +1,5 @@
+import { generateI18nPluralIntervalRule } from '@/utils';
+
 export default {
 	'kkKZ': 'Kazakh',
 	'enUS': 'English',
@@ -5,6 +7,7 @@ export default {
 	// common route
 	'route_/': 'Dormitory Management System',
 	'route_/404': '404 - DMS',
+	'route_/profile': 'Profile - DMS',
 
 	// auth route
 	'route_/auth/login': 'Login - DMS',
@@ -31,8 +34,12 @@ export default {
 
 	'auth_password': 'Password',
 	'auth_missing_password': 'Password is a required field',
-	'auth_password_less_than_rule': 'Password length less than 4',
-	'auth_password_more_than_rule': 'Password length more than 40',
+	'auth_password_less_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Құпия сөз ұзындығы {{ min }}-ден кем',
+	}),
+	'auth_password_more_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Құпия сөз ұзындығы {{ max }}-ден артық',
+	}),
 	'auth_rePassword': 'Repeat password',
 	'auth_rePassword_noMatch': 'The passwords entered do not match',
 	'auth_or': 'or',

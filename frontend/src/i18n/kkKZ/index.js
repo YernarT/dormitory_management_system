@@ -1,3 +1,5 @@
+import { generateI18nPluralIntervalRule } from '@/utils';
+
 export default {
 	'kkKZ': 'Қазақша',
 	'enUS': 'Ағылшынша',
@@ -5,6 +7,7 @@ export default {
 	// common route
 	'route_/': 'Жатақхананы Басқару Жүйесі',
 	'route_/404': '404 - ЖБЖ',
+	'route_/profile': 'Жеке кабинет - ЖБЖ',
 
 	// auth route
 	'route_/auth/login': 'Кіру - ЖБЖ',
@@ -31,8 +34,12 @@ export default {
 
 	'auth_password': 'Құпия сөз',
 	'auth_missing_password': 'Құпия сөз міндетті өріс',
-	'auth_password_less_than_rule': 'Құпия сөз ұзындығы 4-ден кем',
-	'auth_password_more_than_rule': 'Құпия сөз ұзындығы 40-ден артық',
+	'auth_password_less_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Құпия сөз ұзындығы {{ min }}-ден кем',
+	}),
+	'auth_password_more_than_rule': generateI18nPluralIntervalRule({
+		'0-inf': 'Құпия сөз ұзындығы {{ max }}-ден артық',
+	}),
 	'auth_rePassword': 'Құпия сөз қайталау',
 	'auth_rePassword_noMatch': 'Енгізілген құпия сөздер сәйкес келмейді',
 	'auth_or': 'немесе',
