@@ -23,5 +23,5 @@ if (!isValid) {
 export const userAtom = atom({
 	key: 'userAtom',
 	// default value, aka initial value
-	default: localStorage.get('user', state),
+	default: state,
 });
