@@ -25,7 +25,7 @@ class User(models.Model):
         verbose_name_plural = 'Пайдаланушылар'
 
     def __str__(self):
-        return self.email
+        return self.fullname
 
 
 class Feedback(models.Model):
@@ -41,4 +41,4 @@ class Feedback(models.Model):
         verbose_name_plural = 'Пайдаланушылардың кері байланыстары'
 
     def __str__(self):
-        return self.sender
+        return self.sender.fullname
