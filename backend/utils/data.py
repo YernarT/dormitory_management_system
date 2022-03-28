@@ -97,15 +97,41 @@ def verify_data(data: Any, required: bool = True, data_type: Any = str,
     return True, None
 
 
-def serializer_data(data: Any, multiple: bool = True) -> Union[dict, list]:
-    data = serializers.serialize('json', data if multiple else [data])
+def serializer_data(data: Any, options: Dict[str, any] = {
+    'is_multiple': True,
+    'include_fields': '__all__',
+    'exclude_fields': []
+}) -> Union[dict, list]:
+    data = serializers.serialize(
+        'json', data if options['is_multiple'] else [data])
     data = json_loads(data)
 
     def customize_serialized_fileds(serialized_data: list) -> Union[dict, list]:
         result = [dict({'id': data.get('pk')}, **data.get('fields'))
                   for data in serialized_data]
 
-        if multiple:
+        # 处理 includes_fields 选项
+        include_fields = options.get('include_fields', '__all__')
+        if include_fields != '__all__':
+            temp = []
+            for data in result:
+                new_data = {}
+                for field in include_fields:
+                    new_data[field] = data.get(field)
+                temp.append(new_data)
+
+            result = temp
+
+        # 处理 exclude_fields 选项
+        exclude_fields = options.get('exclude_fields', [])
+        if exclude_fields != []:
+            for data in result:
+                for field in exclude_fields:
+                    if data.get(field) != None:
+                        data.pop(field)
+
+        # 处理 is_multiple 选项
+        if options['is_multiple']:
             return result
         return result[0]
 
