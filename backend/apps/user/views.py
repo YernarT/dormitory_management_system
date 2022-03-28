@@ -27,7 +27,7 @@ class LoginView(View):
         if check_password(data['password'], user.password):
             return JsonResponse({'message': 'авторизация сәтті болды',
                                  'token': generate_token(user.id),
-                                 'user': serializer_data(user, False)
+                                 'user': serializer_data(user, {'is_multiple': False, 'exclude_fields': ['password']})
                                  }, status=200)
 
         return JsonResponse({'message': 'авторизация сәтсіз болды'}, status=400)
@@ -58,13 +58,13 @@ class RegisterView(View):
 
         return JsonResponse({'message': 'тіркелу сәтті болды',
                              'token': generate_token(new_user.id),
-                             'user': serializer_data(new_user, False)
+                             'user': serializer_data(new_user, {'is_multiple': False, 'exclude_fields': ['password']})
                              }, status=201)
 
 
 class EditView(View):
 
-    def post(self, request):
+    def put(self, request):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
@@ -92,13 +92,13 @@ class EditView(View):
             user_or_response_content.save()
 
         return JsonResponse({'message': 'өзгерту сәтті болды',
-                             'user': serializer_data(user_or_response_content, False)
+                             'user': serializer_data(user_or_response_content, {'is_multiple': False, 'include_fields': ['fullname', 'email']})
                              }, status=200)
 
 
 class ChangePasswordView(View):
 
-    def post(self, request):
+    def put(self, request):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
@@ -110,7 +110,8 @@ class ChangePasswordView(View):
             return response
 
         if check_password(data['oldPassword'], user_or_response_content.password):
-            user_or_response_content.password = make_password(data['newPassword'])
+            user_or_response_content.password = make_password(
+                data['newPassword'])
             user_or_response_content.save()
 
             return JsonResponse({'message': 'Құпия сөз сәтті өзгертілді'}, status=200)
