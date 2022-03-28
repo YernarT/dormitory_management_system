@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userAtom, defaultUserState, pageAtom } from '@/store';
-import { useSafeState, useCreation } from 'ahooks';
+import { useSafeState, useCreation, useRequest } from 'ahooks';
 import { useTranslation } from 'react-i18next';
 
 import { localStorage, fromNow } from '@/utils';
+import { reqSendFeedback } from '@/service/api/common-api';
 
 import { Button, Card, Divider, Input, message as antdMessage } from 'antd';
 
@@ -14,7 +15,7 @@ export default function Other() {
 	const { t } = useTranslation();
 	const [{ createTime }, setUser] = useRecoilState(userAtom);
 	const page = useRecoilValue(pageAtom);
-	const [comment, setComment] = useSafeState('');
+	const [feedbackContent, setFeedbackContent] = useSafeState('');
 
 	const createTimeReadableFormat = useCreation(
 		() =>
@@ -32,14 +33,24 @@ export default function Other() {
 		setUser(defaultUserState);
 	};
 
-	const handleSendComment = () => {
-		let _comment = comment.trim();
-		setComment('');
+	const { runAsync: runReqSendFeedback, loading: loadingReqSendFeedback } =
+		useRequest(data => reqSendFeedback(data), {
+			manual: true,
+		});
+
+	const handleSendFeedback = () => {
+		let data = feedbackContent.trim();
 
 		// 有内容
-		if (_comment) {
-			console.log(`Comment 内容\n${_comment}`);
-			antdMessage.info('Функция қазірше дайын емес...');
+		if (data) {
+			runReqSendFeedback({ content: data })
+				.then(({ message }) => {
+					antdMessage.success(message);
+					setFeedbackContent('');
+				})
+				.catch(({ message }) => {
+					antdMessage.error(message);
+				});
 		}
 	};
 
@@ -48,19 +59,20 @@ export default function Other() {
 			<p>{t('profile_other_p1', { createTime: createTimeReadableFormat })}</p>
 
 			<TextArea
-				placeholder={t('profile_other_comment')}
+				placeholder={t('profile_other_feedback')}
 				maxLength={254}
 				showCount
-				value={comment}
-				onChange={({ target: { value } }) => setComment(value)}
+				value={feedbackContent}
+				onChange={({ target: { value } }) => setFeedbackContent(value)}
 			/>
 
 			<Button
 				type="primary"
 				block
 				style={{ marginTop: '10px' }}
-				onClick={handleSendComment}>
-				{t('profile_other_send_comment')}
+				onClick={handleSendFeedback}
+				loading={loadingReqSendFeedback}>
+				{t('profile_other_send_feedback')}
 			</Button>
 
 			<Divider />
