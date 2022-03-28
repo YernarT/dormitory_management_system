@@ -41,4 +41,6 @@ class Feedback(models.Model):
         verbose_name_plural = 'Пайдаланушылардың кері байланыстары'
 
     def __str__(self):
-        return self.sender.fullname
+        if self.sender:
+            return self.sender.fullname
+        return 'Жойылған пайдаланушы'
