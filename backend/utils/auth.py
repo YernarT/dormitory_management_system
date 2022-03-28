@@ -18,7 +18,10 @@ def verify_token(request: WSGIRequest):
 
         # not expired
         if (now - token_expire_date).days < 0:
-            user = User.objects.get(id=id)
+            try:
+                user = User.objects.get(id=id)
+            except User.DoesNotExist:
+                return False, {'message': 'авторизация сәтсіз болды'}
 
             return True, user
         else:
