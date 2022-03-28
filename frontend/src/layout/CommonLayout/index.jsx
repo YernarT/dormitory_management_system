@@ -4,7 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { userAtom, pageAtom } from '@/store';
-import { useCreation, useSafeState } from 'ahooks';
+import { useCreation, useSafeState, useMemoizedFn } from 'ahooks';
 
 import { getHtmlLang } from '@/utils';
 
@@ -66,12 +66,21 @@ export default memo(function CommonLayout({ children }) {
 		});
 	};
 
+	// 回到首页
+	const back2Home = useMemoizedFn(() => {
+		if (history.location.pathname !== '/') {
+			history.push('/');
+		}
+	}, []);
+
 	return (
 		<CommonLayoutStyledBox>
 			<Layout className="common-layout">
 				<Header className="header">
-					<img src={favicon} alt="Logo" className="logo" />
-					<h2 className="title">{t('header_site_name_short')}</h2>
+					<img src={favicon} alt="Logo" className="logo" onClick={back2Home} />
+					<h2 className="title" onClick={back2Home}>
+						{t('header_site_name_short')}
+					</h2>
 
 					{isLogin ? (
 						<div className="user-action">
