@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { localStorage } from '@/utils';
+import { defaultUserState } from '@/store';
 
 export const apiServerInstance = axios.create({
 	baseURL: 'http://localhost:8000/api',
@@ -25,14 +26,23 @@ apiServerInstance.interceptors.response.use(
 		if (error.response && error.response.status) {
 			let { status } = error.response;
 
-			if (status >= 500) {
+			if (status === 401) {
+				localStorage.set('user', defaultUserState);
 				return Promise.reject({
-					message: 'The server crashed...',
+					...error.response.data,
+					needExecuteLogout: true,
+					initialUser: defaultUserState,
 				});
 			}
 
 			if (status >= 400) {
 				return Promise.reject(error.response.data);
+			}
+
+			if (status >= 500) {
+				return Promise.reject({
+					message: 'The server crashed...',
+				});
 			}
 		}
 

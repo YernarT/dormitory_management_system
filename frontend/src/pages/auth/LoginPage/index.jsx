@@ -58,8 +58,12 @@ export default function LoginPage() {
 
 				history.push('/');
 			})
-			.catch(({ message }) => {
+			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
 			});
 	};
 

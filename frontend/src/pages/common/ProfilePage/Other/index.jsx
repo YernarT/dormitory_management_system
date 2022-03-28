@@ -48,8 +48,12 @@ export default function Other() {
 					antdMessage.success(message);
 					setFeedbackContent('');
 				})
-				.catch(({ message }) => {
+				.catch(({ message, needExecuteLogout, initialUser }) => {
 					antdMessage.error(message);
+
+					if (needExecuteLogout) {
+						setUser(initialUser);
+					}
 				});
 		}
 	};

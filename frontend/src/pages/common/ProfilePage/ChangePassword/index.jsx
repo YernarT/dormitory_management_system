@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRequest } from 'ahooks';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@/store';
 
 import { reqChangePassword } from '@/service/api/common-api';
 
@@ -9,6 +11,7 @@ import { LockOutlined } from '@ant-design/icons';
 
 export default function ChangePassword() {
 	const { t } = useTranslation();
+	const setUser = useSetRecoilState(userAtom);
 
 	const { runAsync: runReqChangePassword, loading: loadingReqChangePassword } =
 		useRequest(data => reqChangePassword(data), {
@@ -19,8 +22,12 @@ export default function ChangePassword() {
 			.then(({ message }) => {
 				antdMessage.success(message);
 			})
-			.catch(({ message }) => {
+			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
 			});
 	};
 
