@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from user.views import LoginView, RegisterView, EditView, ChangePasswordView
+from user.views import LoginView, RegisterView, EditView, ChangePasswordView, FeedbackView
 
 
 urlpatterns = [
@@ -8,6 +8,8 @@ urlpatterns = [
 
     url(r'^user/edit/$', EditView.as_view()),
     url(r'^user/change_password/$', ChangePasswordView.as_view()),
+    
+    url(r'^user/feedback/$', FeedbackView.as_view()),
 ]
 
 app_name = 'user'

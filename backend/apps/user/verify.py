@@ -30,12 +30,6 @@ def verify_login(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, J
 
 
 def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
-    is_valid_or_key_name, reason_or_none = verify_dict(data, [{'key_name': 'email'}, {'key_name': 'fullname', 'required': False}, {
-        'key_name': 'password'}, {'key_name': 'role'}])
-
-    if is_valid_or_key_name != True:
-        return False, JsonResponse({'message': reason_or_none}, status=400)
-
     email = data.get('email')
     fullname = data.get('fullname')
     password = data.get('password')
@@ -63,6 +57,12 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
             })):
         if not is_valid:
             return False, JsonResponse({'message': error_message}, status=400)
+
+    is_valid_or_key_name, reason_or_none = verify_dict(data, [{'key_name': 'email'}, {'key_name': 'fullname', 'required': False}, {
+        'key_name': 'password'}, {'key_name': 'role'}])
+
+    if is_valid_or_key_name != True:
+        return False, JsonResponse({'message': reason_or_none}, status=400)
 
     if role not in [role_choices[0] for role_choices in User.ROLE_CHOICES]:
         return False, JsonResponse({'message': 'Қолдау көрсетілмейтін рөл түрі'}, status=400)
@@ -107,5 +107,26 @@ def verify_change_password(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tup
     })):
         if not is_valid:
             return False, JsonResponse({'message': error_message}, status=400)
+
+    return True, None
+
+
+def verify_post_feedback(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
+    content = data.get('content')
+
+    is_valid, error_message = verify_data(data=content, required=True, data_type=str, max_length=254, error_messages={
+        'required': 'Кері байланыс мазмұны міндетті өріс',
+        'data_type': 'Кері байланыс мазмұны string типінде болу керек',
+        'max_length': 'Кері байланыс мазмұнының ұзындығы 254-ден артық',
+    })
+
+    if not is_valid:
+        return False, JsonResponse({'message': error_message}, status=400)
+
+    is_valid_or_key_name, reason_or_none = verify_dict(
+        data, [{'key_name': 'content'}])
+
+    if is_valid_or_key_name != True:
+        return False, JsonResponse({'message': reason_or_none}, status=400)
 
     return True, None

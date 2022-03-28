@@ -3,8 +3,8 @@ from django.views.generic import View
 from django.contrib.auth.hashers import check_password, make_password
 
 
-from user.models import User
-from user.verify import verify_register, verify_login, verify_edit, verify_change_password
+from user.models import User, Feedback
+from user.verify import verify_register, verify_login, verify_edit, verify_change_password, verify_post_feedback
 
 from utils.auth import generate_token, verify_token
 from utils.data import get_data, serializer_data
@@ -117,3 +117,25 @@ class ChangePasswordView(View):
             return JsonResponse({'message': 'Құпия сөз сәтті өзгертілді'}, status=200)
 
         return JsonResponse({'message': 'Ескі құпия сөз қате'}, status=400)
+
+
+class FeedbackView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        data = get_data(request)
+
+        is_valid, response = verify_post_feedback(data)
+        if not is_valid:
+            return response
+
+        Feedback.objects.create(
+            sender=user_or_response_content, **data)
+
+        return JsonResponse({'message': 'Пікір сәтті жіберілді'}, status=201)
