@@ -46,7 +46,7 @@ export default function LoginPage() {
 					email,
 					role,
 					fullname,
-					create_time: createTime,
+					createTime,
 					id,
 					token,
 				};

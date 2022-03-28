@@ -53,7 +53,7 @@ export default function RegisterPage() {
 					email,
 					role,
 					fullname,
-					create_time: createTime,
+					createTime,
 					id,
 					token,
 				};
