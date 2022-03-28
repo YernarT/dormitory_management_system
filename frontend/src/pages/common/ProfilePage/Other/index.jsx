@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { userAtom, defaultUserState } from '@/store';
+import { useSafeState } from 'ahooks';
 
 import { localStorage } from '@/utils';
 
@@ -10,6 +11,7 @@ const { TextArea } = Input;
 
 export default function Other() {
 	const setUser = useSetRecoilState(userAtom);
+	const [comment, setComment] = useSafeState('');
 
 	const handleLogout = () => {
 		antdMessage.info('Cау болыңыз~');
@@ -18,18 +20,34 @@ export default function Other() {
 		setUser(defaultUserState);
 	};
 
+	const handleSendComment = () => {
+		let _comment = comment.trim();
+		setComment('');
+
+		// 有内容
+		if (_comment) {
+			console.log(`Comment 内容\n${_comment}`);
+			antdMessage.info('Функция қазірше дайын емес...');
+		}
+	};
+
 	return (
 		<Card title="ЖБЖ 1.0.0 нұсқа">
 			<p>Есептік жазба 2022.03.18 тіркелген, пайдаланғаныңыз үшін рахмет!</p>
 
 			<TextArea
 				placeholder="Пікірлер..."
-				minLength={20}
 				maxLength={254}
 				showCount
+				value={comment}
+				onChange={({ target: { value } }) => setComment(value)}
 			/>
 
-			<Button type="primary" block style={{ marginTop: '10px' }}>
+			<Button
+				type="primary"
+				block
+				style={{ marginTop: '10px' }}
+				onClick={handleSendComment}>
 				Пікір қалдыру
 			</Button>
 
