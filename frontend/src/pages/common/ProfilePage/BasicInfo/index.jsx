@@ -45,8 +45,8 @@ export default function BasicInfo() {
 					fullname,
 				}));
 			})
-			.catch(err => {
-				antdMessage.error(err.message);
+			.catch(({ message }) => {
+				antdMessage.error(message);
 			});
 	};
 

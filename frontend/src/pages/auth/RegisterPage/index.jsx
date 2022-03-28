@@ -65,8 +65,8 @@ export default function RegisterPage() {
 
 				history.push('/');
 			})
-			.catch(err => {
-				antdMessage.error(err.message);
+			.catch(({ message }) => {
+				antdMessage.error(message);
 			});
 	};
 

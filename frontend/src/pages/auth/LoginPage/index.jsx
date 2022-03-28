@@ -58,8 +58,8 @@ export default function LoginPage() {
 
 				history.push('/');
 			})
-			.catch(err => {
-				antdMessage.error(err.message);
+			.catch(({ message }) => {
+				antdMessage.error(message);
 			});
 	};
 

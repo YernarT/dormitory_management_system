@@ -19,8 +19,8 @@ export default function ChangePassword() {
 			.then(({ message }) => {
 				antdMessage.success(message);
 			})
-			.catch(err => {
-				antdMessage.error(err.message);
+			.catch(({ message }) => {
+				antdMessage.error(message);
 			});
 	};
 
