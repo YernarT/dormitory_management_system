@@ -15,9 +15,9 @@ class User(models.Model):
         ('tenant', 'Жалға алушы'),
     )
     role = models.CharField(
-        max_length=25, choices=ROLE_CHOICES, verbose_name='рөл')
+        max_length=25, choices=ROLE_CHOICES, verbose_name='Рөл')
     create_time = models.DateTimeField(
-        auto_now_add=True, verbose_name='уақыт')
+        auto_now_add=True, verbose_name='Тіркелген уақыт')
 
     class Meta:
         db_table = 'user'
@@ -26,3 +26,19 @@ class User(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Feedback(models.Model):
+    content = models.CharField(max_length=254, verbose_name='Мазмұны')
+    sender = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, verbose_name='Жіберуші')
+    create_time = models.DateTimeField(
+        auto_now_add=True, verbose_name='Жіберілген уақыт')
+
+    class Meta:
+        db_table = 'user_feedback'
+        verbose_name = 'Пайдаланушының кері байланысы'
+        verbose_name_plural = 'Пайдаланушылардың кері байланыстары'
+
+    def __str__(self):
+        return self.sender
