@@ -110,7 +110,7 @@ class ChangePasswordView(View):
             return response
 
         if check_password(data['oldPassword'], user_or_response_content.password):
-            user_or_response_content.password = data['newPassword']
+            user_or_response_content.password = make_password(data['newPassword'])
             user_or_response_content.save()
 
             return JsonResponse({'message': 'Құпия сөз сәтті өзгертілді'}, status=200)
