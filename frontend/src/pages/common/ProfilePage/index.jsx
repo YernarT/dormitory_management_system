@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRecoilValue } from 'recoil';
+import { pageAtom } from '@/store';
 
 import { useCreation, useResponsive } from 'ahooks';
 
@@ -15,22 +17,27 @@ const { TabPane } = Tabs;
 export default function ProfilePage() {
 	const { t } = useTranslation();
 	const responsive = useResponsive();
+	const page = useRecoilValue(pageAtom);
 
 	const profileTabs = useCreation(
 		() => [
 			{
 				key: 'basic_infomation',
-				tabName: 'Негізгі инфо.',
+				tabName: t('profile_tabName_basic_infomation'),
 				tabContent: <BasicInfo />,
 			},
 			{
 				key: 'change_password',
-				tabName: 'Құпия сөзді өзгерту',
+				tabName: t('profile_tabName_change_password'),
 				tabContent: <ChangePassword />,
 			},
-			{ key: 'other', tabName: 'Басқа', tabContent: <Other /> },
+			{
+				key: 'other',
+				tabName: t('profile_tabName_other'),
+				tabContent: <Other />,
+			},
 		],
-		[],
+		[page.locale],
 	);
 
 	return (
