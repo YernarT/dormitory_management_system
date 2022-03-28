@@ -56,4 +56,19 @@ export default {
 		'0-inf': 'The fullname length is more than {{ min }}',
 	}),
 	'auth_save_changes': 'Save changes',
+
+	// Profile
+	'profile_tabName_basic_infomation': 'Basic info.',
+	'profile_tabName_change_password': 'Change password',
+	'profile_tabName_other': 'Other',
+
+	'profile_old_password': 'Old password',
+	'profile_new_password': 'New password',
+	'profile_logout': 'Bye~',
+	'profile_logout_btn': 'Logout',
+	'profile_other_title': 'DMS 1.0.0 version',
+	'profile_other_p1':
+		'Account {{createTime}} is registered, thank you for using it!',
+	'profile_other_comment': 'Comments...',
+	'profile_other_send_comment': 'Send feedback',
 };

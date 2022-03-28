@@ -56,4 +56,19 @@ export default {
 		'0-inf': 'Аты-жөн ұзындығы {{ max }}-ден артық',
 	}),
 	'auth_save_changes': 'Өзгерісті сақтау',
+
+	// Profile
+	'profile_tabName_basic_infomation': 'Негізгі инфо.',
+	'profile_tabName_change_password': 'Құпия сөзді өзгерту',
+	'profile_tabName_other': 'Басқа',
+
+	'profile_old_password': 'Ескі кұпия сөз',
+	'profile_new_password': 'Жаңа кұпия сөз',
+	'profile_logout': 'Cаубол~',
+	'profile_logout_btn': 'Шығу',
+	'profile_other_title': 'ЖБЖ 1.0.0 нұсқа',
+	'profile_other_p1':
+		'Есептік жазба {{ createTime }} тіркелген, пайдаланғаныңыз үшін рахмет!',
+	'profile_other_comment': 'Пікірлер...',
+	'profile_other_send_comment': 'Пікір қалдыру',
 };
