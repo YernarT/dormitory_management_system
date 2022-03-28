@@ -51,7 +51,7 @@ export default function ChangePassword() {
 				<Input.Password
 					prefix={<LockOutlined />}
 					type="password"
-					placeholder="Ескі кұпия сөз"
+					placeholder={t('profile_old_password')}
 				/>
 			</Form.Item>
 			<Form.Item
@@ -79,7 +79,7 @@ export default function ChangePassword() {
 				<Input.Password
 					prefix={<LockOutlined />}
 					type="password"
-					placeholder="Жаңа кұпия сөз"
+					placeholder={t('profile_new_password')}
 				/>
 			</Form.Item>
 
