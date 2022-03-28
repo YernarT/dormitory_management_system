@@ -69,6 +69,6 @@ export default {
 	'profile_other_title': 'ЖБЖ 1.0.0 нұсқа',
 	'profile_other_p1':
 		'Есептік жазба {{ createTime }} тіркелген, пайдаланғаныңыз үшін рахмет!',
-	'profile_other_comment': 'Пікірлер...',
-	'profile_other_send_comment': 'Пікір қалдыру',
+	'profile_other_feedback': 'Пікірлер...',
+	'profile_other_send_feedback': 'Пікір қалдыру',
 };

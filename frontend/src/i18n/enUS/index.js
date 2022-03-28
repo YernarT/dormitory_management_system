@@ -69,6 +69,6 @@ export default {
 	'profile_other_title': 'DMS 1.0.0 version',
 	'profile_other_p1':
 		'Account {{createTime}} is registered, thank you for using it!',
-	'profile_other_comment': 'Comments...',
-	'profile_other_send_comment': 'Send feedback',
+	'profile_other_feedback': 'Comments...',
+	'profile_other_send_feedback': 'Send feedback',
 };
