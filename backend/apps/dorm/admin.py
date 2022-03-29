@@ -1,3 +1,19 @@
 from django.contrib import admin
 
-# Register your models here.
+from dorm.models import City, Dorm, DormImage, Room, RoomImage, Bed, BedImage, Rent
+
+admin.site.register(City)
+
+admin.site.register(Dorm)
+
+admin.site.register(DormImage)
+
+admin.site.register(Room)
+
+admin.site.register(RoomImage)
+
+admin.site.register(Bed)
+
+admin.site.register(BedImage)
+
+admin.site.register(Rent)
