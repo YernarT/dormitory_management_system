@@ -4,6 +4,7 @@ import { getLatestState, localStorage } from '@/utils';
 export const defaultUserState = {
 	email: '',
 	role: 'guest',
+	gender: null,
 	fullname: '',
 	createTime: null,
 	id: -1,
