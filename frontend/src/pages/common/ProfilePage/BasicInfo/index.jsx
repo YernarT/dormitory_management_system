@@ -109,11 +109,11 @@ export default function BasicInfo() {
 			</Form.Item>
 			<Form.Item
 				name="gender"
-				label="Gender"
-				rules={[{ required: true, message: 'Gender is required field' }]}>
+				label={t('auth_gender')}
+				rules={[{ required: true, message: t('auth_missing_gender') }]}>
 				<Radio.Group>
-					<Radio value={true}>Ер</Radio>
-					<Radio value={false}>Әйел</Radio>
+					<Radio value={true}>{t('auth_gender_male')}</Radio>
+					<Radio value={false}>{t('auth_gender_female')}</Radio>
 				</Radio.Group>
 			</Form.Item>
 
