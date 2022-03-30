@@ -21,7 +21,7 @@ import { favicon } from '@/assets/image';
 
 const { Header, Content, Footer } = Layout;
 
-export default memo(function CommonLayout({ children }) {
+export default memo(function CommonLayout({ children, extraStyle = {} }) {
 	const history = useHistory();
 	const { t } = useTranslation();
 	const user = useRecoilValue(userAtom);
@@ -41,6 +41,10 @@ export default memo(function CommonLayout({ children }) {
 			}
 		}
 	}, [history.location]);
+
+	useEffect(() => {
+		alert(window.screen.width);
+	});
 
 	const handleToolbarClick = ({ key }) => {
 		// 是否在 auth 相关页面
@@ -74,7 +78,7 @@ export default memo(function CommonLayout({ children }) {
 	}, []);
 
 	return (
-		<CommonLayoutStyledBox>
+		<CommonLayoutStyledBox extraStyle={extraStyle}>
 			<Layout className="common-layout">
 				<Header className="header">
 					<img src={favicon} alt="Logo" className="logo" onClick={back2Home} />
