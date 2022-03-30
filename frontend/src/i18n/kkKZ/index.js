@@ -47,6 +47,10 @@ export default {
 	'auth_register': 'Тіркелу',
 	'auth_login': 'Кіру',
 
+	'auth_gender': 'Жыныс',
+	'auth_missing_gender': 'Жыныс міндетті өріс',
+	'auth_gender_male': 'Ер',
+	'auth_gender_female': 'Әйел',
 	'auth_fullname': 'Аты-жөн',
 	'auth_missing_fullname': 'Аты-жөн міндетті өріс',
 	'auth_fullname_less_than_rule': generateI18nPluralIntervalRule({

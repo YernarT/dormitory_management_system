@@ -47,6 +47,10 @@ export default {
 	'auth_register': 'Register',
 	'auth_login': 'Login',
 
+	'auth_gender': 'Gender',
+	'auth_missing_gender': 'Gender is a required field',
+	'auth_gender_male': 'Male',
+	'auth_gender_female': 'Female',
 	'auth_fullname': 'Fullname',
 	'auth_missing_fullname': 'Fullname is a required field',
 	'auth_fullname_less_than_rule': generateI18nPluralIntervalRule({
