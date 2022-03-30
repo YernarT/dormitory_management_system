@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 
 import { CommonLayout } from '@/layout';
-import { AuthLayoutStyledBox } from './style';
+import { AuthLayoutStyledBox, authLayoutWrapperStyle } from './style';
 
 export default memo(function AuthLayout({ children }) {
 	return (
-		<CommonLayout>
+		<CommonLayout extraStyle={authLayoutWrapperStyle}>
 			<AuthLayoutStyledBox>{children}</AuthLayoutStyledBox>
 		</CommonLayout>
 	);
