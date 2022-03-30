@@ -17,13 +17,20 @@ DEBUG = True
 
 APPEND_SLASH = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
+# CORS_ALLOWED_ORIGINS = [
+# f'http://localhost:{origin}' for origin in range(0, 65536)
+# ] + [
+# f'http://127.0.0.1:{origin}' for origin in range(0, 65536)
+# ]
 
 CORS_ALLOWED_ORIGINS = [
-    f'http://localhost:{origin}' for origin in range(0, 65536)
-] + [
-    f'http://127.0.0.1:{origin}' for origin in range(0, 65536)
+    'http://localhost:3015',
+    'http://127.0.0.1:3015',
+
+    'http://192.168.137.1:3015',
+    'http://10.11.2.249:3015',
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
