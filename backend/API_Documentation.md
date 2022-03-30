@@ -22,6 +22,7 @@
 	"user": {
 		"id": 8,
 		"fullname": "Toktar Yernar",
+		"gender": true,
 		"email": "87714526555",
 		"role": "tenant",
 		"create_time": "2022-03-28T19:09:30.413Z"
@@ -51,12 +52,15 @@
 | ---------- | ---- | ---------------------------------- | ------- |
 | `email`    | 邮箱 | `string`                           | `True`  |
 | `fullname` | 名称 | `string`                           | `False` |
+| `gender`   | 性别 | `boolean`                          | `True`  |
 | `password` | 密码 | `string`                           | `True`  |
 | `role`     | 角色 | `site admin, dorm manager, tenant` | `True`  |
 
+> 请求数据必须完全一致, 即不能有多余或缺少的字段
+
 ### 成功的返回
 
-状态码: `200`
+状态码: `201`
 
 ```json
 {
@@ -66,6 +70,7 @@
 		"id": 8,
 		"fullname": "Toktar Yernar",
 		"email": "87714526555",
+		"gender": true,
 		"role": "tenant",
 		"create_time": "2022-03-28T19:09:30.413Z"
 	}
@@ -94,6 +99,7 @@
 | ---------- | ---- | -------- | ------- |
 | `email`    | 邮箱 | `string` | `False` |
 | `fullname` | 名称 | `string` | `False` |
+| `gender` | 性别 | `boolean` | `False` |
 
 ### 成功的返回
 
@@ -104,7 +110,8 @@
 	"message": "өзгерту сәтті болды",
 	"user": {
 		"fullname": "Toktar Yernar",
-		"email": "87714526555"
+		"email": "87714526555",
+		"gender": true
 	}
 }
 ```
