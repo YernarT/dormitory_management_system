@@ -5,9 +5,8 @@ export const container = css`
 		width: 100%;
 		margin-right: auto;
 		margin-left: auto;
-		padding-left: 12px;
-		padding-right: 12px;
 	}
+
 	@media (min-width: 576px) {
 		& {
 			max-width: 540px;
