@@ -23,6 +23,7 @@ export const CommonLayoutStyledBox = styled.div`
 
 			user-select: none;
 
+			padding: 0 24px;
 			background-color: #fff;
 
 			.logo {
@@ -41,6 +42,10 @@ export const CommonLayoutStyledBox = styled.div`
 			.user-action {
 				margin-left: auto;
 				justify-content: flex-end;
+			}
+
+			.toolbar {
+				width: 100%;
 
 				@media screen and (max-width: 760px) {
 					width: 260px;
@@ -49,10 +54,6 @@ export const CommonLayoutStyledBox = styled.div`
 				@media screen and (max-width: 540px) {
 					width: 20px;
 				}
-			}
-
-			.toolbar {
-				width: 100%;
 			}
 
 			.user-action {
@@ -65,14 +66,20 @@ export const CommonLayoutStyledBox = styled.div`
 		.content {
 			height: 100%;
 
-			overflow: hidden;
+			overflow: hidden auto;
 		}
 
 		.footer {
 			${({ theme }) => theme.typography.secondary};
 			text-align: center;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 
 			position: relative;
+			overflow: hidden;
+
+			padding-left: 24px;
+			padding-right: 24px;
 
 			&::before {
 				content: '';
@@ -93,4 +100,6 @@ export const CommonLayoutStyledBox = styled.div`
 			}
 		}
 	}
+
+	${({ extraStyle }) => extraStyle};
 `;
