@@ -42,8 +42,13 @@ class RegisterView(View):
         if not is_valid:
             return response
 
-        # TODO: 校验权限
-        # data.get('role') == 'site admin'
+        # 校验权限
+        if data.get('role') == 'site admin':
+            is_valid, user_or_response_content = verify_token(request)
+            if not is_valid:
+                return JsonResponse(user_or_response_content, status=401)
+            if user_or_response_content.role != 'site admin':
+                return JsonResponse({'message': 'site admin рөлін тек site admin рөлді пайдаланушы құра алады'}, status=401)
 
         try:
             have_same_email_user = User.objects.get(email=data.get('email'))
