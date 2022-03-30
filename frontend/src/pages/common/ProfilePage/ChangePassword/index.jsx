@@ -32,7 +32,11 @@ export default function ChangePassword() {
 	};
 
 	return (
-		<Form className="form" onFinish={onFinish}>
+		<Form
+			className="form"
+			onFinish={onFinish}
+			validateTrigger="onBlur"
+			hideRequiredMark>
 			<Form.Item
 				name="oldPassword"
 				rules={[
