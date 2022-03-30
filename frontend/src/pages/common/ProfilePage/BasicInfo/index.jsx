@@ -6,12 +6,12 @@ import { useRequest } from 'ahooks';
 
 import { reqEdit } from '@/service/api/common-api';
 
-import { Form, Input, Button, message as antdMessage } from 'antd';
+import { Form, Input, Radio, Button, message as antdMessage } from 'antd';
 import { MailOutlined, UserOutlined } from '@ant-design/icons';
 
 export default function BasicInfo() {
 	const { t } = useTranslation();
-	const [{ email, fullname }, setUser] = useRecoilState(userAtom);
+	const [{ email, fullname, gender }, setUser] = useRecoilState(userAtom);
 
 	const { runAsync: runReqEdit, loading: loadingReqEdit } = useRequest(
 		data => reqEdit(data),
@@ -21,12 +21,15 @@ export default function BasicInfo() {
 	);
 	const onFinish = values => {
 		let data = {};
-		// 判断是否有修改
+		// 判断是否有修改, 只将修改后的字段加到请求体里
 		if (values.email !== email) {
 			data.email = values.email;
 		}
 		if (values.fullname !== fullname) {
 			data.fullname = values.fullname;
+		}
+		if (values.gender !== gender) {
+			data.gender = values.gender;
 		}
 
 		// 没有任何修改
@@ -36,13 +39,14 @@ export default function BasicInfo() {
 		}
 
 		runReqEdit(data)
-			.then(({ message, user: { email, fullname } }) => {
+			.then(({ message, user: { email, fullname, gender } }) => {
 				antdMessage.success(message);
 
 				setUser(prevState => ({
 					...prevState,
 					email,
 					fullname,
+					gender,
 				}));
 			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
@@ -55,7 +59,11 @@ export default function BasicInfo() {
 	};
 
 	return (
-		<Form onFinish={onFinish} initialValues={{ email, fullname }}>
+		<Form
+			onFinish={onFinish}
+			initialValues={{ email, fullname, gender }}
+			validateTrigger="onBlur"
+			hideRequiredMark>
 			<Form.Item
 				name="email"
 				rules={[
@@ -98,6 +106,15 @@ export default function BasicInfo() {
 					prefix={<UserOutlined />}
 					placeholder={t('auth_fullname')}
 				/>
+			</Form.Item>
+			<Form.Item
+				name="gender"
+				label="Gender"
+				rules={[{ required: true, message: 'Gender is required field' }]}>
+				<Radio.Group>
+					<Radio value={true}>Ер</Radio>
+					<Radio value={false}>Әйел</Radio>
+				</Radio.Group>
 			</Form.Item>
 
 			<Form.Item>
