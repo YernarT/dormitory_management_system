@@ -48,7 +48,18 @@ const fromNow = (date, opts = {}) => {
 	let abs = Math.abs(del);
 
 	if (abs < MIN) {
-		return 'just now';
+		switch (opts.lang || 'enUS') {
+			case 'enUS':
+				return 'just now';
+			case 'zhCN':
+				return '刚刚';
+			case 'ruRU':
+				return 'толка что';
+			case 'kkKZ':
+				return 'жаңа ғана';
+			default:
+				return 'just now';
+		}
 	}
 
 	let periods;
