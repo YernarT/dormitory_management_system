@@ -8,7 +8,7 @@ import { useRequest } from 'ahooks';
 import { reqRegister } from '@/service/api/auth-api';
 import { localStorage } from '@/utils';
 
-import { Form, Input, Button, message as antdMessage } from 'antd';
+import { Form, Input, Radio, Button, message as antdMessage } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthLayout } from '@/layout';
 
@@ -47,12 +47,13 @@ export default function RegisterPage() {
 				let {
 					message,
 					token,
-					user: { email, role, fullname, create_time: createTime, id },
+					user: { email, role, fullname, gender, create_time: createTime, id },
 				} = data;
 				let newUser = {
 					email,
 					role,
 					fullname,
+					gender,
 					createTime,
 					id,
 					token,
@@ -76,7 +77,12 @@ export default function RegisterPage() {
 
 	return (
 		<AuthLayout>
-			<Form className="form" onFinish={onFinish}>
+			<Form
+				className="form"
+				onFinish={onFinish}
+				scrollToFirstError
+				validateTrigger="onBlur"
+				hideRequiredMark>
 				<Form.Item
 					name="email"
 					rules={[
@@ -91,6 +97,17 @@ export default function RegisterPage() {
 					]}>
 					<Input type="email" prefix={<MailOutlined />} placeholder="Email" />
 				</Form.Item>
+
+				<Form.Item
+					name="gender"
+					label="Gender"
+					rules={[{ required: true, message: 'Gender is required field' }]}>
+					<Radio.Group>
+						<Radio value={true}>Ер</Radio>
+						<Radio value={false}>Әйел</Radio>
+					</Radio.Group>
+				</Form.Item>
+
 				<Form.Item
 					name="password"
 					rules={[

@@ -40,12 +40,13 @@ export default function LoginPage() {
 				let {
 					message,
 					token,
-					user: { email, role, fullname, create_time: createTime, id },
+					user: { email, role, fullname, gender, create_time: createTime, id },
 				} = data;
 				let newUser = {
 					email,
 					role,
 					fullname,
+					gender,
 					createTime,
 					id,
 					token,
@@ -69,7 +70,11 @@ export default function LoginPage() {
 
 	return (
 		<AuthLayout>
-			<Form className="form" onFinish={onFinish}>
+			<Form
+				className="form"
+				onFinish={onFinish}
+				validateTrigger="onBlur"
+				hideRequiredMark>
 				<Form.Item
 					name="email"
 					rules={[
