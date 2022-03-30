@@ -33,6 +33,7 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
     email = data.get('email')
     fullname = data.get('fullname')
     password = data.get('password')
+    gender = data.get('gender')
     role = data.get('role')
 
     for is_valid, error_message in (verify_data(data=email, required=True, data_type=str, min_length=5, max_length=254, regex=r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', error_messages={
@@ -51,6 +52,9 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
                 'data_type': 'Құпия сөз string типінде болу керек',
                 'min_length': 'Құпия сөз ұзындығы 4-ден кем',
                 'max_length': 'Құпия сөз ұзындығы 254-ден артық',
+            }), verify_data(data=gender, required=True, data_type=bool, error_messages={
+                'required': 'Жыныс міндетті өріс',
+                'data_type': 'Жыныс boolean типінде болу керек',
             }), verify_data(data=role, required=True, data_type=str, error_messages={
                 'required': 'Рөл міндетті өріс',
                 'data_type': 'Рөл string типінде болу керек',
@@ -59,7 +63,7 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
             return False, JsonResponse({'message': error_message}, status=400)
 
     is_valid_or_key_name, reason_or_none = verify_dict(data, [{'key_name': 'email'}, {'key_name': 'fullname', 'required': False}, {
-        'key_name': 'password'}, {'key_name': 'role'}])
+        'key_name': 'password'}, {'key_name': 'gender'}, {'key_name': 'role'}])
 
     if is_valid_or_key_name != True:
         return False, JsonResponse({'message': reason_or_none}, status=400)
@@ -73,6 +77,7 @@ def verify_register(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool
 def verify_edit(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
     email = data.get('email')
     fullname = data.get('fullname')
+    gender = data.get('gender')
 
     for is_valid, error_message in (verify_data(data=email, required=False, data_type=str, min_length=5, max_length=254, regex=r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', error_messages={
         'data_type': 'Email string типінде болу керек',
@@ -83,6 +88,8 @@ def verify_edit(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, Js
         'data_type': 'Аты жөн string типінде болу керек',
         'min_length': 'Аты жөн ұзындығы 1-ден кем',
         'max_length': 'Аты жөн ұзындығы 50-ден артық',
+    }), verify_data(data=gender, required=False, data_type=bool, error_messages={
+        'data_type': 'Жыныс boolean типінде болу керек',
     })):
         if not is_valid:
             return False, JsonResponse({'message': error_message}, status=400)
