@@ -14,6 +14,7 @@ class User(models.Model):
         ('dorm manager', 'Жатақхана меңгеруші'),
         ('tenant', 'Жалға алушы'),
     )
+    gender = models.BooleanField(verbose_name='Жыныс')
     role = models.CharField(
         max_length=25, choices=ROLE_CHOICES, verbose_name='Рөл')
     create_time = models.DateTimeField(
