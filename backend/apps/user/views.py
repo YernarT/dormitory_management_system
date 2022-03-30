@@ -84,7 +84,8 @@ class EditView(View):
             return JsonResponse({'message': 'Email тіркелген'}, status=400)
 
         data_fields = [('email', data.get('email')),
-                       ('fullname', data.get('fullname'))]
+                       ('fullname', data.get('fullname')),
+                       ('gender', data.get('gender'))]
         for field_name, field_value in data_fields:
             if field_value != None:
                 user_or_response_content.__setattr__(field_name, field_value)
@@ -92,7 +93,7 @@ class EditView(View):
             user_or_response_content.save()
 
         return JsonResponse({'message': 'өзгерту сәтті болды',
-                             'user': serializer_data(user_or_response_content, {'is_multiple': False, 'include_fields': ['fullname', 'email']})
+                             'user': serializer_data(user_or_response_content, {'is_multiple': False, 'include_fields': ['fullname', 'email', 'gender']})
                              }, status=200)
 
 
