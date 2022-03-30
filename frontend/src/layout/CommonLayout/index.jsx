@@ -42,10 +42,6 @@ export default memo(function CommonLayout({ children, extraStyle = {} }) {
 		}
 	}, [history.location]);
 
-	useEffect(() => {
-		alert(window.screen.width);
-	});
-
 	const handleToolbarClick = ({ key }) => {
 		// 是否在 auth 相关页面
 		let inAuthPage = history.location.pathname.includes('auth');
