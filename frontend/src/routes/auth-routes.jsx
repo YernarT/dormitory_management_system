@@ -12,7 +12,7 @@ const authRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: false,
-		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
+		role: ['guest'],
 		title: 'route_/auth/login',
 	},
 
@@ -24,7 +24,7 @@ const authRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: false,
-		role: ['guest', 'tenant', 'dorm manager', 'site admin'],
+		role: ['guest'],
 		title: 'route_/auth/register',
 	},
 ];
