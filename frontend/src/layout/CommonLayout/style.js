@@ -17,34 +17,12 @@ export const CommonLayoutStyledBox = styled.div`
 			${container};
 		}
 
-		.header {
-			display: flex;
-			align-items: center;
-
-			user-select: none;
-
-			padding: 0 24px;
-			background-color: #fff;
-
-			.logo {
-				width: 54px;
-				height: 54px;
-				object-fit: cover;
-			}
-
-			.title {
-				${({ theme }) => theme.typography.title};
-
-				margin-left: 10px;
-			}
-
-			.toolbar,
-			.user-action {
+		/* .toolbar {
 				margin-left: auto;
 				justify-content: flex-end;
-			}
+			} */
 
-			.toolbar {
+		/* .toolbar {
 				width: 100%;
 
 				@media screen and (max-width: 760px) {
@@ -54,14 +32,11 @@ export const CommonLayoutStyledBox = styled.div`
 				@media screen and (max-width: 540px) {
 					width: 20px;
 				}
-			}
+			} */
 
-			.user-action {
-				display: flex;
-				align-items: center;
-				gap: 15px;
-			}
-		}
+		/* .translate-btn {
+				margin-right: 10px;
+			} */
 
 		.content {
 			height: 100%;
@@ -71,6 +46,8 @@ export const CommonLayoutStyledBox = styled.div`
 
 		.footer {
 			${({ theme }) => theme.typography.secondary};
+			font-size: 0.72rem;
+			font-weight: bold;
 			text-align: center;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -101,5 +78,6 @@ export const CommonLayoutStyledBox = styled.div`
 		}
 	}
 
-	${({ extraStyle }) => extraStyle};
+	/* 新特性: 额外样式 */
+	${({ extraStyle }) => extraStyle}
 `;
