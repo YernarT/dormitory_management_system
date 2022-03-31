@@ -4,7 +4,7 @@ export const AuthLayoutStyledBox = styled.div`
 	width: 300px;
 	max-width: 95%;
 	height: max-content;
-	margin: 24px 0;
+	margin-top: 28px;
 	padding: 34px 24px 20px 24px;
 
 	border: 1px solid rgba(255, 255, 255, 0.3);
