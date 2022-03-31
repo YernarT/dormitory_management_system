@@ -98,3 +98,21 @@
 - **租客 (Tenant)**
   - 申请入住 **宿舍**
   - 申请离开 **宿舍**
+
+### 前端路由
+
+- 公用路由
+  - / 
+  - /404
+  - /profile
+  - /auth/login
+  - /auth/register
+
+- 网站管理员路由
+  - /dashboard
+
+- 宿舍管理员路由
+  - /dashboard
+
+- 租客路由
+  - /apply-material 
