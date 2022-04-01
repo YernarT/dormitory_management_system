@@ -26,7 +26,21 @@ export const HeaderStyledBox = styled(Header)`
 		margin-left: 4px;
 	}
 
-    .toolbar {
-        margin-left: auto;
-    }
+	.toolbar {
+		width: 100%;
+		margin-left: auto;
+		justify-content: flex-end;
+
+		@media screen and (max-width: 760px) {
+			width: 260px;
+		}
+
+		@media screen and (max-width: 540px) {
+			width: 20px;
+		}
+	}
+
+	.user-action {
+		margin-left: 10px;
+	}
 `;
