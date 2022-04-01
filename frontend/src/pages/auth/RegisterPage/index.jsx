@@ -100,7 +100,6 @@ export default function RegisterPage() {
 
 				<Form.Item
 					name="gender"
-					label={t('auth_gender')}
 					rules={[{ required: true, message: t('auth_missing_gender') }]}>
 					<Radio.Group>
 						<Radio value={true}>{t('auth_gender_male')}</Radio>
