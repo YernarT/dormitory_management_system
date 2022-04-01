@@ -6,6 +6,8 @@ export const AntdComponentStyleModify = createGlobalStyle`
 		padding: 5px 10px;
 	}
 	.dms-btn-block {
+		width: 100%;
+		width: -webkit-fill-available;
 		padding: 5px 0;
 	}
 
