@@ -71,6 +71,7 @@
 ## bugs & todos
 
 - (前端) Antd 组件样式 按需加载
+- (前端) container 公共类 宽度调整
 
 ---
 
@@ -102,17 +103,20 @@
 ### 前端路由
 
 - 公用路由
-  - / 
+
+  - /
   - /404
   - /profile
   - /auth/login
   - /auth/register
 
 - 网站管理员路由
+
   - /dashboard
 
 - 宿舍管理员路由
+
   - /dashboard
 
 - 租客路由
-  - /apply-material 
+  - /apply-material
