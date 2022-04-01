@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
@@ -18,14 +18,6 @@ export default function LoginPage() {
 	const { t } = useTranslation();
 	const history = useHistory();
 	const setUser = useSetRecoilState(userAtom);
-
-	// 初始化 search params
-	useEffect(() => {
-		let searchParams = history.location.search;
-		if (!searchParams.includes('publish') && !searchParams.includes('seek')) {
-			history.replace({ search: '?form=seek' });
-		}
-	}, []);
 
 	const { runAsync: runReqLogin, loading: loadingReqLogin } = useRequest(
 		data => reqLogin(data),

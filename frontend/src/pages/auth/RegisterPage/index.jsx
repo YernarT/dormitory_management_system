@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
@@ -19,14 +19,6 @@ export default function RegisterPage() {
 	const history = useHistory();
 	const setUser = useSetRecoilState(userAtom);
 
-	// 初始化 search params
-	useEffect(() => {
-		let searchParams = history.location.search;
-		if (!searchParams.includes('publish') && !searchParams.includes('seek')) {
-			history.replace({ search: '?form=seek' });
-		}
-	}, []);
-
 	const { runAsync: runReqRegister, loading: loadingReqRegister } = useRequest(
 		data => reqRegister(data),
 		{
@@ -34,11 +26,19 @@ export default function RegisterPage() {
 		},
 	);
 	const onFinish = values => {
-		if (history.location.search.includes('seek')) {
-			values.role = 'tenant';
-		} else {
-			values.role = 'dorm manager';
+		let usp = new URLSearchParams(history.location.search);
+		switch (usp.get('form')) {
+			case 'seek':
+				values.role = 'tenant';
+				break;
+			case 'publish':
+				values.role = 'dorm manager';
+				break;
+			default:
+				values.role = '__unknown';
+				break;
 		}
+
 		// 不发送 confirm password
 		values.rePassword = undefined;
 
