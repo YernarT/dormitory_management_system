@@ -50,20 +50,29 @@ export default memo(function Header({ className }) {
 });
 
 const GuestHeader = memo(function GuestHeader() {
-	const { t } = useTranslation();
 	const history = useHistory();
+	const { t } = useTranslation();
+	const { role } = useRecoilValue(userAtom);
 
 	const [selectedKeys, setSelectedKeys] = useSafeState('');
 
 	const handleToolbarClick = useMemoizedFn(({ key }) => {
-		history.push(`/auth/login?form=${key}`);
+		if (role === 'guest') {
+			let inAuthPage = history.location.pathname.includes('auth');
+
+			if (inAuthPage) {
+				history.replace({ search: `?form=${key}` });
+			} else {
+				history.push(`/auth/login?form=${key}`);
+			}
+
+			return;
+		}
 	});
 
 	useEffect(() => {
 		let usp = new URLSearchParams(history.location.search);
 		let form = usp.get('form');
-
-		console.log(form);
 
 		if (form === 'publish') {
 			setSelectedKeys('publish');
@@ -71,7 +80,28 @@ const GuestHeader = memo(function GuestHeader() {
 		if (form === 'seek') {
 			setSelectedKeys('seek');
 		}
-	}, [history.location]);
+
+		// 初始化 search params
+		if (form !== 'publish' && form !== 'publish') {
+			history.replace({ search: '?form=seek' });
+		}
+	}, []);
+
+	useEffect(() => {
+		let unListen = history.listen(({ search }) => {
+			let usp = new URLSearchParams(search);
+			let form = usp.get('form');
+
+			if (form === 'publish') {
+				setSelectedKeys('publish');
+			}
+			if (form === 'seek') {
+				setSelectedKeys('seek');
+			}
+		});
+
+		return () => unListen();
+	}, [history]);
 
 	return (
 		<Menu
