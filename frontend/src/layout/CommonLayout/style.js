@@ -17,30 +17,8 @@ export const CommonLayoutStyledBox = styled.div`
 			${container};
 		}
 
-		/* .toolbar {
-				margin-left: auto;
-				justify-content: flex-end;
-			} */
-
-		/* .toolbar {
-				width: 100%;
-
-				@media screen and (max-width: 760px) {
-					width: 260px;
-				}
-
-				@media screen and (max-width: 540px) {
-					width: 20px;
-				}
-			} */
-
-		/* .translate-btn {
-				margin-right: 10px;
-			} */
-
 		.content {
 			height: 100%;
-
 			overflow: hidden auto;
 		}
 
