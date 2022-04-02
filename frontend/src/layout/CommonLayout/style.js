@@ -20,6 +20,10 @@ export const CommonLayoutStyledBox = styled.div`
 		.content {
 			height: 100%;
 			overflow: hidden auto;
+
+			@media screen and (max-width: 576px) {
+				padding: 0 10px;
+			}
 		}
 
 		.footer {
