@@ -9,18 +9,7 @@ import { userAtom } from '@/store';
 export default memo(function RouteGuard({ routes }) {
 	const user = useRecoilValue(userAtom);
 	const { t } = useTranslation();
-	let { pathname } = useLocation();
-
-	let pathConvert = {
-		'site admin': '/site-admin',
-		'dorm manager': '/dorm-manager',
-		'tenant': '/tenant',
-		'guest': '/',
-	};
-	// 对 '/' 路径做特殊处理
-	if (pathname === '/') {
-		return <Redirect to={pathConvert[user.role]} />;
-	}
+	const { pathname } = useLocation();
 
 	const targetConfig = routes.find(routeConfig => {
 		if (Array.isArray(routeConfig.path)) {
@@ -30,8 +19,18 @@ export default memo(function RouteGuard({ routes }) {
 		return routeConfig.path === pathname;
 	});
 
-	let siteTitle = t(targetConfig?.title || document.title);
+	const siteTitle = t(targetConfig?.title || document.title);
 	useTitle(siteTitle);
+
+	const pathConvert = {
+		'site admin': '/site-admin',
+		'dorm manager': '/dorm-manager',
+		'tenant': '/tenant',
+	};
+	// 对 '/' 路径做特殊处理
+	if (user.role !== 'guest' && pathname === '/') {
+		return <Redirect to={pathConvert[user.role]} />;
+	}
 
 	// Registered route
 	if (targetConfig) {
