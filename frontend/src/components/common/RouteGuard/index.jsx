@@ -7,9 +7,20 @@ import { useRecoilValue } from 'recoil';
 import { userAtom } from '@/store';
 
 export default memo(function RouteGuard({ routes }) {
-	const { pathname } = useLocation();
-
 	const user = useRecoilValue(userAtom);
+	const { t } = useTranslation();
+	let { pathname } = useLocation();
+
+	let pathConvert = {
+		'site admin': '/site-admin',
+		'dorm manager': '/dorm-manager',
+		'tenant': '/tenant',
+		'guest': '/',
+	};
+	// 对 '/' 路径做特殊处理
+	if (pathname === '/') {
+		return <Redirect to={pathConvert[user.role]} />;
+	}
 
 	const targetConfig = routes.find(routeConfig => {
 		if (Array.isArray(routeConfig.path)) {
@@ -19,14 +30,13 @@ export default memo(function RouteGuard({ routes }) {
 		return routeConfig.path === pathname;
 	});
 
-	const { t } = useTranslation();
 	let siteTitle = t(targetConfig?.title || document.title);
 	useTitle(siteTitle);
 
 	// Registered route
 	if (targetConfig) {
-		// Require authorization, but user not authorized
 		if (targetConfig.auth && Boolean(user.token) === false) {
+			// Require authorization, but user not authorized
 			return <Redirect to="/auth/login" />;
 		}
 
