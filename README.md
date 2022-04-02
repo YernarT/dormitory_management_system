@@ -72,6 +72,7 @@
 
 - (前端) Antd 组件样式 按需加载
 - (前端) container 公共类 宽度调整
+- (前端) Login & Register 页面 less 文件整合
 
 ---
 
@@ -112,11 +113,12 @@
 
 - 网站管理员路由
 
-  - /dashboard
+  - /site-admin
 
 - 宿舍管理员路由
 
-  - /dashboard
+  - /dorm-manager
 
 - 租客路由
-  - /apply-material
+
+  - /tenant
