@@ -3,18 +3,18 @@ import { sleep } from '@/utils';
 
 import { CommonLoading } from '@/loading';
 
-const tenantRoutes = [
+const siteAdminRoutes = [
 	{
-		path: '/tenant',
+		path: '/site-admin',
 		component: lazy(async () => {
-			await sleep(360);
-			return import('@/pages/tenant/HomePage');
+			await sleep(560);
+			return import('@/pages/guest/LandingPage');
 		}),
 		fallback: <CommonLoading />,
 		auth: true,
-		role: ['tenant'],
-		title: 'Home | React Template',
+		role: ['site admin'],
+		title: 'route_/',
 	},
 ];
 
-export default tenantRoutes;
+export default siteAdminRoutes;

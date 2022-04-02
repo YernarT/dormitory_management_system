@@ -3,18 +3,18 @@ import { sleep } from '@/utils';
 
 import { CommonLoading } from '@/loading';
 
-const tenantRoutes = [
+const dormManagerRoutes = [
 	{
-		path: '/tenant',
+		path: '/dorm-manager',
 		component: lazy(async () => {
-			await sleep(360);
-			return import('@/pages/tenant/HomePage');
+			await sleep(560);
+			return import('@/pages/dorm_manager/HomePage');
 		}),
 		fallback: <CommonLoading />,
 		auth: true,
-		role: ['tenant'],
-		title: 'Home | React Template',
+		role: ['dorm manager'],
+		title: 'route_/',
 	},
 ];
 
-export default tenantRoutes;
+export default dormManagerRoutes;
