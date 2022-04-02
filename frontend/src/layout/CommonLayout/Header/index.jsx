@@ -17,6 +17,7 @@ import { HeaderStyledBox } from './style';
 import { favicon } from '@/assets/image';
 
 export default memo(function Header({ className }) {
+	const history = useHistory();
 	const { t } = useTranslation();
 	const { role } = useRecoilValue(userAtom);
 
@@ -41,7 +42,7 @@ export default memo(function Header({ className }) {
 			{/* public dom */}
 			<TranslateButton />
 			{isLogin && (
-				<Button onClick={toProfile}>
+				<Button onClick={toProfile} className="user-action">
 					<UserOutlined />
 				</Button>
 			)}
@@ -52,22 +53,19 @@ export default memo(function Header({ className }) {
 const GuestHeader = memo(function GuestHeader() {
 	const history = useHistory();
 	const { t } = useTranslation();
-	const { role } = useRecoilValue(userAtom);
 
 	const [selectedKeys, setSelectedKeys] = useSafeState('');
 
 	const handleToolbarClick = useMemoizedFn(({ key }) => {
-		if (role === 'guest') {
-			let inAuthPage = history.location.pathname.includes('auth');
+		let inAuthPage = history.location.pathname.includes('auth');
 
-			if (inAuthPage) {
-				history.replace({ search: `?form=${key}` });
-			} else {
-				history.push(`/auth/login?form=${key}`);
-			}
-
-			return;
+		if (inAuthPage) {
+			history.replace({ search: `?form=${key}` });
+		} else {
+			history.push(`/auth/login?form=${key}`);
 		}
+
+		return;
 	});
 
 	useEffect(() => {
@@ -123,13 +121,13 @@ const GuestHeader = memo(function GuestHeader() {
 });
 
 const TenantHeader = memo(function TenantHeader() {
-	return <></>;
+	return <div className="toolbar" />;
 });
 
 const DormManagerHeader = memo(function DormManagerHeader() {
-	return <></>;
+	return <div className="toolbar" />;
 });
 
 const SiteAdminHeader = memo(function SiteAdminHeader() {
-	return <></>;
+	return <div className="toolbar" />;
 });
