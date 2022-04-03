@@ -9,6 +9,7 @@ urlpatterns = [
 
     # user module
     url('^api/', include('user.urls')),
+    url('^api/', include('dorm.urls')),
 
     url(r'^media/(?P<path>.*)$', serve,
         {"document_root": settings.MEDIA_ROOT}),
