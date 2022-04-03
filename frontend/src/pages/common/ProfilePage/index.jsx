@@ -43,7 +43,7 @@ export default function ProfilePage() {
 	return (
 		<CommonLayout>
 			<ProfilePageStyledBox>
-				<Tabs
+				<Tabs centered 
 					tabPosition={responsive.md === false ? 'top' : 'left'}
 					className="profile-tabs">
 					{profileTabs.map(({ key, tabName, tabContent }) => (

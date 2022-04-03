@@ -8,7 +8,7 @@ export const ProfilePageStyledBox = styled.div`
 	${hideScrollbar};
 
 	.profile-tabs {
-		margin-top: 15px;
+		@media screen and (min-width: 768px) { margin-top: 15px; }
 	}
 
 	form {
