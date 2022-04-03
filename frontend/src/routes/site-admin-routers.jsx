@@ -8,7 +8,7 @@ const siteAdminRoutes = [
 		path: '/site-admin',
 		component: lazy(async () => {
 			await sleep(560);
-			return import('@/pages/guest/LandingPage');
+			return import('@/pages/site_admin/HomePage');
 		}),
 		fallback: <CommonLoading />,
 		auth: true,
