@@ -37,7 +37,7 @@ export default function HomePage() {
 	return (
 		<CommonLayout>
 			<HomePageStyledBox>
-				<Tabs
+				<Tabs centered 
 					tabPosition={responsive.md === false ? 'top' : 'left'}
 					className="dorm-manager-tabs">
 					{dromManagerTabs.map(({ key, tabName, tabContent }) => (
