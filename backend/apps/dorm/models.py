@@ -3,7 +3,7 @@ from django.db import models
 
 class City(models.Model):
     '''城市'''
-    name = models.CharField(max_length=40, verbose_name='Қала атуы')
+    name = models.CharField(max_length=40, unique=True, verbose_name='Қала атуы')
 
     class Meta:
         db_table = 'dorm_city'
