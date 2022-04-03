@@ -128,7 +128,15 @@ class ChangePasswordView(View):
 class FeedbackView(View):
 
     def get(self, request):
-        pass
+        feedbacks = Feedback.objects.all()
+
+        serialized_feedbacks = serializer_data(feedbacks)
+        for idx, feedback_obj in enumerate(feedbacks):
+            if feedback_obj.sender:
+                serialized_feedbacks[idx]['sender'] = serializer_data(
+                    feedback_obj.sender, {'is_multiple': False, 'exclude_fields': ['password']})
+
+        return JsonResponse({'feedbacks': serialized_feedbacks}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
@@ -145,3 +153,36 @@ class FeedbackView(View):
             sender=user_or_response_content, **data)
 
         return JsonResponse({'message': 'Пікір сәтті жіберілді'}, status=201)
+
+    def delete(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        if user_or_response_content.role != 'site admin':
+            return JsonResponse({'message': 'Керібайланысты тек site admin рөлді пайдаланушы жойа алады'}, status=401)
+
+        Feedback.objects.all().delete()
+
+        return JsonResponse({'message': 'Керібайланыстар сәтті жойылды'}, status=200)
+
+
+class FeedbackSingleView(View):
+    def delete(self, request, id):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        if user_or_response_content.role != 'site admin':
+            return JsonResponse({'message': 'Керібайланысты тек site admin рөлді пайдаланушы жойа алады'}, status=401)
+
+        try:
+            feedback = Feedback.objects.get(id=id)
+        except Feedback.DoesNotExist:
+            feedback = None
+
+        if feedback:
+            feedback.delete()
+            return JsonResponse({'message': 'Керібайланыс сәтті жойылды'}, status=200)
+
+        return JsonResponse({'message': 'Керібайланыс табылмады'}, status=400)
