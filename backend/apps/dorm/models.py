@@ -3,7 +3,8 @@ from django.db import models
 
 class City(models.Model):
     '''城市'''
-    name = models.CharField(max_length=40, unique=True, verbose_name='Қала атуы')
+    name = models.CharField(max_length=40, unique=True,
+                            verbose_name='Қала атуы')
 
     class Meta:
         db_table = 'dorm_city'
@@ -23,6 +24,8 @@ class Dorm(models.Model):
         City, on_delete=models.SET_NULL, null=True, verbose_name='Орналасқан қала')
     address = models.CharField(
         max_length=60, verbose_name='Жатақхана нақты мекен-жайы')
+    creator = models.ForeignKey(
+        'user.User', on_delete=models.CASCADE, verbose_name='Құрушы')
 
     class Meta:
         db_table = 'dorm'
