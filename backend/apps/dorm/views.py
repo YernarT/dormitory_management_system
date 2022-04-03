@@ -113,13 +113,12 @@ class DormView(View):
         data['city'] = city
 
         try:
-            have_same_name_dorm = Dorm.objects.filter(
-                name=data.get('name'), creator=user_or_response_content)
+            have_dorm = Dorm.objects.get(creator=user_or_response_content)
         except Dorm.DoesNotExist:
-            have_same_name_dorm = False
+            have_dorm = False
 
-        if have_same_name_dorm:
-            return JsonResponse({'message': 'Мұндай атаулы жатақхана құрылған'}, status=400)
+        if have_dorm:
+            return JsonResponse({'message': 'Тек бір жатақхана құруға болады'}, status=400)
 
         new_dorm = Dorm.objects.create(
             **data, creator=user_or_response_content)
