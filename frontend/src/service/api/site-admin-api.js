@@ -10,3 +10,14 @@ export const reqCreateCity = data =>
 // Delete City
 export const reqDeleteCity = id =>
 	apiServerInstance.delete(`/dorm/city/${id}/`);
+
+// Get Feedbacks
+export const reqFeedbacks = () => apiServerInstance.get('/user/feedback/');
+
+// Delete Feedbacks
+export const reqDeleteFeedback = id =>
+	apiServerInstance.delete(`/user/feedback/${id}/`);
+
+// Delete All Feedbacks
+export const reqDeleteAllFeedback = () =>
+	apiServerInstance.delete('/user/feedback/');
