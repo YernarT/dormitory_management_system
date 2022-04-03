@@ -79,10 +79,10 @@ export default function City() {
 	};
 
 	// Delete city
-	const { runAsync: runReqDeleteCity, loading: loadingDeleteCity } = useRequest(
-		id => reqDeleteCity(id),
-		{ manual: true },
-	);
+	const { runAsync: runReqDeleteCity } = useRequest(id => reqDeleteCity(id), {
+		manual: true,
+		throttleWait: 500,
+	});
 
 	const handleDelete = id => {
 		runReqDeleteCity(id)
