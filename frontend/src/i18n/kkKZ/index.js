@@ -15,6 +15,7 @@ export default {
 
 	// Loading
 	commonLoadingHelpText: 'Жүктелуде...',
+	backToHome: 'Басты бетке оралу',
 
 	// Header
 	'header_site_name_short': 'ЖБЖ',
@@ -75,4 +76,15 @@ export default {
 		'Есептік жазба {{ createTime }} тіркелген, пайдаланғаныңыз үшін рахмет!',
 	'profile_other_feedback': 'Пікірлер...',
 	'profile_other_send_feedback': 'Пікір қалдыру',
+
+	// site admin
+	'site_admin_tabName_feedback': 'Кері байланыс',
+	'site_admin_tabName_city': 'Қала',
+	'site_admin_tabName_dorm': 'Жатақхана',
+
+	// dorm manager
+	'dorm_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'dorm_manager_tabName_process_request': 'Өтінішті өңдеу',
+
+	// tenant
 };

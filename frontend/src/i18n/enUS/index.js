@@ -15,6 +15,7 @@ export default {
 
 	// Loading
 	commonLoadingHelpText: 'Loading...',
+	backToHome: 'Back to homepage',
 
 	// Header
 	'header_site_name_short': 'DMS',
@@ -75,4 +76,15 @@ export default {
 		'Account {{createTime}} is registered, thank you for using it!',
 	'profile_other_feedback': 'Comments...',
 	'profile_other_send_feedback': 'Send feedback',
+
+	// site admin
+	'site_admin_tabName_feedback': 'Feedback',
+	'site_admin_tabName_city': 'City',
+	'site_admin_tabName_dorm': 'Dorm',
+
+	// dorm manager
+	'dorm_manager_tabName_dormitory_management': 'Dormitory management',
+	'dorm_manager_tabName_process_request': 'Process request',
+
+	// tenant
 };
