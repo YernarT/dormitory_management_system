@@ -84,7 +84,7 @@ export default function City() {
 		throttleWait: 500,
 	});
 
-	const handleDelete = id => {
+	const handleDeleteCity = id => {
 		runReqDeleteCity(id)
 			.then(({ message }) => {
 				antdMessage.success(message);
@@ -116,11 +116,11 @@ export default function City() {
 				<div className="cities">
 					{cities.length ? (
 						cities.map(city => (
-							<Card key={city.name} className="city">
+							<Card key={city.id} className="city">
 								<Skeleton loading={loadingReqCities} active>
 									<DeleteOutlined
 										className="delete-btn"
-										onClick={() => handleDelete(city.id)}
+										onClick={() => handleDeleteCity(city.id)}
 									/>
 									<p className="city-name">{city.name}</p>
 								</Skeleton>
