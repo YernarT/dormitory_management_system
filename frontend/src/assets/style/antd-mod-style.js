@@ -56,4 +56,14 @@ export const AntdComponentStyleModify = createGlobalStyle`
 			${({ theme }) => theme.typography.title};
 		}
 	}
+
+	.dms-modal {
+		&-close-x {
+			font-size: 1.4rem;
+		}
+
+		&-title {
+			${({ theme }) => theme.typography.title};
+		}
+	}
 `;
