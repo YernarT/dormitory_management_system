@@ -87,4 +87,6 @@ export default {
 	'dorm_manager_tabName_process_request': 'Өтінішті өңдеу',
 
 	// tenant
+	'tenant_tabName_search_dorm': 'Жатақхана іздеу',
+	'tenant_tabName_info': 'Өтініш',
 };

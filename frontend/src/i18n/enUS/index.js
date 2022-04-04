@@ -87,4 +87,6 @@ export default {
 	'dorm_manager_tabName_process_request': 'Process request',
 
 	// tenant
+	'tenant_tabName_search_dorm': 'Search dorm',
+	'tenant_tabName_info': 'Request',
 };
