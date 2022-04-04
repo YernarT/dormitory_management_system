@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.generic import View
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import check_password
 
 
 from user.models import User, Feedback
@@ -58,7 +58,6 @@ class RegisterView(View):
         if have_same_email_user:
             return JsonResponse({'message': 'Email тіркелген'}, status=400)
 
-        data['password'] = make_password(data['password'])
         new_user = User.objects.create(**data)
 
         return JsonResponse({'message': 'тіркелу сәтті болды',

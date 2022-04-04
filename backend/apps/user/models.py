@@ -1,4 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from django.contrib.auth.hashers import make_password
+
 from datetime import datetime
 
 
@@ -27,6 +31,12 @@ class User(models.Model):
 
     def __str__(self):
         return self.fullname
+
+
+@receiver(pre_save, sender=User)
+def user_pre_save(instance, **kwargs):
+    # pbkdf2_sha256$
+    instance.password = make_password(instance.password)
 
 
 class Feedback(models.Model):
