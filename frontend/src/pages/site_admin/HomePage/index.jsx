@@ -23,17 +23,17 @@ export default function HomePage() {
 		() => [
 			{
 				key: 'feedback',
-				tabName: '用户反馈',
+				tabName: t('site_admin_tabName_feedback'),
 				tabContent: <Feedback />,
 			},
 			{
 				key: 'city',
-				tabName: '城市',
+				tabName: t('site_admin_tabName_city'),
 				tabContent: <City />,
 			},
 			{
 				key: 'dorm',
-				tabName: '宿舍',
+				tabName: t('site_admin_tabName_dorm'),
 				tabContent: <Dorm />,
 			},
 		],
