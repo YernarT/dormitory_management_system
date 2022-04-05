@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.db import models
 
 
@@ -15,6 +16,31 @@ class City(models.Model):
         return self.name
 
 
+class Organization(models.Model):
+    '''机构'''
+    name = models.CharField(max_length=40, verbose_name='Ұйым атуы')
+    CATEGORY_CHOICES = (
+        ('university', 'Университет'),
+        ('college', 'Колледж'),
+        ('school', 'Мектеп'),
+        ('other', 'Басқа'),
+    )
+    category = models.CharField(
+        max_length=10, choices=CATEGORY_CHOICES, verbose_name='Санат')
+    creator = models.ForeignKey(
+        'user.User', on_delete=models.CASCADE, verbose_name='Құрушы')
+    create_time = models.DateTimeField(
+        auto_now_add=True, verbose_name='Құрылған уақыт')
+
+    class Meta:
+        db_table = 'dorm_organization'
+        verbose_name = 'Ұйым'
+        verbose_name_plural = 'Ұйымдар'
+
+    def __str__(self):
+        return f'{self.name} ({self.category})'
+
+
 class Dorm(models.Model):
     '''宿舍'''
     name = models.CharField(max_length=40, verbose_name='Жатақхана атуы')
@@ -24,8 +50,10 @@ class Dorm(models.Model):
         City, on_delete=models.SET_NULL, null=True, verbose_name='Орналасқан қала')
     address = models.CharField(
         max_length=60, verbose_name='Жатақхана нақты мекен-жайы')
-    creator = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, verbose_name='Құрушы')
+    organization = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, verbose_name='Ұйым')
+    create_time = models.DateTimeField(
+        auto_now_add=True, verbose_name='Құрылған уақыт')
 
     class Meta:
         db_table = 'dorm'
