@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import View
 
-from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage
+from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
 
 from utils.auth import verify_token
@@ -79,7 +79,15 @@ class DormView(View):
         if get_mode == 'all':
             dorm_list = Dorm.objects.all()
         else:
-            dorm_list = Dorm.objects.filter(creator=user_or_response_content)
+            try:
+                org = Organization.objects.get(
+                    category=user_or_response_content)
+            except Organization.DoesNotExist:
+                org = None
+
+            if org == None:
+                return JsonResponse({'dorms': []}, status=200)
+            dorm_list = Dorm.objects.filter(organization=org)
 
         serialized_dorm_list = serializer_data(dorm_list)
         for idx, dorm_obj in enumerate(dorm_list):
