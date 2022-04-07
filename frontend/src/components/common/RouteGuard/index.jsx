@@ -25,6 +25,7 @@ export default memo(function RouteGuard({ routes }) {
 	const pathConvert = {
 		'site admin': '/site-admin',
 		'dorm manager': '/dorm-manager',
+		'org manager': '/org-manager',
 		'tenant': '/tenant',
 	};
 	// 对 '/' 路径做特殊处理
