@@ -48,15 +48,15 @@
 
 ### 请求数据
 
-| 字段名     | 描述 | 类型                               | 必填    |
-| ---------- | ---- | ---------------------------------- | ------- |
-| `email`    | 邮箱 | `string`                           | `True`  |
-| `fullname` | 名称 | `string`                           | `False` |
-| `gender`   | 性别 | `boolean`                          | `True`  |
-| `password` | 密码 | `string`                           | `True`  |
-| `role`     | 角色 | `site admin, dorm manager, tenant` | `True`  |
+| 字段名     | 描述 | 类型                                            | 必填    |
+| ---------- | ---- | ----------------------------------------------- | ------- |
+| `email`    | 邮箱 | `string`                                        | `True`  |
+| `fullname` | 名称 | `string`                                        | `False` |
+| `gender`   | 性别 | `boolean`                                       | `True`  |
+| `password` | 密码 | `string`                                        | `True`  |
+| `role`     | 角色 | `site admin, org manager, dorm manager, tenant` | `True`  |
 
-> 请求数据必须完全一致, 即不能有多余或缺少的字段
+> 此接口中请求数据的字段必须完全正确, 不能有多余或缺少的字段
 
 ### 成功的返回
 
@@ -95,11 +95,13 @@
 
 ### 请求数据
 
-| 字段名     | 描述 | 类型     | 必填    |
-| ---------- | ---- | -------- | ------- |
-| `email`    | 邮箱 | `string` | `False` |
-| `fullname` | 名称 | `string` | `False` |
-| `gender` | 性别 | `boolean` | `False` |
+| 字段名     | 描述 | 类型      | 必填    |
+| ---------- | ---- | --------- | ------- |
+| `email`    | 邮箱 | `string`  | `False` |
+| `fullname` | 名称 | `string`  | `False` |
+| `gender`   | 性别 | `boolean` | `False` |
+
+> 此接口中请求头需要有 X-AUTH-TOKEN 字段
 
 ### 成功的返回
 
