@@ -15,12 +15,13 @@ class User(models.Model):
     password = models.CharField(max_length=254, verbose_name='Құпия сөз')
     ROLE_CHOICES = (
         ('site admin', 'Сайт әкімшісі'),
+        ('org manager', 'Жатақхана меңгеруші'),
         ('dorm manager', 'Жатақхана меңгеруші'),
         ('tenant', 'Жалға алушы'),
     )
-    gender = models.BooleanField(verbose_name='Жыныс')
     role = models.CharField(
-        max_length=25, choices=ROLE_CHOICES, verbose_name='Рөл')
+        max_length=20, choices=ROLE_CHOICES, verbose_name='Рөл')
+    gender = models.BooleanField(verbose_name='Жыныс')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Тіркелген уақыт')
 
@@ -39,17 +40,19 @@ def user_pre_save(instance, **kwargs):
     instance.password = make_password(instance.password)
 
 
-class Feedback(models.Model):
+class Notification(models.Model):
     content = models.CharField(max_length=254, verbose_name='Мазмұны')
     sender = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, verbose_name='Жіберуші')
+        User, on_delete=models.SET_NULL, null=True, related_name='sender', verbose_name='Жіберуші')
+    recipient = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='recipient', verbose_name='Алушы')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Жіберілген уақыт')
 
     class Meta:
-        db_table = 'user_feedback'
-        verbose_name = 'Пайдаланушының кері байланысы'
-        verbose_name_plural = 'Пайдаланушылардың кері байланыстары'
+        db_table = 'notification'
+        verbose_name = 'Хабарландыру'
+        verbose_name_plural = 'Хабарландырулар'
 
     def __str__(self):
         if self.sender:
