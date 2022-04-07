@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 
 
@@ -8,7 +7,7 @@ class City(models.Model):
                             verbose_name='Қала атуы')
 
     class Meta:
-        db_table = 'dorm_city'
+        db_table = 'city'
         verbose_name = 'Қала'
         verbose_name_plural = 'Қалалар'
 
@@ -33,7 +32,7 @@ class Organization(models.Model):
         auto_now_add=True, verbose_name='Құрылған уақыт')
 
     class Meta:
-        db_table = 'dorm_organization'
+        db_table = 'organization'
         verbose_name = 'Ұйым'
         verbose_name_plural = 'Ұйымдар'
 
@@ -91,9 +90,11 @@ class Room(models.Model):
         max_length=254, null=True, blank=True, verbose_name='Сипаттама')
     dorm = models.ForeignKey(
         Dorm, on_delete=models.CASCADE, verbose_name='Жатақхана')
+    create_time = models.DateTimeField(
+        auto_now_add=True, verbose_name='Құрылған уақыт')
 
     class Meta:
-        db_table = 'dorm_room'
+        db_table = 'room'
         verbose_name = 'Бөлме'
         verbose_name_plural = 'Бөлмелер'
 
@@ -108,7 +109,7 @@ class RoomImage(models.Model):
         Room, on_delete=models.CASCADE, verbose_name='Бөлме')
 
     class Meta:
-        db_table = 'dorm_room_image'
+        db_table = 'room_image'
         verbose_name = 'Бөлме суреті'
         verbose_name_plural = 'Бөлме суреттері'
 
@@ -126,9 +127,11 @@ class Bed(models.Model):
                               null=True, blank=True, verbose_name='Иесі (Пайдаланушы)')
     room = models.ForeignKey(
         Room, on_delete=models.CASCADE, verbose_name='Бөлме')
+    create_time = models.DateTimeField(
+        auto_now_add=True, verbose_name='Құрылған уақыт')
 
     class Meta:
-        db_table = 'dorm_bed'
+        db_table = 'bed'
         verbose_name = 'Төсек орын'
         verbose_name_plural = 'Төсек орындар'
 
@@ -150,7 +153,7 @@ class BedImage(models.Model):
         Room, on_delete=models.CASCADE, verbose_name='Төсек орын')
 
     class Meta:
-        db_table = 'dorm_bed_image'
+        db_table = 'bed_image'
         verbose_name = 'Төсек орын суреті'
         verbose_name_plural = 'Төсек орын суреттері'
 
@@ -159,29 +162,3 @@ class BedImage(models.Model):
             return f'{self.room.name} суреті'
 
         return f'Төсек орын суреті'
-
-
-class Rent(models.Model):
-    '''房租价格'''
-    bed = models.ForeignKey(Bed, on_delete=models.CASCADE,
-                            verbose_name='Төсек орын')
-    price = models.PositiveIntegerField(verbose_name='Баға')
-    DURATION_CHOICES = (
-        ('hour', 'Сағат'),
-        ('day', 'Күн'),
-        ('month', 'Ай'),
-        ('year', 'Жыл'),
-    )
-    duration = models.CharField(
-        max_length=10, choices=DURATION_CHOICES, verbose_name='Мерзім')
-
-    class Meta:
-        db_table = 'dorm_rent'
-        verbose_name = 'Төлем ақы'
-        verbose_name_plural = 'Төлем ақылар'
-
-    def __str__(self):
-        if self.bed.name:
-            return f'{self.duration} / {self.price} - {self.bed.name}'
-
-        return f'{self.duration} / {self.price}'
