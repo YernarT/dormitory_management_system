@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from user.models import User, Feedback
+from user.models import User, Notification
 
 admin.site.register(User)
 
-admin.site.register(Feedback)
+admin.site.register(Notification)

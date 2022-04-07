@@ -3,8 +3,8 @@ from django.views.generic import View
 from django.contrib.auth.hashers import check_password
 
 
-from user.models import User, Feedback
-from user.verify import verify_register, verify_login, verify_edit, verify_change_password, verify_post_feedback
+from user.models import User, Notification
+from user.verify import verify_register, verify_login, verify_edit, verify_change_password, verify_post_notification
 
 from utils.auth import generate_token, verify_token
 from utils.data import get_data, serializer_data
@@ -43,12 +43,14 @@ class RegisterView(View):
             return response
 
         # 校验权限
-        if data.get('role') == 'site admin':
+        role = data.get('role')
+        if role == 'site admin':
+            return JsonResponse({'message': 'site admin рөлін құруға шұықсат етілмеген'}, status=401)
+
+        if role == 'dorm manager':
             is_valid, user_or_response_content = verify_token(request)
-            if not is_valid:
-                return JsonResponse(user_or_response_content, status=401)
-            if user_or_response_content.role != 'site admin':
-                return JsonResponse({'message': 'site admin рөлін тек site admin рөлді пайдаланушы құра алады'}, status=401)
+            if not is_valid or user_or_response_content.role != 'org manager':
+                return JsonResponse({'message': 'dorm manager рөлін тек org manager рөлді пайдаланушы құра алады'}, status=401)
 
         try:
             have_same_email_user = User.objects.get(email=data.get('email'))
@@ -115,8 +117,6 @@ class ChangePasswordView(View):
             return response
 
         if check_password(data['oldPassword'], user_or_response_content.password):
-            user_or_response_content.password = make_password(
-                data['newPassword'])
             user_or_response_content.save()
 
             return JsonResponse({'message': 'Құпия сөз сәтті өзгертілді'}, status=200)
@@ -124,18 +124,20 @@ class ChangePasswordView(View):
         return JsonResponse({'message': 'Ескі құпия сөз қате'}, status=400)
 
 
-class FeedbackView(View):
+class NotificationView(View):
 
     def get(self, request):
-        feedbacks = Feedback.objects.all()
+        notifications = Notification.objects.all()
 
-        serialized_feedbacks = serializer_data(feedbacks)
-        for idx, feedback_obj in enumerate(feedbacks):
-            if feedback_obj.sender:
-                serialized_feedbacks[idx]['sender'] = serializer_data(
-                    feedback_obj.sender, {'is_multiple': False, 'exclude_fields': ['password']})
+        serialized_notifications = serializer_data(notifications)
+        for idx, notification_obj in enumerate(notifications):
+            if notification_obj.sender:
+                serialized_notifications[idx]['sender'] = serializer_data(
+                    notification_obj.sender, {'is_multiple': False, 'exclude_fields': ['password']})
+                serialized_notifications[idx]['recipient'] = serializer_data(
+                    notification_obj.recipient, {'is_multiple': False, 'exclude_fields': ['password']})
 
-        return JsonResponse({'feedbacks': serialized_feedbacks}, status=200)
+        return JsonResponse({'feedbacks': serialized_notifications}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
@@ -144,12 +146,17 @@ class FeedbackView(View):
 
         data = get_data(request)
 
-        is_valid, response = verify_post_feedback(data)
+        is_valid, response = verify_post_notification(data)
         if not is_valid:
             return response
 
-        Feedback.objects.create(
-            sender=user_or_response_content, **data)
+        recipient = data.get('recipient')
+        if type(recipient) == str:
+            for recipient in User.objects.filter(role=recipient):
+                Notification.objects.create(
+                    sender=user_or_response_content, recipient=recipient, content=data['content'])
+
+        Notification.objects.create(sender=user_or_response_content, **data)
 
         return JsonResponse({'message': 'Пікір сәтті жіберілді'}, status=201)
 
@@ -158,16 +165,19 @@ class FeedbackView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        if user_or_response_content.role != 'site admin':
-            return JsonResponse({'message': 'Керібайланысты тек site admin рөлді пайдаланушы жойа алады'}, status=401)
+        # if user_or_response_content.role != 'site admin':
+        #     return JsonResponse({'message': 'Керібайланысты тек site admin рөлді пайдаланушы жойа алады'}, status=401)
 
-        Feedback.objects.all().delete()
+        # Notification.objects.all().delete()
 
-        return JsonResponse({'message': 'Керібайланыстар сәтті жойылды'}, status=200)
+        # return JsonResponse({'message': 'Керібайланыстар сәтті жойылды'}, status=200)
+        return JsonResponse({'message': 'Керібайланыстар сәтті жойылмады'}, status=400)
 
 
-class FeedbackSingleView(View):
+class NotificationSingleView(View):
+
     def delete(self, request, id):
+        '''待开发...'''
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
@@ -176,8 +186,8 @@ class FeedbackSingleView(View):
             return JsonResponse({'message': 'Керібайланысты тек site admin рөлді пайдаланушы жойа алады'}, status=401)
 
         try:
-            feedback = Feedback.objects.get(id=id)
-        except Feedback.DoesNotExist:
+            feedback = Notification.objects.get(id=id)
+        except Notification.DoesNotExist:
             feedback = None
 
         if feedback:

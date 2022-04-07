@@ -118,20 +118,28 @@ def verify_change_password(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tup
     return True, None
 
 
-def verify_post_feedback(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
+def verify_post_notification(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, JsonResponse]]:
     content = data.get('content')
+    recipient = data.get('recipient')
 
-    is_valid, error_message = verify_data(data=content, required=True, data_type=str, max_length=254, error_messages={
-        'required': 'Кері байланыс мазмұны міндетті өріс',
-        'data_type': 'Кері байланыс мазмұны string типінде болу керек',
-        'max_length': 'Кері байланыс мазмұнының ұзындығы 254-ден артық',
-    })
+    if type(recipient) == str:
+        if recipient not in [role_choices[0] for role_choices in User.ROLE_CHOICES]:
+            return False, JsonResponse({'message': 'Қолдау көрсетілмейтін алушы түрі'}, status=400)
 
-    if not is_valid:
-        return False, JsonResponse({'message': error_message}, status=400)
+    for is_valid, error_message in (verify_data(data=content, required=True, data_type=str, max_length=254, error_messages={
+        'required': 'Хабарландыру мазмұны міндетті өріс',
+        'data_type': 'Хабарландыру мазмұны string типінде болу керек',
+        'max_length': 'Хабарландыру мазмұнының ұзындығы 254-ден артық',
+    }), verify_data(data=recipient, required=True, data_type=int, min=1, error_messages={
+        'required': 'Алушы id-і міндетті өріс',
+        'data_type': 'Алушы id-і int типінде болу керек',
+        'min': 'Алушы id-і 1-ден аз',
+    })):
+        if not is_valid:
+            return False, JsonResponse({'message': error_message}, status=400)
 
     is_valid_or_key_name, reason_or_none = verify_dict(
-        data, [{'key_name': 'content'}])
+        data, [{'key_name': 'content'}, {'key_name': 'recipient'}])
 
     if is_valid_or_key_name != True:
         return False, JsonResponse({'message': reason_or_none}, status=400)
