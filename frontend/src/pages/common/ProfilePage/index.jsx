@@ -9,6 +9,7 @@ import { Tabs } from 'antd';
 import { CommonLayout } from '@/layout';
 import BasicInfo from './BasicInfo';
 import ChangePassword from './ChangePassword';
+import Notifications from './Notifications';
 import Other from './Other';
 import { ProfilePageStyledBox } from './style';
 
@@ -32,6 +33,11 @@ export default function ProfilePage() {
 				tabContent: <ChangePassword />,
 			},
 			{
+				key: 'notifications',
+				tabName: t('profile_tabName_notifications'),
+				tabContent: <Notifications />,
+			},
+			{
 				key: 'other',
 				tabName: t('profile_tabName_other'),
 				tabContent: <Other />,
@@ -43,7 +49,8 @@ export default function ProfilePage() {
 	return (
 		<CommonLayout>
 			<ProfilePageStyledBox>
-				<Tabs centered 
+				<Tabs
+					centered
 					tabPosition={responsive.md === false ? 'top' : 'left'}
 					className="profile-tabs">
 					{profileTabs.map(({ key, tabName, tabContent }) => (
