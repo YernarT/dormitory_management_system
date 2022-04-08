@@ -7,9 +7,8 @@ import { useCreation, useResponsive } from 'ahooks';
 
 import { Tabs } from 'antd';
 import { CommonLayout } from '@/layout';
-import Feedback from './Feedback';
 import City from './City';
-import Dorm from './Dorm';
+import Organization from './Organization';
 import { HomePageStyledBox } from './style';
 
 const { TabPane } = Tabs;
@@ -22,19 +21,14 @@ export default function HomePage() {
 	const siteAdminTabs = useCreation(
 		() => [
 			{
-				key: 'feedback',
-				tabName: t('site_admin_tabName_feedback'),
-				tabContent: <Feedback />,
-			},
-			{
 				key: 'city',
 				tabName: t('site_admin_tabName_city'),
 				tabContent: <City />,
 			},
 			{
-				key: 'dorm',
-				tabName: t('site_admin_tabName_dorm'),
-				tabContent: <Dorm />,
+				key: 'organization',
+				tabName: t('site_admin_tabName_organization'),
+				tabContent: <Organization />,
 			},
 		],
 		[page.locale],

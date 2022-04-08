@@ -104,13 +104,13 @@ export default function City() {
 			<CityStyledBox hasCity={Boolean(cities.length)}>
 				<div className="head">
 					<h2 className="title">Қалалар</h2>
-					<Button
+					{/* <Button
 						type="primary"
 						onClick={openAddCityModal}
 						loading={loadingReqCreateCity}>
 						<PlusOutlined />
 						<span>Қала қосу</span>
-					</Button>
+					</Button> */}
 				</div>
 
 				<div className="cities">
@@ -127,7 +127,7 @@ export default function City() {
 							</Card>
 						))
 					) : (
-						<Empty />
+						<Empty description="Қала жоқ" />
 					)}
 				</div>
 			</CityStyledBox>
