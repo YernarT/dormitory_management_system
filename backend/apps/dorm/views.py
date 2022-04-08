@@ -161,7 +161,21 @@ class OrganizationView(View):
         
     
     def post(self, request):
-        pass
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        data = get_data(request)
+
+        organization = Organization.objects.create(creator=user_or_response_content, **data)
+
+        serialized_organization = serializer_data(organization, {'is_multiple': False})
+
+        serialized_organization['creator'] = serializer_data(
+        organization.creator, {'is_multiple': False, 'exclude_fields': ['password']})
+
+        return JsonResponse({'message': 'success', 'organization': serialized_organization}, status=201)
+
 
 
 class OrganizationCategoryView(View):
