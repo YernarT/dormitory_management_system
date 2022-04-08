@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useRequest, useMount, useSetState } from 'ahooks';
 import { reqGetMyDorm, reqCreateDorm } from '@/service/api/dorm-manager-api';
 
-import { message as antdMessage, Button, Card } from 'antd';
+import { message as antdMessage, Button, Card, Empty } from 'antd';
 import { DormitoryManagementStyledBox } from './style';
 
 export default function DormitoryManagement() {
@@ -40,7 +40,9 @@ export default function DormitoryManagement() {
 			{state.dorm ? (
 				<p>Менім басқарған жатақханам: {state.dorm.id}</p>
 			) : (
-				<p>Жатақхана жоқ, құрыңыз</p>
+				<Empty description="Жатақхана жоқ">
+					<Button>Create Dorm</Button>
+				</Empty>
 			)}
 		</DormitoryManagementStyledBox>
 	);
