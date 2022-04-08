@@ -65,6 +65,7 @@ export default {
 	// Profile
 	'profile_tabName_basic_infomation': 'Basic info.',
 	'profile_tabName_change_password': 'Change password',
+	'profile_tabName_notifications': 'Notification',
 	'profile_tabName_other': 'Other',
 
 	'profile_old_password': 'Old password',
@@ -80,11 +81,18 @@ export default {
 	// site admin
 	'site_admin_tabName_feedback': 'Feedback',
 	'site_admin_tabName_city': 'City',
-	'site_admin_tabName_dorm': 'Dorm',
+	'site_admin_tabName_organization': 'Organization',
+
+	// org manager
+	'org_manager_tabName_organization': 'Organization',
+	'org_manager_tabName_dormitory_management': 'Dormitory management',
+	'org_manager_tabName_process_request': 'Process request',
+	'org_manager_tabName_dormitory_manager': 'Dormitory manager',
 
 	// dorm manager
 	'dorm_manager_tabName_dormitory_management': 'Dormitory management',
 	'dorm_manager_tabName_process_request': 'Process request',
+	'dorm_manager_tabName_dormitory_manager': 'Dormitory manager',
 
 	// tenant
 	'tenant_tabName_search_dorm': 'Search dorm',

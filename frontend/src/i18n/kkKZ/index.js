@@ -65,6 +65,7 @@ export default {
 	// Profile
 	'profile_tabName_basic_infomation': 'Негізгі инфо.',
 	'profile_tabName_change_password': 'Құпия сөзді өзгерту',
+	'profile_tabName_notifications': 'Хабарлама',
 	'profile_tabName_other': 'Басқа',
 
 	'profile_old_password': 'Ескі кұпия сөз',
@@ -80,11 +81,18 @@ export default {
 	// site admin
 	'site_admin_tabName_feedback': 'Кері байланыс',
 	'site_admin_tabName_city': 'Қала',
-	'site_admin_tabName_dorm': 'Жатақхана',
+	'site_admin_tabName_organization': 'Ұйым',
+
+	// org manager
+	'org_manager_tabName_organization': 'Ұйым',
+	'org_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'org_manager_tabName_process_request': 'Өтінішті өңдеу',
+	'org_manager_tabName_dormitory_manager': 'Жатақ басқарушы',
 
 	// dorm manager
 	'dorm_manager_tabName_dormitory_management': 'Жатақхананы басқару',
 	'dorm_manager_tabName_process_request': 'Өтінішті өңдеу',
+	'dorm_manager_tabName_dormitory_manager': 'Жатақ басқарушы',
 
 	// tenant
 	'tenant_tabName_search_dorm': 'Жатақхана іздеу',
