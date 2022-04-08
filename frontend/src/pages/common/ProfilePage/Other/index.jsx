@@ -13,7 +13,7 @@ const { TextArea } = Input;
 
 export default function Other() {
 	const { t } = useTranslation();
-	const [{ createTime }, setUser] = useRecoilState(userAtom);
+	const [{ createTime, role }, setUser] = useRecoilState(userAtom);
 	const page = useRecoilValue(pageAtom);
 	const [feedbackContent, setFeedbackContent] = useSafeState('');
 
@@ -62,24 +62,28 @@ export default function Other() {
 		<Card title={t('profile_other_title')}>
 			<p>{t('profile_other_p1', { createTime: createTimeReadableFormat })}</p>
 
-			<TextArea
-				placeholder={t('profile_other_feedback')}
-				maxLength={254}
-				showCount
-				value={feedbackContent}
-				onChange={({ target: { value } }) => setFeedbackContent(value)}
-			/>
+			{role !== 'site admin' && (
+				<>
+					<TextArea
+						placeholder={t('profile_other_feedback')}
+						maxLength={254}
+						showCount
+						value={feedbackContent}
+						onChange={({ target: { value } }) => setFeedbackContent(value)}
+					/>
 
-			<Button
-				type="primary"
-				block
-				style={{ marginTop: '10px' }}
-				onClick={handleSendFeedback}
-				loading={loadingReqSendFeedback}>
-				{t('profile_other_send_feedback')}
-			</Button>
+					<Button
+						type="primary"
+						block
+						style={{ marginTop: '10px' }}
+						onClick={handleSendFeedback}
+						loading={loadingReqSendFeedback}>
+						{t('profile_other_send_feedback')}
+					</Button>
 
-			<Divider />
+					<Divider />
+				</>
+			)}
 
 			<Button
 				type="primary"
