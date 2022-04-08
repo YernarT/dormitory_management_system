@@ -1,4 +1,9 @@
 from django.db import models
+from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+
+from os import remove
 
 
 class City(models.Model):
@@ -81,6 +86,11 @@ class DormImage(models.Model):
         return f'{self.dorm.name} суреті'
 
 
+@receiver(post_delete, sender=DormImage)
+def dorm_image_post_save(instance, **kwargs):
+    remove(settings.MEDIA_ROOT + '\\' + str(instance.image).replace('/', '\\'))
+
+
 class Room(models.Model):
     '''房间'''
     name = models.CharField(max_length=24, verbose_name='Бөлме атауы')
@@ -115,6 +125,11 @@ class RoomImage(models.Model):
 
     def __str__(self):
         return f'{self.room.name} суреті'
+
+
+@receiver(post_delete, sender=RoomImage)
+def room_image_post_save(instance, **kwargs):
+    remove(settings.MEDIA_ROOT + '\\' + str(instance.image).replace('/', '\\'))
 
 
 class Bed(models.Model):
@@ -162,3 +177,8 @@ class BedImage(models.Model):
             return f'{self.room.name} суреті'
 
         return f'Төсек орын суреті'
+
+
+@receiver(post_delete, sender=BedImage)
+def bed_image_post_save(instance, **kwargs):
+    remove(settings.MEDIA_ROOT + '\\' + str(instance.image).replace('/', '\\'))
