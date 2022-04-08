@@ -101,38 +101,60 @@ class DormView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        if user_or_response_content.role != 'dorm manager':
-            return JsonResponse({'message': 'Жатақхананы тек dorm manager рөлді пайдаланушы жойа алады'}, status=401)
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        city_id = request.POST.get('city')
+        address = request.POST.get('address')
 
-        data = get_data(request)
+        city = City.objects.get(id=city_id)
+        # organization = Organization.objects.get(creator=user_or_response_content)
+        # dorm = Dorm.objects.create(name=name, description=description, city=city, organization=organization)
 
-        is_valid, response = verify_dorm(data)
+        for file in request.FILES:
+            print(file.size)
+
+        # dorm_images = [DormImage.objects.create(dorm=dorm, image=i) for i in  ]
+
+        return JsonResponse({'message': '123 Go!'})
+        # new_dorm = Dorm.objects.create(
+        #     **data, creator=user_or_response_content)
+
+        # serialized_new_dorm = serializer_data(new_dorm, {'is_multiple': False})
+        # serialized_new_dorm['creator'] = serializer_data(
+        # new_dorm.creator, {'is_multiple': False, 'exclude_fields': ['password']})
+
+        # return JsonResponse({'message': 'Жатақхана сәтті құрылды', 'dorm': serialized_new_dorm}, status=201)
+
+
+class OrganizationView(View):
+    def get(self, request):
+        is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
-            return response
+            return JsonResponse(user_or_response_content, status=401)
 
-        try:
-            city = City.objects.get(id=data.get('city'))
-        except City.DoesNotExist:
-            city = False
+        # all -> all dorm         (Default)
+        # self -> just "my" org
+        get_mode = request.GET.get('get_mode', 'all')
+        get_mode = 'all' if get_mode not in ('all', 'self') else get_mode
 
-        if not city:
-            return JsonResponse({'message': 'Мұндай қала жоқ'}, status=400)
+        if get_mode == 'all':
+            organization_list = Organization.objects.all()
+            
+            return JsonResponse({'message': 'success all', }, status=200)
 
-        data['city'] = city
+        else:
+            organization = Organization.objects.filter(
+                creator=user_or_response_content).first()
 
-        try:
-            have_dorm = Dorm.objects.get(creator=user_or_response_content)
-        except Dorm.DoesNotExist:
-            have_dorm = False
+            if organization:
+                print(serializer_data(organization, {'is_multiple': False, }))
+                # creator = serializer_data(
+                #     organization.creator, {'is_multiple': False, 'exclude_fields': ['password']})
 
-        if have_dorm:
-            return JsonResponse({'message': 'Тек бір жатақхана құруға болады'}, status=400)
+                # test
+                return JsonResponse({'message': 'success', }, status=200)
 
-        new_dorm = Dorm.objects.create(
-            **data, creator=user_or_response_content)
+            else:
+                serialized_organization = None
 
-        serialized_new_dorm = serializer_data(new_dorm, {'is_multiple': False})
-        serialized_new_dorm['creator'] = serializer_data(
-            new_dorm.creator, {'is_multiple': False, 'exclude_fields': ['password']})
-
-        return JsonResponse({'message': 'Жатақхана сәтті құрылды', 'dorm': serialized_new_dorm}, status=201)
+            return JsonResponse({'message': 'success', 'organization': serialized_organization}, status=200)

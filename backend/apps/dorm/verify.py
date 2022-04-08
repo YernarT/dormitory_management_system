@@ -31,6 +31,7 @@ def verify_dorm(data: Dict[str, Any]) -> Union[Tuple[bool, None], Tuple[bool, Js
     desciption = data.get('desciption')
     city = data.get('city')
     address = data.get('address')
+    images = data.get('images')
 
     for is_valid, error_message in (verify_data(data=name, required=True, data_type=str, max_length=40, error_messages={
         'required': 'Жатақхана атауы міндетті өріс',
