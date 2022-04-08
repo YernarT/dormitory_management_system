@@ -21,3 +21,7 @@ export const reqGetMyOrgaization = () =>
 // Create Organization
 export const reqCreateOrgaization = data =>
 	apiServerInstance.post('/dorm/organization/', data);
+
+// Get Organization Categories
+export const reqGetOrgaizationCategories = () =>
+	apiServerInstance.get('/dorm/organization/category/');

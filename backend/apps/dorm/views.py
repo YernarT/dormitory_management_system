@@ -158,3 +158,13 @@ class OrganizationView(View):
                 serialized_organization = None
 
             return JsonResponse({'message': 'success', 'organization': serialized_organization}, status=200)
+        
+    
+    def post(self, request):
+        pass
+
+
+class OrganizationCategoryView(View):
+    def get(self, request):
+        
+        return JsonResponse({'categories': Organization.CATEGORY_CHOICES}, status=200)

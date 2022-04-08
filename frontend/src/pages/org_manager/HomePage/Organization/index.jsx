@@ -10,6 +10,7 @@ import {
 	reqCreateDorm,
 	reqGetMyOrgaization,
 	reqCreateOrgaization,
+	reqGetOrgaizationCategories,
 } from '@/service/api/org-manager-api';
 
 import {
@@ -31,6 +32,8 @@ import {
 } from '@ant-design/icons';
 import { OrganizationStyledBox } from './style';
 
+const { Option } = Select;
+
 export default function Organization() {
 	const setUser = useSetRecoilState(userAtom);
 	const [dorm, setDorm] = useRecoilState(dormAtom);
@@ -41,6 +44,7 @@ export default function Organization() {
 			name: '',
 			category: '',
 		},
+		categories: [],
 	});
 
 	// 创建机构的请求
@@ -64,6 +68,27 @@ export default function Organization() {
 				}
 			});
 	};
+
+	// 获取机构的所有类型的请求
+	const { runAsync: runReqGetOrgaizationCategories } = useRequest(
+		() => reqGetOrgaizationCategories(),
+		{
+			manual: true,
+		},
+	);
+
+	// 获取机构的所有类型
+	useMount(() => {
+		runReqGetOrgaizationCategories()
+			.then(({ categories }) => setState({ categories }))
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	});
 
 	return (
 		<>
@@ -121,11 +146,11 @@ export default function Organization() {
 								},
 							}))
 						}>
-						{/* {state.cities.map(city => (
-						<Option key={city.id} value={city.id}>
-							{city.name}
-						</Option>
-					))} */}
+						{state.categories.map(([categoryKey, categoryName]) => (
+							<Option key={categoryKey} value={categoryKey}>
+								{categoryName}
+							</Option>
+						))}
 					</Select>
 				</Space>
 			</Modal>
