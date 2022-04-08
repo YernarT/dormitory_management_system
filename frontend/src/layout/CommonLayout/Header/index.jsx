@@ -37,6 +37,7 @@ export default memo(function Header({ className }) {
 			{role === 'guest' && <GuestHeader />}
 			{role === 'tenant' && <TenantHeader />}
 			{role === 'dorm manager' && <DormManagerHeader />}
+			{role === 'org manager' && <OrgManagerHeader />}
 			{role === 'site admin' && <SiteAdminHeader />}
 
 			{/* public dom */}
@@ -129,6 +130,10 @@ const GuestHeader = memo(function GuestHeader() {
 });
 
 const TenantHeader = memo(function TenantHeader() {
+	return <div className="toolbar" />;
+});
+
+const OrgManagerHeader = memo(function OrgManagerHeader() {
 	return <div className="toolbar" />;
 });
 
