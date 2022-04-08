@@ -58,9 +58,14 @@ export default function Organization() {
 	// 处理创建机构
 	const handleAddOrganization = () => {
 		runReqCreateOrganization(state.addOrganizationFormData)
-			.then(({ organization }) =>
-				setDorm(prevState => ({ ...prevState, organization })),
-			)
+			.then(({ message, organization }) => {
+				antdMessage.success(message);
+				setState({
+					addOrganizationModalVisibile: false,
+					addOrganizationFormData: { name: '', category: '' },
+				});
+				setDorm(prevState => ({ ...prevState, organization }));
+			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
 				if (needExecuteLogout) {
@@ -105,7 +110,10 @@ export default function Organization() {
 
 				<div className="org">
 					{dorm.organization ? (
-						<Card title={dorm.organization.name}></Card>
+						<Card title={dorm.organization.name}>
+							<p>Ұйым санаты: {dorm.organization.category}</p>
+							<p>Құрылған уақыты: {dorm.organization.create_time}</p>
+						</Card>
 					) : (
 						<Empty description="Ұйым жоқ" />
 					)}
@@ -113,7 +121,7 @@ export default function Organization() {
 			</OrganizationStyledBox>
 
 			<Modal
-				title="Жатақхана құру"
+				title="Ұйым құру"
 				visible={state.addOrganizationModalVisibile}
 				onOk={handleAddOrganization}
 				okText="Құру"

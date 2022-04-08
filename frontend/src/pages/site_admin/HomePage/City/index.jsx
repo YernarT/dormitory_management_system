@@ -74,7 +74,7 @@ export default function City() {
 					}
 				});
 		} else {
-			message.warning('输入不合法');
+			message.warning('Жарамсыз енгізу');
 		}
 	};
 
@@ -104,13 +104,13 @@ export default function City() {
 			<CityStyledBox hasCity={Boolean(cities.length)}>
 				<div className="head">
 					<h2 className="title">Қалалар</h2>
-					{/* <Button
+					<Button
 						type="primary"
 						onClick={openAddCityModal}
 						loading={loadingReqCreateCity}>
 						<PlusOutlined />
 						<span>Қала қосу</span>
-					</Button> */}
+					</Button>
 				</div>
 
 				<div className="cities">
