@@ -32,7 +32,7 @@ export default function RegisterPage() {
 				values.role = 'tenant';
 				break;
 			case 'publish':
-				values.role = 'dorm manager';
+				values.role = 'org manager';
 				break;
 			default:
 				values.role = '__unknown';
