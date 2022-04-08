@@ -3,6 +3,7 @@ from django.views.generic import View
 
 from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
+from dorm.serializer import *
 
 from utils.auth import verify_token
 from utils.data import get_data, serializer_data
@@ -107,23 +108,18 @@ class DormView(View):
         address = request.POST.get('address')
 
         city = City.objects.get(id=city_id)
-        # organization = Organization.objects.get(creator=user_or_response_content)
-        # dorm = Dorm.objects.create(name=name, description=description, city=city, organization=organization)
+        organization = Organization.objects.get(
+            creator=user_or_response_content)
+        dorm = Dorm.objects.create(
+            name=name, description=description, city=city, organization=organization)
+        dorm_images = []
 
-        for file in request.FILES:
-            print(file.size)
+        for image in request.FILES.values():
+            dorm_image = DormImage.objects.create(image=image, dorm=dorm)
 
-        # dorm_images = [DormImage.objects.create(dorm=dorm, image=i) for i in  ]
+            dorm_images.append(serializer_dorm_image(dorm_image))
 
-        return JsonResponse({'message': '123 Go!'})
-        # new_dorm = Dorm.objects.create(
-        #     **data, creator=user_or_response_content)
-
-        # serialized_new_dorm = serializer_data(new_dorm, {'is_multiple': False})
-        # serialized_new_dorm['creator'] = serializer_data(
-        # new_dorm.creator, {'is_multiple': False, 'exclude_fields': ['password']})
-
-        # return JsonResponse({'message': 'Жатақхана сәтті құрылды', 'dorm': serialized_new_dorm}, status=201)
+        return JsonResponse({'message': 'success', 'dorm': serializer_dorm(dorm), 'dorm_images': dorm_images}, status=201)
 
 
 class OrganizationView(View):
@@ -139,7 +135,7 @@ class OrganizationView(View):
 
         if get_mode == 'all':
             organization_list = Organization.objects.all()
-            
+
             return JsonResponse({'message': 'success all', }, status=200)
 
         else:
@@ -158,8 +154,7 @@ class OrganizationView(View):
                 serialized_organization = None
 
             return JsonResponse({'message': 'success', 'organization': serialized_organization}, status=200)
-        
-    
+
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
@@ -167,18 +162,19 @@ class OrganizationView(View):
 
         data = get_data(request)
 
-        organization = Organization.objects.create(creator=user_or_response_content, **data)
+        organization = Organization.objects.create(
+            creator=user_or_response_content, **data)
 
-        serialized_organization = serializer_data(organization, {'is_multiple': False})
+        serialized_organization = serializer_data(
+            organization, {'is_multiple': False})
 
         serialized_organization['creator'] = serializer_data(
-        organization.creator, {'is_multiple': False, 'exclude_fields': ['password']})
+            organization.creator, {'is_multiple': False, 'exclude_fields': ['password']})
 
         return JsonResponse({'message': 'success', 'organization': serialized_organization}, status=201)
 
 
-
 class OrganizationCategoryView(View):
     def get(self, request):
-        
+
         return JsonResponse({'categories': Organization.CATEGORY_CHOICES}, status=200)
