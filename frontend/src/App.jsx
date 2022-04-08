@@ -14,7 +14,7 @@ import { useEventListener, useCreation } from 'ahooks';
 import { localStorage, getAntdLocale } from '@/utils';
 
 import { useRecoilValue } from 'recoil';
-import { userAtom, pageAtom } from '@/store';
+import { userAtom, pageAtom, dormAtom } from '@/store';
 
 import getTheme from '@/assets/theme';
 import { AntdComponentStyleModify } from '@/assets/style/antd-mod-style';
@@ -34,11 +34,13 @@ notification.config({
 export default function App() {
 	const user = useRecoilValue(userAtom);
 	const page = useRecoilValue(pageAtom);
+	const dorm = useRecoilValue(dormAtom);
 
 	// Refresh the page to save the data in Recoil to LocalStorage
 	useEventListener('beforeunload', () => {
 		localStorage.set('user', user);
 		localStorage.set('page', page);
+		localStorage.set('dorm', dorm);
 	});
 
 	// Theme object
