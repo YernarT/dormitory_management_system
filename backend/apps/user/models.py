@@ -15,7 +15,7 @@ class User(models.Model):
     password = models.CharField(max_length=254, verbose_name='Құпия сөз')
     ROLE_CHOICES = (
         ('site admin', 'Сайт әкімшісі'),
-        ('org manager', 'Жатақхана меңгеруші'),
+        ('org manager', 'Ұйым меңгеруші'),
         ('dorm manager', 'Жатақхана меңгеруші'),
         ('tenant', 'Жалға алушы'),
     )
