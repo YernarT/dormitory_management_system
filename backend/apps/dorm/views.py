@@ -68,11 +68,12 @@ class CitySingleView(View):
 class DormView(View):
 
     def get(self, request):
+
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        # all -> all dorm         (Default)
+        # all -> all dorm (Default)
         # self -> just "my" dorm
         get_mode = request.GET.get('get_mode', 'all')
         get_mode = 'all' if get_mode not in ('all', 'self') else get_mode
@@ -82,18 +83,16 @@ class DormView(View):
         else:
             try:
                 org = Organization.objects.get(
-                    category=user_or_response_content)
+                    creator=user_or_response_content)
             except Organization.DoesNotExist:
-                org = None
+                # dorm manager
+                org = OrganizationDormManager.objects.get(
+                    dorm_manager=user_or_response_content).organization
 
-            if org == None:
-                return JsonResponse({'dorms': []}, status=200)
             dorm_list = Dorm.objects.filter(organization=org)
 
-        serialized_dorm_list = serializer_data(dorm_list)
-        for idx, dorm_obj in enumerate(dorm_list):
-            serialized_dorm_list[idx]['creator'] = serializer_data(
-                dorm_obj.creator, {'is_multiple': False, 'exclude_fields': ['password']})
+        serialized_dorm_list = [serializer_dorm(
+            dorm_obj) for dorm_obj in dorm_list]
 
         return JsonResponse({'dorms': serialized_dorm_list}, status=200)
 
@@ -106,6 +105,9 @@ class DormView(View):
         description = request.POST.get('description')
         city_id = request.POST.get('city')
         address = request.POST.get('address')
+
+        print('city_id: ', city_id)
+        print('post data: ', request.POST)
 
         city = City.objects.get(id=city_id)
         try:
