@@ -17,9 +17,9 @@ def serializer_dorm(dorm_model_obj):
 
     return serialized_dorm
     
-def serializer_dorm_image(dorm_image_model_obj):
+def serializer_dorm_image(dorm_image_model_obj, request):
     serialized_dorm_image = serializer_data(dorm_image_model_obj, {'is_multiple': False})
     serialized_dorm_image['dorm'] = serializer_dorm(dorm_image_model_obj.dorm)
-    serialized_dorm_image['image'] = get_media_url(serialized_dorm_image['image'])
+    serialized_dorm_image['image'] = get_media_url(request, serialized_dorm_image['image'])
 
     return serialized_dorm_image

@@ -121,7 +121,7 @@ class DormView(View):
 
         for image in request.FILES.values():
             dorm_image = DormImage.objects.create(image=image, dorm=dorm)
-            dorm_images.append(serializer_dorm_image(dorm_image))
+            dorm_images.append(serializer_dorm_image(dorm_image, request))
 
         return JsonResponse({'message': 'success', 'dorm': serializer_dorm(dorm), 'dorm_images': dorm_images}, status=201)
 
