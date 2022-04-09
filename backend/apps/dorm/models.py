@@ -49,7 +49,7 @@ class OrganizationDormManager(models.Model):
     '''机构的宿舍管理员'''
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, verbose_name='Ұйым')
-    user = models.ForeignKey(
+    dorm_manager = models.ForeignKey(
         'user.User', on_delete=models.CASCADE, verbose_name='Жатақ басқарушы')
 
     class Meta:
