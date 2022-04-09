@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import View
 
-from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage, Organization
+from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
 from dorm.serializer import *
 
@@ -108,15 +108,19 @@ class DormView(View):
         address = request.POST.get('address')
 
         city = City.objects.get(id=city_id)
-        organization = Organization.objects.get(
-            creator=user_or_response_content)
+        try:
+            organization = Organization.objects.get(
+                creator=user_or_response_content)
+        except Organization.DoesNotExist:
+            organization = OrganizationDormManager.get(
+                user=user_or_response_content)
+
         dorm = Dorm.objects.create(
-            name=name, description=description, city=city, organization=organization)
+            name=name, description=description, city=city, address=address, organization=organization)
         dorm_images = []
 
         for image in request.FILES.values():
             dorm_image = DormImage.objects.create(image=image, dorm=dorm)
-
             dorm_images.append(serializer_dorm_image(dorm_image))
 
         return JsonResponse({'message': 'success', 'dorm': serializer_dorm(dorm), 'dorm_images': dorm_images}, status=201)
