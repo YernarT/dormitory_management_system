@@ -1,4 +1,4 @@
-from utils.data import serializer_data
+from utils.data import serializer_data, get_media_url
 from user.serializer import serializer_user
 
 def serializer_city(city_model_obj):
@@ -20,5 +20,6 @@ def serializer_dorm(dorm_model_obj):
 def serializer_dorm_image(dorm_image_model_obj):
     serialized_dorm_image = serializer_data(dorm_image_model_obj, {'is_multiple': False})
     serialized_dorm_image['dorm'] = serializer_dorm(dorm_image_model_obj.dorm)
+    serialized_dorm_image['image'] = get_media_url(serialized_dorm_image['image'])
 
     return serialized_dorm_image
