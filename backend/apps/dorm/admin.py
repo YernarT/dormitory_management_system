@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from dorm.models import City, Dorm, DormImage, Room, RoomImage, Bed, BedImage, Organization
+from dorm.models import City, Dorm, DormImage, Room, RoomImage, Bed, BedImage, Organization, OrganizationDormManager
 
 admin.site.register(City)
 
@@ -17,3 +17,5 @@ admin.site.register(Bed)
 admin.site.register(BedImage)
 
 admin.site.register(Organization)
+
+admin.site.register(OrganizationDormManager)
