@@ -143,12 +143,7 @@ class OrganizationView(View):
                 creator=user_or_response_content).first()
 
             if organization:
-                print(serializer_data(organization, {'is_multiple': False, }))
-                # creator = serializer_data(
-                #     organization.creator, {'is_multiple': False, 'exclude_fields': ['password']})
-
-                # test
-                return JsonResponse({'message': 'success', }, status=200)
+                return JsonResponse({'message': 'success', 'organization': serializer_organization(organization)}, status=200)
 
             else:
                 serialized_organization = None
