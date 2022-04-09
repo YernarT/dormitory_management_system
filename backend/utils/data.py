@@ -136,3 +136,15 @@ def serializer_data(data: Any, options: Dict[str, any] = {
         return result[0]
 
     return customize_serialized_fileds(data)
+
+
+def get_media_url(request: WSGIRequest, resource_url: str) -> str:
+    '''get the full path of the media resource'''
+    from django.conf import settings
+    
+    server_protocol = request.META.get('SERVER_PROTOCOL')[
+        :request.META.get('SERVER_PROTOCOL').find('/')
+    ].lower()
+    host = request.META.get('HTTP_HOST')
+
+    return server_protocol + '://' + host + settings.MEDIA_URL + str(resource_url)
