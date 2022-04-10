@@ -66,4 +66,10 @@ export const AntdComponentStyleModify = createGlobalStyle`
 			${({ theme }) => theme.typography.title};
 		}
 	}
+
+	.dms-descriptions {
+		&-title {
+			font-size: 1.15rem;
+		}
+	}
 `;
