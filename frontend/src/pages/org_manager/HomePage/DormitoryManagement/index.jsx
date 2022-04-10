@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { userAtom, dormAtom } from '@/store';
+import { userAtom, dormAtom, pageAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
@@ -9,6 +9,7 @@ import {
 	reqGetDorms,
 	reqCreateDorm,
 } from '@/service/api/org-manager-api';
+import { fromNow } from '@/utils';
 
 import {
 	message as antdMessage,
@@ -21,6 +22,7 @@ import {
 	Select,
 	Upload,
 	Space,
+	Descriptions,
 } from 'antd';
 import {
 	DeleteOutlined,
@@ -34,6 +36,7 @@ const { Option } = Select;
 
 export default function DormitoryManagement() {
 	const setUser = useSetRecoilState(userAtom);
+	const page = useRecoilValue(pageAtom);
 	const dorm = useRecoilValue(dormAtom);
 	const { t } = useTranslation();
 	const [state, setState] = useSetState({
@@ -164,8 +167,23 @@ export default function DormitoryManagement() {
 										className="delete-btn"
 										// onClick={() => handleDeleteCity(city.id)}
 									/>
-									<p className="dorm-name">{dorm.name}</p>
-									<p className="dorm-description">{dorm.description}</p>
+									<Descriptions title={dorm.name} column={1}>
+										<Descriptions.Item label="Сипаттама">
+											{dorm.description}
+										</Descriptions.Item>
+										<Descriptions.Item label="Орналасқан қала">
+											{dorm.city.name}
+										</Descriptions.Item>
+										<Descriptions.Item label="Нақты мекенжайы">
+											{dorm.address}
+										</Descriptions.Item>
+										<Descriptions.Item label="Құрылған уақыт">
+											{fromNow(dorm.create_time, {
+												lang: page.locale,
+												suffix: true,
+											})}
+										</Descriptions.Item>
+									</Descriptions>
 								</Skeleton>
 							</Card>
 						))
