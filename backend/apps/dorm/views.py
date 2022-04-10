@@ -94,6 +94,12 @@ class DormView(View):
         serialized_dorm_list = [serializer_dorm(
             dorm_obj) for dorm_obj in dorm_list]
 
+        for idx, dorm in enumerate(dorm_list):
+            serialized_dorm_list[idx]['images'] = []
+            for dorm_image in DormImage.objects.filter(dorm=dorm):
+                serialized_dorm_list[idx]['images'].append(
+                    serializer_dorm_image(dorm_image, request))
+
         return JsonResponse({'dorms': serialized_dorm_list}, status=200)
 
     def post(self, request):
@@ -105,9 +111,6 @@ class DormView(View):
         description = request.POST.get('description')
         city_id = request.POST.get('city')
         address = request.POST.get('address')
-
-        print('city_id: ', city_id)
-        print('post data: ', request.POST)
 
         city = City.objects.get(id=city_id)
         try:
@@ -125,7 +128,10 @@ class DormView(View):
             dorm_image = DormImage.objects.create(image=image, dorm=dorm)
             dorm_images.append(serializer_dorm_image(dorm_image, request))
 
-        return JsonResponse({'message': 'success', 'dorm': serializer_dorm(dorm), 'dorm_images': dorm_images}, status=201)
+        dorm = serializer_dorm(dorm)
+        dorm['images'] = dorm_images
+
+        return JsonResponse({'message': 'success', 'dorm': dorm, }, status=201)
 
 
 class OrganizationView(View):
