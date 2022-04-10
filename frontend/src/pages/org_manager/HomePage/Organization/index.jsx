@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { userAtom, dormAtom } from '@/store';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { userAtom, dormAtom, pageAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
@@ -12,6 +12,7 @@ import {
 	reqCreateOrgaization,
 	reqGetOrgaizationCategories,
 } from '@/service/api/org-manager-api';
+import { fromNow } from '@/utils';
 
 import {
 	message as antdMessage,
@@ -36,6 +37,7 @@ const { Option } = Select;
 
 export default function Organization() {
 	const setUser = useSetRecoilState(userAtom);
+	const page = useRecoilValue(pageAtom);
 	const [dorm, setDorm] = useRecoilState(dormAtom);
 	const { t } = useTranslation();
 	const [state, setState] = useSetState({
@@ -101,6 +103,7 @@ export default function Organization() {
 				<div className="head">
 					<h2 className="title">Ұйым</h2>
 					<Button
+						style={{ display: dorm.organization ? 'none' : 'block' }}
 						type="primary"
 						onClick={() => setState({ addOrganizationModalVisibile: true })}>
 						<PlusOutlined />
@@ -112,7 +115,13 @@ export default function Organization() {
 					{dorm.organization ? (
 						<Card title={dorm.organization.name}>
 							<p>Ұйым санаты: {dorm.organization.category}</p>
-							<p>Құрылған уақыты: {dorm.organization.create_time}</p>
+							<p>
+								Құрылған уақыты:{' '}
+								{fromNow(dorm.organization.create_time, {
+									lang: page.locale,
+									suffix: true,
+								})}
+							</p>
 						</Card>
 					) : (
 						<Empty description="Ұйым жоқ" />

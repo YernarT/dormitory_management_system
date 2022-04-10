@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
-import { userAtom } from '@/store';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { userAtom, dormAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
@@ -8,7 +8,6 @@ import {
 	reqGetCities,
 	reqGetDorms,
 	reqCreateDorm,
-	reqGetMyOrgaization,
 } from '@/service/api/org-manager-api';
 
 import {
@@ -35,9 +34,9 @@ const { Option } = Select;
 
 export default function DormitoryManagement() {
 	const setUser = useSetRecoilState(userAtom);
+	const dorm = useRecoilValue(dormAtom);
 	const { t } = useTranslation();
 	const [state, setState] = useSetState({
-		organization: null,
 		dorms: [],
 		dormImages: [],
 		cities: [],
@@ -53,6 +52,8 @@ export default function DormitoryManagement() {
 		},
 	});
 
+	// const [addDormFormData, setAddDormFormData] = useSetState({})
+
 	// 获取所有城市的请求
 	const { runAsync: runReqGetCities, loading: loadingReqGetCities } =
 		useRequest(() => reqGetCities(), {
@@ -63,7 +64,14 @@ export default function DormitoryManagement() {
 	useMount(() => {
 		runReqGetCities()
 			.then(({ cities }) => {
-				setState({ cities });
+				setState(prevState => ({
+					...prevState,
+					cities,
+					addDormFormData: {
+						...prevState.addDormFormData,
+						city: cities[0].id,
+					},
+				}));
 			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
@@ -97,24 +105,6 @@ export default function DormitoryManagement() {
 			});
 	});
 
-	// 获取机构的请求
-	const { runAsync: runReqGetMyOrg } = useRequest(() => reqGetMyOrgaization(), {
-		manual: true,
-	});
-
-	// 获取机构
-	useMount(() => {
-		runReqGetMyOrg()
-			.then(({ organization }) => setState({ organization }))
-			.catch(({ message, needExecuteLogout, initialUser }) => {
-				antdMessage.error(message);
-
-				if (needExecuteLogout) {
-					setUser(initialUser);
-				}
-			});
-	});
-
 	const handleAddDorm = () => {
 		let data = new FormData();
 		Object.entries(state.addDormFormData).forEach(([key, value]) => {
@@ -134,9 +124,9 @@ export default function DormitoryManagement() {
 					dorms: [...prevState.dorms, dorm],
 					dormImages: [...prevState.dormImages, ...dorm_images],
 					addDormFormData: {
+						...prevState.addDormFormData,
 						name: '',
 						description: '',
-						city: '',
 						address: '',
 						images: [],
 					},
@@ -175,6 +165,7 @@ export default function DormitoryManagement() {
 										// onClick={() => handleDeleteCity(city.id)}
 									/>
 									<p className="dorm-name">{dorm.name}</p>
+									<p className="dorm-description">{dorm.description}</p>
 								</Skeleton>
 							</Card>
 						))
@@ -221,6 +212,7 @@ export default function DormitoryManagement() {
 					<Select
 						placeholder="Орналасқан қала"
 						style={{ width: '100%' }}
+						value={state.addDormFormData.city}
 						onChange={value =>
 							setState(prevState => ({
 								addDormFormData: { ...prevState.addDormFormData, city: value },
