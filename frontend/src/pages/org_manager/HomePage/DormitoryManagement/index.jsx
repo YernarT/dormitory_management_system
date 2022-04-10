@@ -22,6 +22,7 @@ import {
 	Select,
 	Upload,
 	Space,
+	Image,
 	Descriptions,
 } from 'antd';
 import {
@@ -29,6 +30,7 @@ import {
 	PlusOutlined,
 	UploadOutlined,
 } from '@ant-design/icons';
+import { DormCard } from '@/components/dorm';
 import { DormitoryManagementStyledBox } from './style';
 
 const { TextArea } = Input;
@@ -41,7 +43,6 @@ export default function DormitoryManagement() {
 	const { t } = useTranslation();
 	const [state, setState] = useSetState({
 		dorms: [],
-		dormImages: [],
 		cities: [],
 
 		addDormModalVisibility: false,
@@ -121,11 +122,10 @@ export default function DormitoryManagement() {
 		});
 
 		reqCreateDorm(data)
-			.then(({ dorm, dorm_images, message }) => {
+			.then(({ dorm, message }) => {
 				antdMessage.success(message);
 				setState(prevState => ({
 					dorms: [...prevState.dorms, dorm],
-					dormImages: [...prevState.dormImages, ...dorm_images],
 					addDormFormData: {
 						...prevState.addDormFormData,
 						name: '',
@@ -159,33 +159,9 @@ export default function DormitoryManagement() {
 				</div>
 
 				<div className="dorms">
-					{state.dorms.length ? (
+					{state.dorms.length > 0 ? (
 						state.dorms.map(dorm => (
-							<Card key={dorm.id} className="dorm">
-								<Skeleton loading={false} active>
-									<DeleteOutlined
-										className="delete-btn"
-										// onClick={() => handleDeleteCity(city.id)}
-									/>
-									<Descriptions title={dorm.name} column={1}>
-										<Descriptions.Item label="Сипаттама">
-											{dorm.description}
-										</Descriptions.Item>
-										<Descriptions.Item label="Орналасқан қала">
-											{dorm.city.name}
-										</Descriptions.Item>
-										<Descriptions.Item label="Нақты мекенжайы">
-											{dorm.address}
-										</Descriptions.Item>
-										<Descriptions.Item label="Құрылған уақыт">
-											{fromNow(dorm.create_time, {
-												lang: page.locale,
-												suffix: true,
-											})}
-										</Descriptions.Item>
-									</Descriptions>
-								</Skeleton>
-							</Card>
+							<DormCard key={dorm.id} dorm={dorm} loading={false} />
 						))
 					) : (
 						<Empty description="Жатақхана жоқ" />
