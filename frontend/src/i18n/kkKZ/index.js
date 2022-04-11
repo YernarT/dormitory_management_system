@@ -86,13 +86,14 @@ export default {
 	// org manager
 	'org_manager_tabName_organization': 'Ұйым',
 	'org_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'org_manager_tabName_room_management': 'Бөлме басқару',
 	'org_manager_tabName_process_request': 'Өтінішті өңдеу',
 	'org_manager_tabName_dormitory_manager': 'Жатақ басқарушы',
 
 	// dorm manager
 	'dorm_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'dorm_manager_tabName_room_management': 'Бөлме басқару',
 	'dorm_manager_tabName_process_request': 'Өтінішті өңдеу',
-	'dorm_manager_tabName_dormitory_manager': 'Жатақ басқарушы',
 
 	// tenant
 	'tenant_tabName_search_dorm': 'Жатақхана іздеу',

@@ -86,13 +86,14 @@ export default {
 	// org manager
 	'org_manager_tabName_organization': 'Organization',
 	'org_manager_tabName_dormitory_management': 'Dormitory management',
+	'org_manager_tabName_room_management': 'Room management',
 	'org_manager_tabName_process_request': 'Process request',
 	'org_manager_tabName_dormitory_manager': 'Dormitory manager',
 
 	// dorm manager
 	'dorm_manager_tabName_dormitory_management': 'Dormitory management',
+	'dorm_manager_tabName_room_management': 'Room management',
 	'dorm_manager_tabName_process_request': 'Process request',
-	'dorm_manager_tabName_dormitory_manager': 'Dormitory manager',
 
 	// tenant
 	'tenant_tabName_search_dorm': 'Search dorm',
