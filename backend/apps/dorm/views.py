@@ -217,3 +217,15 @@ class DormManagerView(View):
             organization=org, dorm_manager=manager)
 
         return JsonResponse({'message': 'Сәтті құрылды', 'dorm_manager': serializer_user(manager)}, status=201)
+
+
+class DormManagerSingleView(View):
+
+    def delete(self, request, id):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        User.objects.get(id=id).delete()
+
+        return JsonResponse({'message': 'Сәтті жойылды'})
