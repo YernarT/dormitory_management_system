@@ -4,6 +4,7 @@ from django.views.generic import View
 from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
 from dorm.serializer import *
+from user.models import User
 
 from utils.auth import verify_token
 from utils.data import get_data, serializer_data
@@ -185,3 +186,34 @@ class OrganizationCategoryView(View):
     def get(self, request):
 
         return JsonResponse({'categories': Organization.CATEGORY_CHOICES}, status=200)
+
+
+class DormManagerView(View):
+
+    def get(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        org = Organization.objects.get(creator=user_or_response_content)
+        org_managers = OrganizationDormManager.objects.filter(organization=org)
+        serialized_managers = []
+        for org_manager in org_managers:
+            user = User.objects.get(id=org_manager.dorm_manager.id)
+            serialized_managers.append(serializer_user(user))
+
+        return JsonResponse({'message': 'success', 'dorm_managers': serialized_managers}, status=200)
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        data = get_data(request)
+
+        manager = User.objects.create(**data)
+        org = Organization.objects.get(creator=user_or_response_content)
+        OrganizationDormManager.objects.create(
+            organization=org, dorm_manager=manager)
+
+        return JsonResponse({'message': 'Сәтті құрылды', 'dorm_manager': serializer_user(manager)}, status=201)
