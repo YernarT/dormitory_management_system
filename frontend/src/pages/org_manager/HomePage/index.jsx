@@ -16,6 +16,7 @@ import { Tabs, message as antdMessage } from 'antd';
 import { CommonLayout } from '@/layout';
 import Organization from './Organization';
 import DormitoryManagement from './DormitoryManagement';
+import RoomManagement from './RoomManagement';
 import ProcessRequest from './ProcessRequest';
 import DormitoryManager from './DormitoryManager';
 
@@ -63,6 +64,11 @@ export default function HomePage() {
 				tabName: t('org_manager_tabName_dormitory_management'),
 				tabContent: <DormitoryManagement />,
 				disabled: Boolean(!dorm.organization),
+			},
+			{
+				key: 'room_management',
+				tabName: t('org_manager_tabName_room_management'),
+				tabContent: <RoomManagement />,
 			},
 			{
 				key: 'process_request',

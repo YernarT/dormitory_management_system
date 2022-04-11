@@ -8,6 +8,7 @@ import { useCreation, useResponsive } from 'ahooks';
 import { Tabs } from 'antd';
 import { CommonLayout } from '@/layout';
 import DormitoryManagement from './DormitoryManagement';
+import RoomManagement from './RoomManagement';
 import ProcessRequest from './ProcessRequest';
 import { HomePageStyledBox } from './style';
 
@@ -26,6 +27,11 @@ export default function HomePage() {
 				tabContent: <DormitoryManagement />,
 			},
 			{
+				key: 'room_management',
+				tabName: t('dorm_manager_tabName_room_management'),
+				tabContent: <RoomManagement />,
+			},
+			{
 				key: 'process_request',
 				tabName: t('dorm_manager_tabName_process_request'),
 				tabContent: <ProcessRequest />,
@@ -37,7 +43,8 @@ export default function HomePage() {
 	return (
 		<CommonLayout>
 			<HomePageStyledBox>
-				<Tabs centered 
+				<Tabs
+					centered
 					tabPosition={responsive.md === false ? 'top' : 'left'}
 					className="dorm-manager-tabs">
 					{dromManagerTabs.map(({ key, tabName, tabContent }) => (
