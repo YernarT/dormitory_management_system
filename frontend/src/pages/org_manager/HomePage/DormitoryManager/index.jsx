@@ -7,6 +7,7 @@ import { useSetState, useRequest, useMount } from 'ahooks';
 import {
 	reqGetDormManagers,
 	reqCreateDormManager,
+	reqDeleteDormManager,
 } from '@/service/api/org-manager-api';
 import { fromNow } from '@/utils';
 
@@ -76,7 +77,7 @@ export default function DormitoryManager() {
 				antdMessage.success(message);
 
 				setState(prevState => ({
-					dormManagers: [prevState.dormManagers, dormManager],
+					dormManagers: [...prevState.dormManagers, dormManager],
 
 					addDormManagerModalVisibility: false,
 					addDormManagerFormData: {
@@ -86,6 +87,36 @@ export default function DormitoryManager() {
 						role: 'dorm manager',
 						gender: false,
 					},
+				}));
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	};
+
+	// 删除宿管的请求
+	const { runAsync: runReqDeleteDormManager } = useRequest(
+		id => reqDeleteDormManager(id),
+		{
+			manual: true,
+		},
+	);
+
+	// 处理删除宿管
+	const handleDeleteDormManager = id => {
+		runReqDeleteDormManager(id)
+			.then(({ message }) => {
+				antdMessage.success(message);
+
+				setState(prevState => ({
+					...prevState,
+					dormManagers: prevState.dormManagers.filter(
+						manager => manager.id !== id,
+					),
 				}));
 			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
@@ -115,7 +146,7 @@ export default function DormitoryManager() {
 						<Card key={manager.id} className="dorm-manager">
 							<DeleteOutlined
 								className="delete-btn"
-								// onClick={() => handleDeleteCity(city.id)}
+								onClick={() => handleDeleteDormManager(manager.id)}
 							/>
 							<Descriptions title={manager.fullname} column={1}>
 								<Descriptions.Item label="Email">
