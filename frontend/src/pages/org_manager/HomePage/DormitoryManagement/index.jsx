@@ -14,22 +14,14 @@ import { fromNow } from '@/utils';
 import {
 	message as antdMessage,
 	Empty,
-	Card,
-	Skeleton,
 	Button,
 	Modal,
 	Input,
 	Select,
 	Upload,
 	Space,
-	Image,
-	Descriptions,
 } from 'antd';
-import {
-	DeleteOutlined,
-	PlusOutlined,
-	UploadOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { DormCard } from '@/components/dorm';
 import { DormitoryManagementStyledBox } from './style';
 
@@ -38,15 +30,14 @@ const { Option } = Select;
 
 export default function DormitoryManagement() {
 	const setUser = useSetRecoilState(userAtom);
-	const page = useRecoilValue(pageAtom);
-	const dorm = useRecoilValue(dormAtom);
-	const { t } = useTranslation();
+	// const page = useRecoilValue(pageAtom);
+	// const dorm = useRecoilValue(dormAtom);
+	// const { t } = useTranslation();
 	const [state, setState] = useSetState({
 		dorms: [],
 		cities: [],
 
 		addDormModalVisibility: false,
-
 		addDormFormData: {
 			name: '',
 			description: '',
@@ -59,10 +50,9 @@ export default function DormitoryManagement() {
 	// const [addDormFormData, setAddDormFormData] = useSetState({})
 
 	// 获取所有城市的请求
-	const { runAsync: runReqGetCities, loading: loadingReqGetCities } =
-		useRequest(() => reqGetCities(), {
-			manual: true,
-		});
+	const { runAsync: runReqGetCities } = useRequest(() => reqGetCities(), {
+		manual: true,
+	});
 
 	// 获取所有城市
 	useMount(() => {
@@ -87,12 +77,9 @@ export default function DormitoryManagement() {
 	});
 
 	// 获取所有宿舍的请求
-	const { runAsync: runReqGetDorms, loading: loadingReqGetDorms } = useRequest(
-		() => reqGetDorms(),
-		{
-			manual: true,
-		},
-	);
+	const { runAsync: runReqGetDorms } = useRequest(() => reqGetDorms(), {
+		manual: true,
+	});
 
 	// 获取所有宿舍
 	useMount(() => {
