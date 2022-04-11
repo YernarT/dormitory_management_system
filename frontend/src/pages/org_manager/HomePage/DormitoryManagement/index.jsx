@@ -147,9 +147,11 @@ export default function DormitoryManagement() {
 
 				<div className="dorms">
 					{state.dorms.length > 0 ? (
-						state.dorms.map(dorm => (
-							<DormCard key={dorm.id} dorm={dorm} loading={false} />
-						))
+						<Space direction="vertical" size={15}>
+							{state.dorms.map(dorm => (
+								<DormCard key={dorm.id} dorm={dorm} loading={false} />
+							))}
+						</Space>
 					) : (
 						<Empty description="Жатақхана жоқ" />
 					)}
