@@ -58,7 +58,7 @@ class OrganizationDormManager(models.Model):
         verbose_name_plural = 'Ұйымның жатақ басқарушылары'
 
     def __str__(self):
-        return f'{str(self.organization)} {self.user.fullname}'
+        return f'{str(self.organization)} {self.dorm_manager.fullname}'
 
 
 class Dorm(models.Model):
