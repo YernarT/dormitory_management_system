@@ -4,7 +4,11 @@ import { userAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
-import { reqGetMyDorm, reqCreateDorm } from '@/service/api/dorm-manager-api';
+import {
+	reqGetDorms,
+	reqCreateDorm,
+	reqGetCities,
+} from '@/service/api/dorm-manager-api';
 
 import { message as antdMessage, Button, Space, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -19,14 +23,14 @@ export default function DormitoryManagement() {
 	});
 
 	// 获取所有宿舍的请求
-	const { runAsync: runReqGetMyDorm, loading: loadingReqGetMyDorm } =
-		useRequest(() => reqGetMyDorm(), {
+	const { runAsync: runReqGetDorms, loading: loadingReqGetDorms } =
+		useRequest(() => reqGetDorms(), {
 			manual: true,
 		});
 
 	// 获取所有宿舍
 	useMount(() => {
-		runReqGetMyDorm()
+		runReqGetDorms()
 			.then(({ dorms }) => {
 				setState({ dorms });
 			})
