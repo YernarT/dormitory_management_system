@@ -8,7 +8,12 @@ import { Card, Skeleton, Descriptions, Image, Empty } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { DormCardStyledBox } from './style';
 
-export default memo(function DormCard({ dorm, loading, showDeleteBtn = true }) {
+export default memo(function DormCard({
+	dorm,
+	loading,
+	showDeleteBtn = true,
+	handleDelete,
+}) {
 	const page = useRecoilValue(pageAtom);
 
 	return (
@@ -17,7 +22,9 @@ export default memo(function DormCard({ dorm, loading, showDeleteBtn = true }) {
 				<Skeleton loading={loading} active>
 					<DeleteOutlined
 						className="delete-btn"
-						// onClick={() => handleDeleteCity(city.id)}
+						onClick={() => {
+							handleDelete && handleDelete(dorm.id);
+						}}
 					/>
 					<Descriptions title={dorm.name} column={1}>
 						<Descriptions.Item label="Сипаттама">
