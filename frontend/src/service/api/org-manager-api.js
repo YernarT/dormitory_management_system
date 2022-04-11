@@ -33,3 +33,7 @@ export const reqGetDormManagers = () =>
 // Create Dorm Manager
 export const reqCreateDormManager = data =>
 	apiServerInstance.post('/dorm/dorm_manager/', data);
+
+// Delete Dorm Manager
+export const reqDeleteDormManager = id =>
+	apiServerInstance.delete(`/dorm/dorm_manager/${id}/`);
