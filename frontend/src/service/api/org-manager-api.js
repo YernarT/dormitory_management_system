@@ -37,3 +37,14 @@ export const reqCreateDormManager = data =>
 // Delete Dorm Manager
 export const reqDeleteDormManager = id =>
 	apiServerInstance.delete(`/dorm/dorm_manager/${id}/`);
+
+// Get Rooms
+export const reqGetRooms = () => apiServerInstance.get('/dorm/room/');
+
+// Create Room
+export const reqCreateRoom = data =>
+	apiServerInstance.post('/dorm/room/', data, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
