@@ -55,7 +55,12 @@ export default function DormitoryManagement() {
 				{state.dorms.length > 0 ? (
 					<Space direction="vertical" size={15}>
 						{state.dorms.map(dorm => (
-							<DormCard key={dorm.id} dorm={dorm} loading={false} />
+							<DormCard
+								key={dorm.id}
+								dorm={dorm}
+								loading={false}
+								showDeleteBtn={false}
+							/>
 						))}
 					</Space>
 				) : (

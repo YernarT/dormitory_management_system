@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Card } from 'antd';
 
-export const DormCardStyledBox = styled(Card)`
+export const DormCardStyledBox = styled.div`
 	position: relative;
 
 	.delete-btn {
@@ -11,5 +10,7 @@ export const DormCardStyledBox = styled(Card)`
 
 		cursor: pointer;
 		color: ${({ theme }) => theme.palette.error};
+
+		display: ${({ showDeleteBtn }) => (showDeleteBtn ? 'block' : 'none')};
 	}
 `;
