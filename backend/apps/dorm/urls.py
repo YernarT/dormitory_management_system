@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from dorm.views import CityView, CitySingleView, DormView, OrganizationView, OrganizationCategoryView, DormManagerView, DormManagerSingleView
+from dorm.views import CityView, CitySingleView, DormView, OrganizationView, OrganizationCategoryView, DormManagerView, DormManagerSingleView, RoomView
 
 
 urlpatterns = [
@@ -14,6 +14,8 @@ urlpatterns = [
 
     url(r'^dorm/dorm_manager/$', DormManagerView.as_view()),
     url(r'^dorm/dorm_manager/(?P<id>\d+)/$$', DormManagerSingleView.as_view()),
+
+    url(r'^dorm/room/$', RoomView.as_view()),
 ]
 
 app_name = 'dorm'

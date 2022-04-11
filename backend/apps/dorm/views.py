@@ -229,3 +229,43 @@ class DormManagerSingleView(View):
         User.objects.get(id=id).delete()
 
         return JsonResponse({'message': 'Сәтті жойылды'})
+
+
+class RoomView(View):
+
+    def get(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        try:
+            org = Organization.objects.get(creator=user_or_response_content)
+        except Organization.DoesNotExist:
+            # dorm manager
+            org = OrganizationDormManager.objects.get(
+                dorm_manager=user_or_response_content).organization
+
+        dorms = Dorm.objects.filter(organization=org)
+        rooms = [Room.objects.filter(dorm=dorm) for dorm in dorms]
+
+        '''
+        期望的数据结构:
+        [
+            {
+                dorm: { ... },
+                room: { ... }
+            }
+        ]
+        '''
+
+        print(rooms)
+        return JsonResponse({'message': 'success', 'rooms': []}, status=200)
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        data = get_data(request)
+
+        pass
