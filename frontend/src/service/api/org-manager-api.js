@@ -25,3 +25,11 @@ export const reqCreateOrgaization = data =>
 // Get Organization Categories
 export const reqGetOrgaizationCategories = () =>
 	apiServerInstance.get('/dorm/organization/category/');
+
+// Get Dorm Managers
+export const reqGetDormManagers = () =>
+	apiServerInstance.get('/dorm/dorm_manager/');
+
+// Create Dorm Manager
+export const reqCreateDormManager = data =>
+	apiServerInstance.post('/dorm/dorm_manager/', data);
