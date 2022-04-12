@@ -44,7 +44,7 @@ def serializer_room(room_model_obj) -> dict:
 def serializer_room_image(room_image_model_obj, request) -> dict:
     serialized_room_image = serializer_data(
         room_image_model_obj, {'is_multiple': False})
-    serialized_room_image['room'] = serializer_dorm(room_image_model_obj.room)
+    serialized_room_image['room'] = serializer_room(room_image_model_obj.room)
     serialized_room_image['image'] = get_media_url(
         request, serialized_room_image['image'])
 
