@@ -3,8 +3,9 @@ from django.views.generic import View
 
 from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
-from dorm.serializer import *
+from dorm.serializer import serializer_city, serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image
 from user.models import User
+from user.serializer import serializer_user
 
 from utils.auth import verify_token
 from utils.data import get_data, serializer_data
@@ -132,7 +133,7 @@ class DormView(View):
         dorm = serializer_dorm(dorm)
         dorm['images'] = dorm_images
 
-        return JsonResponse({'message': 'success', 'dorm': dorm, }, status=201)
+        return JsonResponse({'message': 'Жатақхана сәтті құрылды', 'dorm': dorm, }, status=201)
 
 
 class OrganizationView(View):
@@ -246,26 +247,55 @@ class RoomView(View):
                 dorm_manager=user_or_response_content).organization
 
         dorms = Dorm.objects.filter(organization=org)
-        rooms = [Room.objects.filter(dorm=dorm) for dorm in dorms]
+        rooms = []
+        for dorm in dorms:
+            this_dorm_rooms = Room.objects.filter(dorm=dorm)
+            if this_dorm_rooms.exists():
+                for room in this_dorm_rooms:
+                    room_images = RoomImage.objects.filter(room=room)
+                    room = serializer_room(room)
+                    rooms.append(room)
+                    if room_images.exists():
+                        room['images'] = [serializer_room_image(
+                            room_image, request) for room_image in room_images]
+                    else:
+                        room['images'] = []
 
-        '''
-        期望的数据结构:
-        [
-            {
-                dorm: { ... },
-                room: { ... }
-            }
-        ]
-        '''
-
-        print(rooms)
-        return JsonResponse({'message': 'success', 'rooms': []}, status=200)
+        return JsonResponse({'message': 'success', 'rooms': rooms}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        data = get_data(request)
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        floor = request.POST.get('floor')
+        dorm_id = request.POST.get('dorm')
 
-        pass
+        dorm = Dorm.objects.get(id=dorm_id)
+
+        room = Room.objects.create(
+            name=name, description=description, floor=floor, dorm=dorm)
+        room_images = []
+
+        for image in request.FILES.values():
+            room_image = RoomImage.objects.create(image=image, room=room)
+            room_images.append(serializer_room_image(room_image, request))
+
+        room = serializer_room(room)
+        room['images'] = room_images
+
+        return JsonResponse({'message': 'Сәтті құрылды', 'room': room, }, status=201)
+
+
+class RoomSingleView(View):
+    
+    def delete(self, request, id):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        Room.objects.get(id=id).delete()
+
+        return JsonResponse({'message': 'Сәтті жойылды'})
