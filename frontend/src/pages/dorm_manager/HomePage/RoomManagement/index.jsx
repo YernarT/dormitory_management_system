@@ -4,18 +4,70 @@ import { userAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
-import { reqGetRooms, reqCreateRoom } from '@/service/api/dorm-manager-api';
+import {
+	reqGetRooms,
+	reqCreateRoom,
+	reqGetDorms,
+} from '@/service/api/dorm-manager-api';
 
-import { message as antdMessage, Button, Space, Empty } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import {
+	message as antdMessage,
+	Button,
+	Space,
+	Empty,
+	Modal,
+	Input,
+	Upload,
+	Select,
+} from 'antd';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { RoomCard } from '@/components/dorm';
 import { RoomManagementStyledBox } from './style';
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 export default function RoomManagement() {
 	const setUser = useSetRecoilState(userAtom);
 	const { t } = useTranslation();
 	const [state, setState] = useSetState({
+		dorms: [],
 		rooms: [],
+
+		addRoomModalVisibility: false,
+		addRoomFormData: {
+			name: '',
+			floor: 1,
+			description: '',
+			dorm: '',
+			images: [],
+		},
+	});
+
+	// 获取所有宿舍的请求
+	const { runAsync: runReqGetDorms } = useRequest(() => reqGetDorms(), {
+		manual: true,
+	});
+
+	// 获取所有宿舍
+	useMount(() => {
+		runReqGetDorms()
+			.then(({ dorms }) => {
+				setState(prevState => ({
+					dorms,
+					addRoomFormData: {
+						...prevState.addRoomFormData,
+						dorm: dorms[0].id,
+					},
+				}));
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
 	});
 
 	// 获取所有房间的请求
@@ -41,34 +93,180 @@ export default function RoomManagement() {
 			});
 	});
 
-	return (
-		<RoomManagementStyledBox>
-			<div className="head">
-				<h2 className="title">Бөлмелер</h2>
-				<Button
-					type="primary"
-					onClick={() => setState({ addDormModalVisibility: true })}>
-					<PlusOutlined />
-					<span>Бөлмелер</span>
-				</Button>
-			</div>
+	// 添加房间的请求
+	const { runAsync: runReqCreateRoom } = useRequest(
+		data => reqCreateRoom(data),
+		{
+			manual: true,
+		},
+	);
 
-			<div className="rooms">
-				{state.rooms.length > 0 ? (
-					<Space direction="vertical" size={15}>
-						{state.rooms.map(room => (
-							<RoomCard
-								key={room.id}
-								room={room}
-								loading={loadingReqGetRooms}
-								showDeleteBtn={false}
-							/>
+	// 处理添加房间
+	const handleAddRoom = () => {
+		let data = new FormData();
+		Object.entries(state.addRoomFormData).forEach(([key, value]) => {
+			if (key === 'images') {
+				value.forEach(image => {
+					data.append(image.uid, image);
+				});
+			} else {
+				data.append(key, value);
+			}
+		});
+
+		runReqCreateRoom(data)
+			.then(({ room, message }) => {
+				antdMessage.success(message);
+
+				setState(prevState => ({
+					rooms: [...prevState.rooms, room],
+					addRoomModalVisibility: false,
+					addRoomFormData: {
+						...prevState.addRoomFormData,
+						name: '',
+						floor: 1,
+						description: '',
+					},
+				}));
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	};
+
+	return (
+		<>
+			<RoomManagementStyledBox>
+				<div className="head">
+					<h2 className="title">Бөлмелер</h2>
+					<Button
+						type="primary"
+						onClick={() => setState({ addRoomModalVisibility: true })}>
+						<PlusOutlined />
+						<span>Бөлмелер</span>
+					</Button>
+				</div>
+
+				<div className="rooms">
+					{state.rooms.length > 0 ? (
+						<Space direction="vertical" size={15}>
+							{state.rooms.map(room => (
+								<RoomCard
+									key={room.id}
+									room={room}
+									loading={loadingReqGetRooms}
+									showDeleteBtn={false}
+								/>
+							))}
+						</Space>
+					) : (
+						<Empty description="Бөлме жоқ" />
+					)}
+				</div>
+			</RoomManagementStyledBox>
+
+			<Modal
+				title="Бөлме құру"
+				visible={state.addRoomModalVisibility}
+				onOk={handleAddRoom}
+				okText="Құру"
+				onCancel={() => setState({ addRoomModalVisibility: false })}>
+				<Space direction="vertical" style={{ width: '100%' }} size={15}>
+					<Input
+						type="text"
+						placeholder="Бөлме атуы"
+						maxLength={40}
+						value={state.addRoomFormData.name}
+						onChange={({ target: { value } }) =>
+							setState(prevState => ({
+								addRoomFormData: { ...prevState.addRoomFormData, name: value },
+							}))
+						}
+					/>
+
+					<TextArea
+						placeholder={'Сипаттама'}
+						maxLength={254}
+						showCount
+						value={state.addRoomFormData.description}
+						onChange={({ target: { value } }) =>
+							setState(prevState => ({
+								addRoomFormData: {
+									...prevState.addRoomFormData,
+									description: value,
+								},
+							}))
+						}
+					/>
+
+					<Select
+						placeholder="Жатақхана"
+						style={{ width: '100%' }}
+						value={state.addRoomFormData.dorm}
+						onChange={value =>
+							setState(prevState => ({
+								addRoomFormData: { ...prevState.addRoomFormData, dorm: value },
+							}))
+						}>
+						{state.dorms.map(dorm => (
+							<Option key={dorm.id} value={dorm.id}>
+								{`${dorm.name} ${dorm.city.name}`}
+							</Option>
 						))}
-					</Space>
-				) : (
-					<Empty description="Бөлме жоқ" />
-				)}
-			</div>
-		</RoomManagementStyledBox>
+					</Select>
+
+					<Select
+						placeholder="Қабат нөмері"
+						style={{ width: '100%' }}
+						value={state.addRoomFormData.floor}
+						onChange={value =>
+							setState(prevState => ({
+								addRoomFormData: { ...prevState.addRoomFormData, floor: value },
+							}))
+						}>
+						{Array.from(Array(32).keys()).map(num => (
+							<Option key={num + 1} value={num + 1}>
+								{num + 1}
+							</Option>
+						))}
+					</Select>
+
+					<Upload
+						accept="image/*"
+						multiple={true}
+						fileList={state.addRoomFormData.images}
+						beforeUpload={file => {
+							if (state.addRoomFormData.images.length === 5) {
+								antdMessage.warning('Ең көбінде 5 сурет жариялауға болады');
+								return;
+							}
+
+							setState(preState => ({
+								addRoomFormData: {
+									...preState.addRoomFormData,
+									images: [...preState.addRoomFormData.images, file],
+								},
+							}));
+							return false;
+						}}
+						onRemove={file => {
+							setState(preState => ({
+								addRoomFormData: {
+									...preState.addRoomFormData,
+									images: preState.addRoomFormData.images.filter(
+										image => image !== file,
+									),
+								},
+							}));
+						}}>
+						<Button icon={<UploadOutlined />}>Бөлме суреті</Button>
+					</Upload>
+				</Space>
+			</Modal>
+		</>
 	);
 }
