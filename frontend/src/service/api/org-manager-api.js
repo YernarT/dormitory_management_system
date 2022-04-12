@@ -48,3 +48,7 @@ export const reqCreateRoom = data =>
 			'Content-Type': 'multipart/form-data',
 		},
 	});
+
+// Delete Room
+export const reqDeleteRoom = id =>
+	apiServerInstance.delete(`/dorm/room/${id}/`);
