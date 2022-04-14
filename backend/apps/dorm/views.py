@@ -2,8 +2,9 @@ from django.http import JsonResponse
 from django.views.generic import View
 
 from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
-from dorm.verify import verify_city, verify_dorm
-from dorm.serializer import serializer_city, serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
+from dorm.verify import verify_city
+from dorm.utils import get_organization
+from dorm.serializer import serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
 from user.models import User
 from user.serializer import serializer_user
 
@@ -83,15 +84,8 @@ class DormView(View):
         if get_mode == 'all':
             dorm_list = Dorm.objects.all()
         else:
-            try:
-                org = Organization.objects.get(
-                    creator=user_or_response_content)
-            except Organization.DoesNotExist:
-                # dorm manager
-                org = OrganizationDormManager.objects.get(
-                    dorm_manager=user_or_response_content).organization
-
-            dorm_list = Dorm.objects.filter(organization=org)
+            org = get_organization(user_or_response_content)
+            dorm_list = Dorm.objects.filter(organization=org) if org else []
 
         serialized_dorm_list = [serializer_dorm(
             dorm_obj) for dorm_obj in dorm_list]
@@ -239,14 +233,9 @@ class RoomView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        try:
-            org = Organization.objects.get(creator=user_or_response_content)
-        except Organization.DoesNotExist:
-            # dorm manager
-            org = OrganizationDormManager.objects.get(
-                dorm_manager=user_or_response_content).organization
+        org = get_organization(user_or_response_content)
+        dorms = Dorm.objects.filter(organization=org) if org else []
 
-        dorms = Dorm.objects.filter(organization=org)
         rooms = []
         for dorm in dorms:
             this_dorm_rooms = Room.objects.filter(dorm=dorm)
@@ -308,14 +297,9 @@ class BedView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        try:
-            org = Organization.objects.get(creator=user_or_response_content)
-        except Organization.DoesNotExist:
-            # dorm manager
-            org = OrganizationDormManager.objects.get(
-                dorm_manager=user_or_response_content).organization
+        org = get_organization(user_or_response_content)
+        dorms = Dorm.objects.filter(organization=org) if org else []
 
-        dorms = Dorm.objects.filter(organization=org)
         rooms = []
         for dorm in dorms:
             this_dorm_rooms = Room.objects.filter(dorm=dorm)
