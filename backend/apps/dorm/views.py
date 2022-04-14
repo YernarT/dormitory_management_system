@@ -3,7 +3,7 @@ from django.views.generic import View
 
 from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city, verify_dorm
-from dorm.serializer import serializer_city, serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image
+from dorm.serializer import serializer_city, serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
 from user.models import User
 from user.serializer import serializer_user
 
@@ -290,12 +290,88 @@ class RoomView(View):
 
 
 class RoomSingleView(View):
-    
+
     def delete(self, request, id):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
         Room.objects.get(id=id).delete()
+
+        return JsonResponse({'message': 'Сәтті жойылды'})
+
+
+class BedView(View):
+
+    def get(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        try:
+            org = Organization.objects.get(creator=user_or_response_content)
+        except Organization.DoesNotExist:
+            # dorm manager
+            org = OrganizationDormManager.objects.get(
+                dorm_manager=user_or_response_content).organization
+
+        dorms = Dorm.objects.filter(organization=org)
+        rooms = []
+        for dorm in dorms:
+            this_dorm_rooms = Room.objects.filter(dorm=dorm)
+            if this_dorm_rooms.exists():
+                for room in this_dorm_rooms:
+                    rooms.append(room)
+
+        beds = []
+        for room in rooms:
+            this_room_beds = Bed.objects.filter(room=room)
+            if this_room_beds.exists():
+                for bed in this_room_beds:
+                    serialized_bed = serializer_bed(bed)
+                    bed_images = BedImage.objects.filter(bed=bed)
+                    if bed_images.exists():
+                        serialized_bed['images'] = [serializer_bed_image(
+                            bed_image, request) for bed_image in bed_images]
+                    else:
+                        serialized_bed['images'] = []
+
+                    beds.append(serialized_bed)
+
+        return JsonResponse({'message': 'success', 'beds': beds}, status=200)
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        room_id = request.POST.get('room')
+
+        room = Room.objects.get(id=room_id)
+
+        bed = Bed.objects.create(
+            name=name, description=description, room=room)
+        bed_images = []
+
+        for image in request.FILES.values():
+            bed_image = BedImage.objects.create(image=image, bed=bed)
+            bed_images.append(serializer_bed_image(bed_image, request))
+
+        bed = serializer_bed(bed)
+        bed['images'] = bed_images
+
+        return JsonResponse({'message': 'Сәтті құрылды', 'bed': bed, }, status=201)
+
+
+class BedSingleView(View):
+
+    def delete(self, request, id):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        Bed.objects.get(id=id).delete()
 
         return JsonResponse({'message': 'Сәтті жойылды'})
