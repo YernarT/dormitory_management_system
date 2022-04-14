@@ -103,7 +103,7 @@ class DormImage(models.Model):
 
 
 @receiver(post_delete, sender=DormImage)
-def dorm_image_post_save(instance, **kwargs):
+def dorm_image_post_delete(instance, **kwargs):
     remove(settings.MEDIA_ROOT + '/' + str(instance.image))
 
 
@@ -144,7 +144,7 @@ class RoomImage(models.Model):
 
 
 @receiver(post_delete, sender=RoomImage)
-def room_image_post_save(instance, **kwargs):
+def room_image_post_delete(instance, **kwargs):
     remove(settings.MEDIA_ROOT + '/' + str(instance.image))
 
 
@@ -196,5 +196,5 @@ class BedImage(models.Model):
 
 
 @receiver(post_delete, sender=BedImage)
-def bed_image_post_save(instance, **kwargs):
+def bed_image_post_delete(instance, **kwargs):
     remove(settings.MEDIA_ROOT + '/' + str(instance.image))
