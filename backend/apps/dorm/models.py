@@ -155,7 +155,7 @@ class Bed(models.Model):
     description = models.CharField(
         max_length=254, null=True, blank=True, verbose_name='Сипаттама')
     owner = models.ForeignKey('user.User', on_delete=models.SET_NULL,
-                              null=True, blank=True, verbose_name='Иесі (Пайдаланушы)')
+                              null=True, blank=True, default=None, verbose_name='Иесі (Пайдаланушы)')
     room = models.ForeignKey(
         Room, on_delete=models.CASCADE, verbose_name='Бөлме')
     create_time = models.DateTimeField(
