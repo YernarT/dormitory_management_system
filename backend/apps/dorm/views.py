@@ -130,6 +130,17 @@ class DormView(View):
         return JsonResponse({'message': 'Жатақхана сәтті құрылды', 'dorm': dorm, }, status=201)
 
 
+class DormSingleView(View):
+
+    def delete(self, request, id):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        Dorm.objects.get(id=id).delete()
+
+        return JsonResponse({'message': 'Сәтті жойылды'})
+
 class OrganizationView(View):
     def get(self, request):
         is_valid, user_or_response_content = verify_token(request)
