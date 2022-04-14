@@ -180,8 +180,8 @@ class Bed(models.Model):
 class BedImage(models.Model):
     '''床位图片'''
     image = models.ImageField(upload_to='img/dorm/bed_image/')
-    room = models.ForeignKey(
-        Room, on_delete=models.CASCADE, verbose_name='Төсек орын')
+    bed = models.ForeignKey(
+        Bed, on_delete=models.CASCADE, verbose_name='Төсек орын')
 
     class Meta:
         db_table = 'bed_image'
