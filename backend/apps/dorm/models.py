@@ -189,8 +189,8 @@ class BedImage(models.Model):
         verbose_name_plural = 'Төсек орын суреттері'
 
     def __str__(self):
-        if self.room.name:
-            return f'{self.room.name} суреті'
+        if self.bed.name:
+            return f'{self.bed.name} суреті'
 
         return f'Төсек орын суреті'
 
