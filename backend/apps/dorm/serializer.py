@@ -49,3 +49,22 @@ def serializer_room_image(room_image_model_obj, request) -> dict:
         request, serialized_room_image['image'])
 
     return serialized_room_image
+
+
+def serializer_bed(bed_model_obj) -> dict:
+    serialized_bed = serializer_data(bed_model_obj, {'is_multiple': False})
+    serialized_bed['room'] = serializer_room(bed_model_obj.room)
+    serialized_bed['owner'] = serializer_user(
+        bed_model_obj.owner) if bed_model_obj.owner else None
+
+    return serialized_bed
+
+
+def serializer_bed_image(bed_image_model_obj, request) -> dict:
+    serialized_bed_image = serializer_data(
+        bed_image_model_obj, {'is_multiple': False})
+    serialized_bed_image['bed'] = serializer_bed(bed_image_model_obj.bed)
+    serialized_bed_image['image'] = get_media_url(
+        request, serialized_bed_image['image'])
+
+    return serialized_bed_image
