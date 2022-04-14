@@ -24,3 +24,14 @@ export const reqCreateRoom = data =>
 			'Content-Type': 'multipart/form-data',
 		},
 	});
+
+// Get Beds
+export const reqGetBeds = () => apiServerInstance.get('/dorm/bed/');
+
+// Create Bed
+export const reqCreateBed = data =>
+	apiServerInstance.post('/dorm/bed/', data, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});

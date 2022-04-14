@@ -14,6 +14,9 @@ export const reqCreateDorm = data =>
 		},
 	});
 
+// Delete Dorm
+export const reqDeleteDorm = id => apiServerInstance.delete(`/dorm/${id}/`);
+
 // Get My Organization
 export const reqGetMyOrgaization = () =>
 	apiServerInstance.get('/dorm/organization/?get_mode=self');
@@ -52,3 +55,17 @@ export const reqCreateRoom = data =>
 // Delete Room
 export const reqDeleteRoom = id =>
 	apiServerInstance.delete(`/dorm/room/${id}/`);
+
+// Get Beds
+export const reqGetBeds = () => apiServerInstance.get('/dorm/bed/');
+
+// Create Bed
+export const reqCreateBed = data =>
+	apiServerInstance.post('/dorm/bed/', data, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
+
+// Delete Bed
+export const reqDeleteBed = id => apiServerInstance.delete(`/dorm/bed/${id}/`);
