@@ -2,8 +2,10 @@ import { atom } from 'recoil';
 import { getLatestState, localStorage } from '@/utils';
 
 export const defaultDormState = {
-	// interface language, default is Kazakh
 	organization: null,
+	hasDorm: false,
+	hasRoom: false,
+	hasCity: false,
 };
 
 const [isValid, state] = getLatestState(
