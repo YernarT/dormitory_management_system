@@ -217,7 +217,11 @@ class DormManagerView(View):
 
         data = get_data(request)
 
-        manager = User.objects.create(**data)
+        try:
+            manager = User.objects.create(**data)
+        except:
+            return JsonResponse({'message': 'Бұл жатақ басқарушы құрылған'}, status=400)    
+
         org = Organization.objects.get(creator=user_or_response_content)
         OrganizationDormManager.objects.create(
             organization=org, dorm_manager=manager)
