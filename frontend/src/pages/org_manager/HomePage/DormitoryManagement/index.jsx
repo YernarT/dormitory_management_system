@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { userAtom, dormAtom, pageAtom } from '@/store';
+import { useSetRecoilState } from 'recoil';
+import { userAtom, dormAtom } from '@/store';
 import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
@@ -8,6 +8,7 @@ import {
 	reqGetCities,
 	reqGetDorms,
 	reqCreateDorm,
+	reqDeleteDorm,
 } from '@/service/api/org-manager-api';
 import { fromNow } from '@/utils';
 
@@ -30,8 +31,8 @@ const { Option } = Select;
 
 export default function DormitoryManagement() {
 	const setUser = useSetRecoilState(userAtom);
+	const setDorm = useSetRecoilState(dormAtom);
 	// const page = useRecoilValue(pageAtom);
-	// const dorm = useRecoilValue(dormAtom);
 	// const { t } = useTranslation();
 	const [state, setState] = useSetState({
 		dorms: [],
@@ -111,6 +112,7 @@ export default function DormitoryManagement() {
 		reqCreateDorm(data)
 			.then(({ dorm, message }) => {
 				antdMessage.success(message);
+
 				setState(prevState => ({
 					dorms: [...prevState.dorms, dorm],
 					addDormFormData: {
@@ -122,9 +124,40 @@ export default function DormitoryManagement() {
 					},
 					addDormModalVisibility: false,
 				}));
+
+				setDorm(prevState => ({ ...prevState, hasDorm: true }));
 			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	};
+
+	// 删除宿舍的请求
+	const { runAsync: runReqDeleteDorm } = useRequest(id => reqDeleteDorm(id), {
+		manual: true,
+		throttleWait: 300,
+	});
+
+	// 删除宿舍
+	const handleDeleteDorm = id => {
+		runReqDeleteDorm(id)
+			.then(({ message }) => {
+				antdMessage.success(message);
+
+				if (state.dorms.length === 1) {
+					setDorm(prevState => ({ ...prevState, hasDorm: false }));
+				}
+
+				setState(prevState => ({
+					dorms: prevState.dorms.filter(dorm => dorm.id !== id),
+				}));
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message ?? 'Error...');
 
 				if (needExecuteLogout) {
 					setUser(initialUser);
@@ -149,7 +182,12 @@ export default function DormitoryManagement() {
 					{state.dorms.length > 0 ? (
 						<Space direction="vertical" size={15}>
 							{state.dorms.map(dorm => (
-								<DormCard key={dorm.id} dorm={dorm} loading={false} />
+								<DormCard
+									key={dorm.id}
+									dorm={dorm}
+									loading={false}
+									handleDelete={handleDeleteDorm}
+								/>
 							))}
 						</Space>
 					) : (

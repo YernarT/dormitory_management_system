@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
-import { userAtom } from '@/store';
-import { useTranslation } from 'react-i18next';
+import { userAtom, dormAtom } from '@/store';
+// import { useTranslation } from 'react-i18next';
 
 import { useRequest, useMount, useSetState } from 'ahooks';
 import {
@@ -30,7 +30,8 @@ const { TextArea } = Input;
 
 export default function RoomManagement() {
 	const setUser = useSetRecoilState(userAtom);
-	const { t } = useTranslation();
+	const setDorm = useSetRecoilState(dormAtom);
+	// const { t } = useTranslation();
 	const [state, setState] = useSetState({
 		dorms: [],
 		rooms: [],
@@ -129,6 +130,8 @@ export default function RoomManagement() {
 						description: '',
 					},
 				}));
+
+				setDorm(prevState => ({ ...prevState, hasRoom: true }));
 			})
 			.catch(({ message, needExecuteLogout, initialUser }) => {
 				antdMessage.error(message);
@@ -150,6 +153,10 @@ export default function RoomManagement() {
 		runReqDeleteRoom(id)
 			.then(({ message }) => {
 				antdMessage.success(message);
+
+				if (state.rooms.length === 1) {
+					setDorm(prevState => ({ ...prevState, hasRoom: false }));
+				}
 
 				setState(prevState => ({
 					rooms: prevState.rooms.filter(room => room.id !== id),
