@@ -13,7 +13,19 @@ const tenantRoutes = [
 		fallback: <CommonLoading />,
 		auth: true,
 		role: ['tenant'],
-		title: 'Home | React Template',
+		title: 'route_/profile',
+	},
+
+	{
+		path: '/rooms',
+		component: lazy(async () => {
+			await sleep(335);
+			return import('@/pages/tenant/RoomsPage');
+		}),
+		fallback: <CommonLoading />,
+		auth: true,
+		role: ['tenant'],
+		title: 'route_/profile',
 	},
 ];
 
