@@ -15,6 +15,14 @@ export default memo(function BedCard({
 	handleDelete,
 }) {
 	const page = useRecoilValue(pageAtom);
+	const durationChange = duration => {
+		if (duration === 'month') {
+			return 'Ай';
+		}
+		if (duration === 'year') {
+			return 'Жыл';
+		}
+	};
 
 	return (
 		<BedCardStyledBox showDeleteBtn={showDeleteBtn}>
@@ -35,6 +43,10 @@ export default memo(function BedCard({
 
 						<Descriptions.Item label="Сипаттама">
 							{bed.description}
+						</Descriptions.Item>
+
+						<Descriptions.Item label="Бағасы">
+							{bed.rent.price}тг / {durationChange(bed.rent.duration)}
 						</Descriptions.Item>
 
 						<Descriptions.Item label="Құрылған уақыт">
