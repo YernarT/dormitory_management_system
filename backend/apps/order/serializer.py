@@ -11,7 +11,11 @@ def serializer_rent(rent_model_obj) -> dict:
 
 
 def serializer_request(request_model_obj) -> dict:
-    pass
+    serialized_request = serializer_data(request_model_obj, {'is_multiple': False})
+    serialized_request['tenant'] = serializer_user(request_model_obj.tenant)
+    serialized_request['rent'] = serializer_rent(request_model_obj.rent)
+
+    return serialized_request
 
 def serializer_request_appendix(request_appendix_model_obj) -> dict:
     pass
