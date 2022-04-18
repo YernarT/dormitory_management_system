@@ -7,6 +7,8 @@ from dorm.utils import get_organization
 from dorm.serializer import serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
 from user.models import User
 from user.serializer import serializer_user
+from order.models import Rent
+from order.serializer import serializer_rent
 
 from utils.auth import verify_token
 from utils.data import get_data, serializer_data
@@ -141,6 +143,7 @@ class DormSingleView(View):
 
         return JsonResponse({'message': 'Сәтті жойылды'})
 
+
 class OrganizationView(View):
     def get(self, request):
         is_valid, user_or_response_content = verify_token(request)
@@ -220,7 +223,7 @@ class DormManagerView(View):
         try:
             manager = User.objects.create(**data)
         except:
-            return JsonResponse({'message': 'Бұл жатақ басқарушы құрылған'}, status=400)    
+            return JsonResponse({'message': 'Бұл жатақ басқарушы құрылған'}, status=400)
 
         org = Organization.objects.get(creator=user_or_response_content)
         OrganizationDormManager.objects.create(
@@ -335,6 +338,9 @@ class BedView(View):
                     else:
                         serialized_bed['images'] = []
 
+                    rent = Rent.objects.get(bed=bed)
+                    serialized_rent = serializer_rent(rent)
+                    serialized_bed['rent'] = serialized_rent
                     beds.append(serialized_bed)
 
         return JsonResponse({'message': 'success', 'beds': beds}, status=200)
@@ -358,10 +364,16 @@ class BedView(View):
             bed_image = BedImage.objects.create(image=image, bed=bed)
             bed_images.append(serializer_bed_image(bed_image, request))
 
-        bed = serializer_bed(bed)
-        bed['images'] = bed_images
+        serialized_bed = serializer_bed(bed)
+        serialized_bed['images'] = bed_images
 
-        return JsonResponse({'message': 'Сәтті құрылды', 'bed': bed, }, status=201)
+        price = request.POST.get('price')
+        duration = request.POST.get('duration')
+        rent = Rent.objects.create(bed=bed, price=price, duration=duration)
+        serialized_rent = serializer_rent(rent)
+        serialized_bed['rent'] = serialized_rent
+
+        return JsonResponse({'message': 'Сәтті құрылды', 'bed': serialized_bed}, status=201)
 
 
 class BedSingleView(View):

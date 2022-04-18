@@ -16,7 +16,7 @@ class User(models.Model):
     ROLE_CHOICES = (
         ('site admin', 'Сайт әкімшісі'),
         ('org manager', 'Ұйым меңгеруші'),
-        ('dorm manager', 'Жатақхана меңгеруші'),
+        # ('dorm manager', 'Жатақхана меңгеруші'),
         ('tenant', 'Жалға алушы'),
     )
     role = models.CharField(
