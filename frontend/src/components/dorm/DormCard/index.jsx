@@ -19,7 +19,7 @@ export default memo(function DormCard({
 	return (
 		<DormCardStyledBox showDeleteBtn={showDeleteBtn}>
 			<Card>
-				<Skeleton loading={loading} active>
+				<Skeleton loading={loading} active title paragraph>
 					<DeleteOutlined
 						className="delete-btn"
 						onClick={() => {
