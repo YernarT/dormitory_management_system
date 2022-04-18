@@ -13,12 +13,19 @@ export default memo(function DormCard({
 	loading,
 	showDeleteBtn = true,
 	handleDelete,
+	clickable = false,
+	onClick,
 }) {
 	const page = useRecoilValue(pageAtom);
 
 	return (
-		<DormCardStyledBox showDeleteBtn={showDeleteBtn}>
-			<Card>
+		<DormCardStyledBox
+			showDeleteBtn={showDeleteBtn}
+			clickable={clickable}
+			onClick={() => {
+				clickable && onClick && onClick();
+			}}>
+			<Card className="card">
 				<Skeleton loading={loading} active title paragraph>
 					<DeleteOutlined
 						className="delete-btn"

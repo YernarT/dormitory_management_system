@@ -3,14 +3,26 @@ import styled from 'styled-components';
 export const DormCardStyledBox = styled.div`
 	position: relative;
 
-	.delete-btn {
-		position: absolute;
-		top: 6px;
-		right: 6px;
+	.card {
+		margin: 4px 8px;
+		cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
 
-		cursor: pointer;
-		color: ${({ theme }) => theme.palette.error};
+		transition: box-shadow 0.3s ease;
 
-		display: ${({ showDeleteBtn }) => (showDeleteBtn ? 'block' : 'none')};
+		&:hover {
+			box-shadow: ${({ clickable, theme }) =>
+				clickable ? `0 0 2px 2px ${theme.palette.primary}` : 'none'};
+		}
+
+		.delete-btn {
+			position: absolute;
+			top: 6px;
+			right: 6px;
+
+			cursor: pointer;
+			color: ${({ theme }) => theme.palette.error};
+
+			display: ${({ showDeleteBtn }) => (showDeleteBtn ? 'block' : 'none')};
+		}
 	}
 `;
