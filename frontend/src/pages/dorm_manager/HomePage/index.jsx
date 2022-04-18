@@ -9,6 +9,7 @@ import { Tabs } from 'antd';
 import { CommonLayout } from '@/layout';
 import DormitoryManagement from './DormitoryManagement';
 import RoomManagement from './RoomManagement';
+import BedManagement from './BedManagement';
 import ProcessRequest from './ProcessRequest';
 import { HomePageStyledBox } from './style';
 
@@ -30,6 +31,11 @@ export default function HomePage() {
 				key: 'room_management',
 				tabName: t('dorm_manager_tabName_room_management'),
 				tabContent: <RoomManagement />,
+			},
+			{
+				key: 'bed_management',
+				tabName: t('dorm_manager_tabName_bed_management'),
+				tabContent: <BedManagement />,
 			},
 			{
 				key: 'process_request',
