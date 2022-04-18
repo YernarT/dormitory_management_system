@@ -251,24 +251,56 @@ class RoomView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        org = get_organization(user_or_response_content)
-        dorms = Dorm.objects.filter(organization=org) if org else []
+        # all -> all dorm
+        # self -> just "my" dorm (Default)
+        # by_dorm -> by dorm id
+        get_mode = request.GET.get('get_mode', 'self')
+        get_mode = 'self' if get_mode not in (
+            'all', 'self', 'by_dorm') else get_mode
 
-        rooms = []
-        for dorm in dorms:
-            this_dorm_rooms = Room.objects.filter(dorm=dorm)
-            if this_dorm_rooms.exists():
-                for room in this_dorm_rooms:
-                    room_images = RoomImage.objects.filter(room=room)
-                    room = serializer_room(room)
-                    rooms.append(room)
-                    if room_images.exists():
-                        room['images'] = [serializer_room_image(
-                            room_image, request) for room_image in room_images]
-                    else:
-                        room['images'] = []
+        if get_mode == 'all':
+            rooms = Room.objects.all()
+            serialized_rooms = []
+            for room in rooms:
+                room_images = RoomImage.objects.filter(room=room)
+                room = serializer_room(room)
+                if room_images.exists():
+                    room['images'] = [serializer_room_image(
+                        room_image, request) for room_image in room_images]
+                else:
+                    room['images'] = []
 
-        return JsonResponse({'message': 'success', 'rooms': rooms}, status=200)
+                serialized_rooms.append(room)
+
+            return JsonResponse({'message': 'success', 'rooms': serialized_rooms}, status=200)
+
+        elif get_mode == 'by_dorm':
+            dorm_id = request.GET.get('dorm_id')
+            dorm = Dorm.objects.get(id=dorm_id)
+            rooms = dorm.room_set.all()
+            serialized_rooms = [serializer_room(room) for room in rooms]
+
+            return JsonResponse({'message': 'success', 'rooms': serialized_rooms}, status=200)
+
+        else:
+            org = get_organization(user_or_response_content)
+            dorms = Dorm.objects.filter(organization=org) if org else []
+
+            rooms = []
+            for dorm in dorms:
+                this_dorm_rooms = Room.objects.filter(dorm=dorm)
+                if this_dorm_rooms.exists():
+                    for room in this_dorm_rooms:
+                        room_images = RoomImage.objects.filter(room=room)
+                        room = serializer_room(room)
+                        rooms.append(room)
+                        if room_images.exists():
+                            room['images'] = [serializer_room_image(
+                                room_image, request) for room_image in room_images]
+                        else:
+                            room['images'] = []
+
+            return JsonResponse({'message': 'success', 'rooms': rooms}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
