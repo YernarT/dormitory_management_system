@@ -69,3 +69,6 @@ export const reqCreateBed = data =>
 
 // Delete Bed
 export const reqDeleteBed = id => apiServerInstance.delete(`/dorm/bed/${id}/`);
+
+// Get Requests
+export const reqGetRequests = () => apiServerInstance.get('/order/request/');
