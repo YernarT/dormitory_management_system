@@ -34,8 +34,6 @@ class Request(models.Model):
     idn = models.CharField(max_length=12, verbose_name='ИИН нөмер')
     supplementary_description = models.CharField(
         max_length=512, verbose_name='Қосымша ақпарат')
-    rent = models.ForeignKey(Rent, on_delete=models.CASCADE, verbose_name='Төлем ақы түрі')
-    rent_count = models.PositiveSmallIntegerField(verbose_name='Төлем жиілігі')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Жіберілген уақыт')
 
@@ -69,6 +67,9 @@ class Order(models.Model):
     order_no = models.CharField(max_length=40, verbose_name='Тапсырыс нөмері')
     request = models.ForeignKey(
         Request, on_delete=models.CASCADE, verbose_name='Өтініш')
+    rent = models.ForeignKey(Rent, on_delete=models.CASCADE, verbose_name='Төлем ақы түрі')
+    rent_count = models.PositiveSmallIntegerField(verbose_name='Төлем жиілігі')
+    status = models.BooleanField(default=False, verbose_name='Өтініш күйі')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Құрылған уақыт')
 
