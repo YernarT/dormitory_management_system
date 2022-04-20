@@ -21,47 +21,71 @@ class RequestView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        org = get_organization(user_or_response_content)
-        dorms = org.dorm_set.all()
-        request_obj_list = []
-        for dorm in dorms:
-            rooms = dorm.room_set.all()
-            for room in rooms:
-                beds = room.bed_set.all()
-                for bed in beds:
-                    rent = Rent.objects.get(bed=bed)
-                    try: 
-                        request_obj_list.append(Request.objects.get(rent=rent))
-                    except:
-                        pass
-                    
-        serialized_request_obj_list=[serializer_request(request_obj) for request_obj in request_obj_list ]
-        
+        if user_or_response_content.role == 'org manager':
+            org = get_organization(user_or_response_content)
+            dorms = org.dorm_set.all()
+            request_obj_list = []
+            for dorm in dorms:
+                rooms = dorm.room_set.all()
+                for room in rooms:
+                    beds = room.bed_set.all()
+                    for bed in beds:
+                        rent = Rent.objects.get(bed=bed)
+                        try:
+                            request_obj_list.append(
+                                Request.objects.get(rent=rent))
+                        except:
+                            pass
 
-        return JsonResponse({'messgae': 'Өтініштер', 'requests': serialized_request_obj_list}, status=200)
+            serialized_request_obj_list = [serializer_request(
+                request_obj) for request_obj in request_obj_list]
+
+            return JsonResponse({'messgae': 'Өтініштер', 'requests': serialized_request_obj_list}, status=200)
+        # tenant
+        else:
+            # tenant 只会有一个请求表单
+            request = user_or_response_content.request_set.first()
+            if request:
+                serialized_request = None
+            else:
+                serialized_request = None
+
+            # tenant 只会有一个请求表单
+            return JsonResponse({'messgae': 'Өтініштер', 'request': serialized_request}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        if user_or_response_content.role != 'site admin':
-            return JsonResponse({'message': 'Қаланы тек site admin рөлді пайдаланушы құра алады'}, status=401)
+        return JsonResponse({'message': 'Өтініш сәтті құрылды', 'request': {'idn': 1}}, status=201)
+
+
+class OrderView(View):
+    def get(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
+
+        return JsonResponse({'message': 'success', 'orders': []}, status=201)
+
+    def post(self, request):
+        is_valid, user_or_response_content = verify_token(request)
+        if not is_valid:
+            return JsonResponse(user_or_response_content, status=401)
 
         data = get_data(request)
 
-        is_valid, response = verify_city(data)
-        if not is_valid:
-            return response
+        bed_id = data['bedId']
+        bed = Bed.objects.get(id=bed_id)
 
-        try:
-            city = City.objects.get(name=data.get('name'))
-        except City.DoesNotExist:
-            city = None
+        request = Request.objects.filter(
+            tenant=user_or_response_content).first()
+        if request:
+            pass
+            # bed,
+            # request
+        else:
+            return JsonResponse({'message': 'Өтініш жоқ', }, status=400)
 
-        if city:
-            return JsonResponse({'message': 'Мұндай қала бар'}, status=400)
-
-        city = City.objects.create(**data)
-
-        return JsonResponse({'message': 'Қала сәтті қосылды', 'city': serializer_data(city, {'is_multiple': False})}, status=201)
+        return JsonResponse({'message': 'success', 'order': {}}, status=201)
