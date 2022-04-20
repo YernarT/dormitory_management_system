@@ -14,3 +14,17 @@ export const reqGetAllRooms = dormId =>
 // Get ALL Beds
 export const reqGetAllBeds = roomId =>
 	apiServerInstance.get(`/dorm/bed/?get_mode=by_room&room_id=${roomId}`);
+
+// Create Order
+export const reqCreateOrder = data => apiServerInstance.post('/order/', data);
+
+// Get Request
+export const reqGetRequest = () => apiServerInstance.get('/order/request/');
+
+// Create Request
+export const reqCreateRequest = data =>
+	apiServerInstance.post('/order/request/', data, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
