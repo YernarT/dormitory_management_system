@@ -2,9 +2,19 @@ import React, { memo } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { pageAtom, userAtom } from '@/store';
 
+import { useRequest } from 'ahooks';
+import { reqCreateOrder } from '@/service/api/tenant-api';
 import { fromNow } from '@/utils';
 
-import { Card, Skeleton, Descriptions, Image, Empty, Button } from 'antd';
+import {
+	Card,
+	Skeleton,
+	Descriptions,
+	Image,
+	Empty,
+	Button,
+	message as antdMessage,
+} from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { BedCardStyledBox } from './style';
 
@@ -24,6 +34,27 @@ export default memo(function BedCard({
 		if (duration === 'year') {
 			return 'Жыл';
 		}
+	};
+
+	// 入住请求的请求
+	const { runAsync: runReqCreateOrder, loading: loadingReqCreateOrder } =
+		useRequest(data => reqCreateOrder(data), {
+			manual: true,
+		});
+
+	// 处理发送入住请求
+	const handleSendRequest = () => {
+		runReqCreateOrder({ bedId: bed.id })
+			.then(() => {
+				antdMessage.success('Өтініш жіберілді');
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
 	};
 
 	return (
@@ -70,7 +101,11 @@ export default memo(function BedCard({
 					</Descriptions>
 
 					{user.role === 'tenant' && (
-						<Button type="primary" block style={{ marginBottom: '15px' }}>
+						<Button
+							type="primary"
+							block
+							style={{ marginBottom: '15px' }}
+							onClick={handleSendRequest}>
 							Өтініш қалдыру
 						</Button>
 					)}
