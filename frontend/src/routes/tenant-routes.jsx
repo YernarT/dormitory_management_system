@@ -27,6 +27,18 @@ const tenantRoutes = [
 		role: ['tenant'],
 		title: 'route_/profile',
 	},
+
+	{
+		path: '/beds',
+		component: lazy(async () => {
+			await sleep(335);
+			return import('@/pages/tenant/BedsPage');
+		}),
+		fallback: <CommonLoading />,
+		auth: true,
+		role: ['tenant'],
+		title: 'route_/profile',
+	},
 ];
 
 export default tenantRoutes;
