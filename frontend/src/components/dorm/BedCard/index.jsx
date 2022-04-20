@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { pageAtom } from '@/store';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { pageAtom, userAtom } from '@/store';
 
 import { fromNow } from '@/utils';
 
-import { Card, Skeleton, Descriptions, Image, Empty } from 'antd';
+import { Card, Skeleton, Descriptions, Image, Empty, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { BedCardStyledBox } from './style';
 
@@ -15,6 +15,8 @@ export default memo(function BedCard({
 	handleDelete,
 }) {
 	const page = useRecoilValue(pageAtom);
+	const [user, setUser] = useRecoilState(userAtom);
+
 	const durationChange = duration => {
 		if (duration === 'month') {
 			return 'Ай';
@@ -34,6 +36,7 @@ export default memo(function BedCard({
 							handleDelete && handleDelete(bed.id);
 						}}
 					/>
+
 					<Descriptions title={bed.name ?? 'Төсек орын'} column={1}>
 						<Descriptions.Item label="Иесі">
 							{bed?.owner?.fullname ?? 'Бос орын'}
@@ -65,6 +68,12 @@ export default memo(function BedCard({
 							) : null}
 						</Descriptions.Item>
 					</Descriptions>
+
+					{user.role === 'tenant' && (
+						<Button type="primary" block style={{ marginBottom: '15px' }}>
+							Өтініш қалдыру
+						</Button>
+					)}
 				</Skeleton>
 			</Card>
 		</BedCardStyledBox>
