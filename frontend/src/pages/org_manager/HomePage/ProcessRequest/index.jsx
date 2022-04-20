@@ -6,7 +6,7 @@ import { useRequest, useSetState } from 'ahooks';
 import { reqGetRequests } from '@/service/api/org-manager-api';
 
 import { message as antdMessage, Space, Empty } from 'antd';
-import { RequestCard } from '@/components';
+import { RequestCard } from '@/components/dorm';
 import { ProcessRequestStyledBox } from './style';
 
 export default function ProcessRequest() {
