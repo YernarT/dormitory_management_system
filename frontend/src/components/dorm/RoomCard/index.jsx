@@ -13,11 +13,18 @@ export default memo(function RoomCard({
 	loading,
 	showDeleteBtn = true,
 	handleDelete,
+	clickable = false,
+	onClick,
 }) {
 	const page = useRecoilValue(pageAtom);
 
 	return (
-		<RoomCardStyledBox showDeleteBtn={showDeleteBtn}>
+		<RoomCardStyledBox
+			showDeleteBtn={showDeleteBtn}
+			clickable={clickable}
+			onClick={() => {
+				clickable && onClick && onClick();
+			}}>
 			<Card>
 				<Skeleton loading={loading} active title paragraph>
 					<DeleteOutlined

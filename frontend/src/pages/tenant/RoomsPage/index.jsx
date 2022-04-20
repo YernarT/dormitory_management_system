@@ -22,7 +22,7 @@ export default function RoomsPage() {
 		() => reqGetAllRooms(history.location.state.dormId),
 		{
 			onSuccess({ rooms }) {
-				setState(rooms);
+				setState({ rooms });
 			},
 			onError({ message, needExecuteLogout, initialUser }) {
 				antdMessage.error(message);
@@ -46,6 +46,10 @@ export default function RoomsPage() {
 									room={room}
 									loading={loadingGetAllRooms}
 									showDeleteBtn={false}
+									clickable
+									onClick={() => {
+										history.push('/beds', { roomId: room.id });
+									}}
 								/>
 							))}
 						</Space>
