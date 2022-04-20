@@ -279,6 +279,13 @@ class RoomView(View):
             dorm = Dorm.objects.get(id=dorm_id)
             rooms = dorm.room_set.all()
             serialized_rooms = [serializer_room(room) for room in rooms]
+            for idx, room in enumerate(rooms):
+                room_images = room.roomimage_set.all()
+                if room_images.exists():
+                    serialized_rooms[idx]['images'] = [serializer_room_image(
+                        room_image, request) for room_image in room_images]
+                else:
+                    serialized_rooms[idx]['images'] = []
 
             return JsonResponse({'message': 'success', 'rooms': serialized_rooms}, status=200)
 
@@ -347,35 +354,61 @@ class BedView(View):
         if not is_valid:
             return JsonResponse(user_or_response_content, status=401)
 
-        org = get_organization(user_or_response_content)
-        dorms = Dorm.objects.filter(organization=org) if org else []
+        # self -> just "my" dorm (Default)
+        # by_room -> by room id
+        get_mode = request.GET.get('get_mode', 'self')
+        get_mode = 'self' if get_mode not in (
+            'all', 'self', 'by_room') else get_mode
 
-        rooms = []
-        for dorm in dorms:
-            this_dorm_rooms = Room.objects.filter(dorm=dorm)
-            if this_dorm_rooms.exists():
-                for room in this_dorm_rooms:
-                    rooms.append(room)
+        if get_mode == 'self':
+            org = get_organization(user_or_response_content)
+            dorms = Dorm.objects.filter(organization=org) if org else []
 
-        beds = []
-        for room in rooms:
-            this_room_beds = Bed.objects.filter(room=room)
-            if this_room_beds.exists():
-                for bed in this_room_beds:
-                    serialized_bed = serializer_bed(bed)
-                    bed_images = BedImage.objects.filter(bed=bed)
-                    if bed_images.exists():
-                        serialized_bed['images'] = [serializer_bed_image(
-                            bed_image, request) for bed_image in bed_images]
-                    else:
-                        serialized_bed['images'] = []
+            rooms = []
+            for dorm in dorms:
+                this_dorm_rooms = Room.objects.filter(dorm=dorm)
+                if this_dorm_rooms.exists():
+                    for room in this_dorm_rooms:
+                        rooms.append(room)
 
-                    rent = Rent.objects.get(bed=bed)
-                    serialized_rent = serializer_rent(rent)
-                    serialized_bed['rent'] = serialized_rent
-                    beds.append(serialized_bed)
+            beds = []
+            for room in rooms:
+                this_room_beds = Bed.objects.filter(room=room)
+                if this_room_beds.exists():
+                    for bed in this_room_beds:
+                        serialized_bed = serializer_bed(bed)
+                        bed_images = BedImage.objects.filter(bed=bed)
+                        if bed_images.exists():
+                            serialized_bed['images'] = [serializer_bed_image(
+                                bed_image, request) for bed_image in bed_images]
+                        else:
+                            serialized_bed['images'] = []
 
-        return JsonResponse({'message': 'success', 'beds': beds}, status=200)
+                        rent = Rent.objects.get(bed=bed)
+                        serialized_rent = serializer_rent(rent)
+                        serialized_bed['rent'] = serialized_rent
+                        beds.append(serialized_bed)
+
+            return JsonResponse({'message': 'success', 'beds': beds}, status=200)
+
+        # by_room
+        else:
+            room_id = request.GET.get('room_id')
+            room = Room.objects.get(id=room_id)
+            beds = [bed for bed in room.bed_set.all()]
+            for idx, bed in enumerate(beds):
+                beds[idx] = serializer_bed(bed)
+                bed_images = bed.bedimage_set.all()
+                if bed_images.exists():
+                    beds[idx]['images'] = [serializer_bed_image(
+                        bed_image, request) for bed_image in bed_images]
+                else:
+                    beds[idx]['images'] = []
+
+                rent = serializer_rent(bed.rent_set.first())
+                beds[idx]['rent'] = rent
+
+            return JsonResponse({'message': 'success', 'beds': beds}, status=200)
 
     def post(self, request):
         is_valid, user_or_response_content = verify_token(request)
