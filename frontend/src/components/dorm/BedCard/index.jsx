@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { pageAtom, userAtom } from '@/store';
 
-import { useRequest } from 'ahooks';
+import { useRequest, useSetState } from 'ahooks';
 import { reqCreateOrder } from '@/service/api/tenant-api';
 import { fromNow } from '@/utils';
 
@@ -13,7 +13,9 @@ import {
 	Image,
 	Empty,
 	Button,
+	InputNumber,
 	message as antdMessage,
+	Space,
 } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { BedCardStyledBox } from './style';
@@ -26,6 +28,9 @@ export default memo(function BedCard({
 }) {
 	const page = useRecoilValue(pageAtom);
 	const [user, setUser] = useRecoilState(userAtom);
+	const [state, setState] = useSetState({
+		rentCount: 1,
+	});
 
 	const durationChange = duration => {
 		if (duration === 'month') {
@@ -44,7 +49,7 @@ export default memo(function BedCard({
 
 	// 处理发送入住请求
 	const handleSendRequest = () => {
-		runReqCreateOrder({ bedId: bed.id })
+		runReqCreateOrder({ bedId: bed.id, rentCount: state.rentCount })
 			.then(() => {
 				antdMessage.success('Өтініш жіберілді');
 			})
@@ -100,14 +105,26 @@ export default memo(function BedCard({
 						</Descriptions.Item>
 					</Descriptions>
 
-					{user.role === 'tenant' && (
-						<Button
-							type="primary"
-							block
-							style={{ marginBottom: '15px' }}
-							onClick={handleSendRequest}>
-							Өтініш қалдыру
-						</Button>
+					{user.role === 'tenant' && !bed.owner && (
+						<Space direction="vertical" size={15} style={{ width: '100%' }}>
+							<Space size={10}>
+								<span>Төлем жиілігі: </span>
+								<InputNumber
+									min={1}
+									max={24}
+									value={state.rentCount}
+									onChange={value => setState({ rentCount: value })}
+								/>
+							</Space>
+							<Button
+								type="primary"
+								block
+								style={{ marginBottom: '15px' }}
+								onClick={handleSendRequest}
+								loading={loadingReqCreateOrder}>
+								Өтініш қалдыру
+							</Button>
+						</Space>
 					)}
 				</Skeleton>
 			</Card>
