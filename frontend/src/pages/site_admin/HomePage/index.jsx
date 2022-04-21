@@ -8,7 +8,7 @@ import { useCreation, useResponsive } from 'ahooks';
 import { Tabs } from 'antd';
 import { CommonLayout } from '@/layout';
 import City from './City';
-import Organization from './Organization';
+import Statistic from './Statistic';
 import { HomePageStyledBox } from './style';
 
 const { TabPane } = Tabs;
@@ -26,9 +26,9 @@ export default function HomePage() {
 				tabContent: <City />,
 			},
 			{
-				key: 'organization',
-				tabName: t('site_admin_tabName_organization'),
-				tabContent: <Organization />,
+				key: 'statistic',
+				tabName: t('site_admin_tabName_statistic'),
+				tabContent: <Statistic />,
 			},
 		],
 		[page.locale],
