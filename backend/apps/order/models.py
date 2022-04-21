@@ -1,4 +1,9 @@
 from django.db import models
+from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+
+from os import remove
 
 
 class Rent(models.Model):
@@ -51,7 +56,7 @@ class RequestAppendix(models.Model):
     request = models.ForeignKey(
         Request, on_delete=models.CASCADE, verbose_name='Өтініш')
     file = models.FileField(
-        upload_to='img/order/request_appendix_image/', verbose_name='Қосымша құжат')
+        upload_to='img/order/request_appendix_file/', verbose_name='Қосымша құжат')
 
     class Meta:
         db_table = 'request_appendix'
@@ -59,7 +64,12 @@ class RequestAppendix(models.Model):
         verbose_name_plural = 'Өтінішдің қосымша құжаттары'
 
     def __str__(self):
-        return self.request
+        return self.request.idn
+
+
+@receiver(post_delete, sender=RequestAppendix)
+def request_appendix_post_delete(instance, **kwargs):
+    remove(settings.MEDIA_ROOT + '/' + str(instance.file))
 
 
 class Order(models.Model):
@@ -67,7 +77,8 @@ class Order(models.Model):
     order_no = models.CharField(max_length=40, verbose_name='Тапсырыс нөмері')
     request = models.ForeignKey(
         Request, on_delete=models.CASCADE, verbose_name='Өтініш')
-    rent = models.ForeignKey(Rent, on_delete=models.CASCADE, verbose_name='Төлем ақы түрі')
+    rent = models.ForeignKey(
+        Rent, on_delete=models.CASCADE, verbose_name='Төлем ақы түрі')
     rent_count = models.PositiveSmallIntegerField(verbose_name='Төлем жиілігі')
     status = models.BooleanField(default=False, verbose_name='Өтініш күйі')
     create_time = models.DateTimeField(
