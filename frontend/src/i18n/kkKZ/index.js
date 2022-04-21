@@ -81,7 +81,7 @@ export default {
 	// site admin
 	'site_admin_tabName_feedback': 'Кері байланыс',
 	'site_admin_tabName_city': 'Қала',
-	'site_admin_tabName_organization': 'Ұйым',
+	'site_admin_tabName_statistic': 'Статистика',
 
 	// org manager
 	'org_manager_tabName_organization': 'Ұйым',

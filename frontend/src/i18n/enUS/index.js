@@ -81,7 +81,7 @@ export default {
 	// site admin
 	'site_admin_tabName_feedback': 'Feedback',
 	'site_admin_tabName_city': 'City',
-	'site_admin_tabName_organization': 'Organization',
+	'site_admin_tabName_statistic': 'Statistic',
 
 	// org manager
 	'org_manager_tabName_organization': 'Organization',
