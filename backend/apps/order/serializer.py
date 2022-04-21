@@ -11,14 +11,29 @@ def serializer_rent(rent_model_obj) -> dict:
 
 
 def serializer_request(request_model_obj) -> dict:
-    serialized_request = serializer_data(request_model_obj, {'is_multiple': False})
+    serialized_request = serializer_data(
+        request_model_obj, {'is_multiple': False})
     serialized_request['tenant'] = serializer_user(request_model_obj.tenant)
-    serialized_request['rent'] = serializer_rent(request_model_obj.rent)
 
     return serialized_request
 
-def serializer_request_appendix(request_appendix_model_obj) -> dict:
-    pass
+
+def serializer_request_appendix(request_appendix_model_obj, request) -> dict:
+    serialized_request_appendix = serializer_data(
+        request_appendix_model_obj, {'is_multiple': False})
+    serialized_request_appendix['request'] = serializer_request(
+        request_appendix_model_obj.request)
+    serialized_request_appendix['file'] = get_media_url(
+        request, serialized_request_appendix['file'])
+
+    return serialized_request_appendix
+
 
 def serializer_order(order_model_obj) -> dict:
-    pass
+    serialized_order = serializer_data(
+        order_model_obj, {'is_multiple': False})
+
+    serialized_order['request'] = serializer_request(order_model_obj.request)
+    serialized_order['rent'] = serializer_rent(order_model_obj.rent)
+
+    return serialized_order
