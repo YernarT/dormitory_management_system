@@ -3,7 +3,11 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { pageAtom, userAtom } from '@/store';
 
 import { useRequest, useSetState } from 'ahooks';
-import { reqGetRequest, reqCreateRequest } from '@/service/api/tenant-api';
+import {
+	reqGetRequest,
+	reqCreateRequest,
+	reqDeleteRequest,
+} from '@/service/api/tenant-api';
 
 import {
 	message as antdMessage,
@@ -15,6 +19,7 @@ import {
 	Empty,
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { RequestCard } from '@/components/dorm';
 import { RequestStyledBox } from './style';
 
 const { TextArea } = Input;
@@ -87,12 +92,30 @@ export default function Request() {
 			});
 	};
 
+	// 处理删除入住请求
+	const handleDeleteRequest = requestId => {
+		reqDeleteRequest(requestId)
+			.then(({ message }) => {
+				antdMessage.success(message);
+				setState({ request: null });
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	};
+
 	return (
 		<>
 			<RequestStyledBox>
 				{state.request ? (
-					// Request Card
-					state.request.idn
+					<RequestCard
+						request={state.request}
+						handleDelete={handleDeleteRequest}
+					/>
 				) : (
 					<Empty description="Өтініш жоқ">
 						<Button
@@ -168,7 +191,9 @@ export default function Request() {
 								},
 							}));
 						}}>
-						<Button icon={<UploadOutlined />}>қосымша құжаттары</Button>
+						<Button icon={<UploadOutlined />} loading={loadingReqCreateRequest}>
+							қосымша құжаттары
+						</Button>
 					</Upload>
 				</Space>
 			</Modal>
