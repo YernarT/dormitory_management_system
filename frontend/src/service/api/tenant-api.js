@@ -28,3 +28,7 @@ export const reqCreateRequest = data =>
 			'Content-Type': 'multipart/form-data',
 		},
 	});
+
+// Delete Request
+export const reqDeleteRequest = id =>
+	apiServerInstance.delete(`/order/request/${id}/`);
