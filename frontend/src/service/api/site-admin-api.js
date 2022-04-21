@@ -21,3 +21,6 @@ export const reqDeleteFeedback = id =>
 // Delete All Feedbacks
 export const reqDeleteAllFeedback = () =>
 	apiServerInstance.delete('/user/feedback/');
+
+// Get Statistic
+export const reqGetStatistic = () => apiServerInstance.get('/order/statistic/');
