@@ -29,8 +29,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3015',
     'http://127.0.0.1:3015',
 
-    'http://192.168.137.1:3015',
-    'http://10.11.2.249:3015',
+    # 'http://192.168.137.1:3015',
+    'http://10.11.3.16:3015',
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
