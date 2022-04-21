@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import View
 
-from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
+from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city
 from dorm.utils import get_organization
 from dorm.serializer import serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
@@ -111,12 +111,9 @@ class DormView(View):
         address = request.POST.get('address')
 
         city = City.objects.get(id=city_id)
-        try:
-            organization = Organization.objects.get(
-                creator=user_or_response_content)
-        except Organization.DoesNotExist:
-            organization = OrganizationDormManager.get(
-                user=user_or_response_content)
+
+        organization = Organization.objects.get(
+            creator=user_or_response_content)
 
         dorm = Dorm.objects.create(
             name=name, description=description, city=city, address=address, organization=organization)
@@ -195,53 +192,6 @@ class OrganizationCategoryView(View):
     def get(self, request):
 
         return JsonResponse({'categories': Organization.CATEGORY_CHOICES}, status=200)
-
-
-class DormManagerView(View):
-
-    def get(self, request):
-        is_valid, user_or_response_content = verify_token(request)
-        if not is_valid:
-            return JsonResponse(user_or_response_content, status=401)
-
-        org = Organization.objects.get(creator=user_or_response_content)
-        org_managers = OrganizationDormManager.objects.filter(organization=org)
-        serialized_managers = []
-        for org_manager in org_managers:
-            user = User.objects.get(id=org_manager.dorm_manager.id)
-            serialized_managers.append(serializer_user(user))
-
-        return JsonResponse({'message': 'success', 'dorm_managers': serialized_managers}, status=200)
-
-    def post(self, request):
-        is_valid, user_or_response_content = verify_token(request)
-        if not is_valid:
-            return JsonResponse(user_or_response_content, status=401)
-
-        data = get_data(request)
-
-        try:
-            manager = User.objects.create(**data)
-        except:
-            return JsonResponse({'message': 'Бұл жатақ басқарушы құрылған'}, status=400)
-
-        org = Organization.objects.get(creator=user_or_response_content)
-        OrganizationDormManager.objects.create(
-            organization=org, dorm_manager=manager)
-
-        return JsonResponse({'message': 'Сәтті құрылды', 'dorm_manager': serializer_user(manager)}, status=201)
-
-
-class DormManagerSingleView(View):
-
-    def delete(self, request, id):
-        is_valid, user_or_response_content = verify_token(request)
-        if not is_valid:
-            return JsonResponse(user_or_response_content, status=401)
-
-        User.objects.get(id=id).delete()
-
-        return JsonResponse({'message': 'Сәтті жойылды'})
 
 
 class RoomView(View):

@@ -12,7 +12,7 @@ const commonRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: false,
-		role: ['guest', 'tenant', 'dorm manager', 'org manager', 'site admin'],
+		role: ['guest', 'tenant', 'org manager', 'site admin'],
 		title: 'route_/404',
 	},
 
@@ -24,7 +24,7 @@ const commonRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: true,
-		role: ['tenant', 'dorm manager', 'org manager', 'site admin'],
+		role: ['tenant', 'org manager', 'site admin'],
 		title: 'route_/profile',
 	},
 ];

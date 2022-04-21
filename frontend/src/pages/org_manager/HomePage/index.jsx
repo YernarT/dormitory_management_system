@@ -18,7 +18,6 @@ import DormitoryManagement from './DormitoryManagement';
 import RoomManagement from './RoomManagement';
 import BedManagement from './BedManagement';
 import ProcessRequest from './ProcessRequest';
-import DormitoryManager from './DormitoryManager';
 
 import { HomePageStyledBox } from './style';
 
@@ -106,12 +105,6 @@ export default function HomePage() {
 				tabContent: <ProcessRequest />,
 				disabled: !dorm.hasRoom,
 			},
-			// {
-			// 	key: 'dormitory_manager',
-			// 	tabName: t('org_manager_tabName_dormitory_manager'),
-			// 	tabContent: <DormitoryManager />,
-			// 	disabled: !dorm.hasDorm,
-			// },
 		],
 		[page.locale, dorm],
 	);

@@ -47,11 +47,6 @@ class RegisterView(View):
         if role == 'site admin':
             return JsonResponse({'message': 'site admin рөлін құруға шұықсат етілмеген'}, status=401)
 
-        if role == 'dorm manager':
-            is_valid, user_or_response_content = verify_token(request)
-            if not is_valid or user_or_response_content.role != 'org manager':
-                return JsonResponse({'message': 'dorm manager рөлін тек org manager рөлді пайдаланушы құра алады'}, status=401)
-
         try:
             have_same_email_user = User.objects.get(email=data.get('email'))
         except User.DoesNotExist:

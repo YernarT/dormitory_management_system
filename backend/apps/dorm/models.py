@@ -45,22 +45,6 @@ class Organization(models.Model):
         return f'{self.name} ({self.category})'
 
 
-class OrganizationDormManager(models.Model):
-    '''机构的宿舍管理员'''
-    organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, verbose_name='Ұйым')
-    dorm_manager = models.ForeignKey(
-        'user.User', on_delete=models.CASCADE, verbose_name='Жатақ басқарушы')
-
-    class Meta:
-        db_table = 'organization_dorm_manager'
-        verbose_name = 'Ұйымның жатақ басқарушысы'
-        verbose_name_plural = 'Ұйымның жатақ басқарушылары'
-
-    def __str__(self):
-        return f'{str(self.organization)} {self.dorm_manager.fullname}'
-
-
 class Dorm(models.Model):
     '''宿舍'''
     name = models.CharField(max_length=40, verbose_name='Жатақхана атуы')
