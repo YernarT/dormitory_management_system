@@ -11,6 +11,13 @@ export const RequestCardStyledBox = styled.div`
 		cursor: pointer;
 		color: ${({ theme }) => theme.palette.error};
 
-		display: ${({ showDeleteBtn }) => (showDeleteBtn ? 'block' : 'none')};
+		display: ${({ showDeleteBtn }) => {
+			console.log(showDeleteBtn);
+
+			if (showDeleteBtn === true) {
+				return 'block';
+			}
+			return 'none !important';
+		}};
 	}
 `;

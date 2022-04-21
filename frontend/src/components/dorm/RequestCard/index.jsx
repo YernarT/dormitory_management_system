@@ -4,7 +4,7 @@ import { pageAtom } from '@/store';
 
 import { fromNow } from '@/utils';
 
-import { Card, Skeleton, Descriptions, Image, Empty } from 'antd';
+import { Card, Skeleton, Descriptions, Empty } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { RequestCardStyledBox } from './style';
 
@@ -30,20 +30,28 @@ export default memo(function RequestCard({
 						<Descriptions.Item label="ИИН нөмер">
 							{request.idn}
 						</Descriptions.Item>
+
+						<Descriptions.Item label="Қосымша ақпарат">
+							{request.supplementary_description}
+						</Descriptions.Item>
+
+						<Descriptions.Item label="Қосымша құжаттар">
+							{request.appendixs.map((file, idx) => (
+								<div className="file" key={file.id}>
+									<a href={file.file}>қосымша құжат ({idx + 1})</a>
+								</div>
+							))}
+							{request.appendixs.length === 0 ? (
+								<Empty description="Қосымша құжат жоқ" />
+							) : null}
+						</Descriptions.Item>
+
 						<Descriptions.Item label="Жіберілген уақыт">
 							{fromNow(request.create_time, {
 								lang: page.locale,
 								suffix: true,
 							})}
 						</Descriptions.Item>
-						{/* <Descriptions.Item label="Суреттер">
-							{room.images.map(image => (
-								<Image key={image.id} src={image.image} />
-							))}
-							{room.images.length === 0 ? (
-								<Empty description="Суреттер жоқ" />
-							) : null}
-						</Descriptions.Item> */}
 					</Descriptions>
 				</Skeleton>
 			</Card>
