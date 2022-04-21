@@ -92,14 +92,8 @@
 
 - **机构管理员 (Organization Manager)**
 
-  - CRD **宿舍管理员**
   - CRUD 宿舍
   - CRUD 宿舍价格
-  - 处理 **租客** 入住申请
-
-- **宿舍管理员 (Dormitory Admin)**
-
-  - CRU **宿舍**
   - 处理 **租客** 入住申请
 
 - **租客 (Tenant)**
@@ -120,10 +114,6 @@
 - 网站管理员路由
 
   - /site-admin
-
-- 宿舍管理员路由
-
-  - /dorm-manager
 
 - 租客路由
 
