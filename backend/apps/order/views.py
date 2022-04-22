@@ -1,8 +1,7 @@
-from cgi import print_directory
 from django.http import JsonResponse
 from django.views.generic import View
 
-from dorm.models import City, Dorm,  DormImage, OrganizationDormManager, Room, RoomImage, Bed, BedImage, Organization
+from dorm.models import City, Dorm,  DormImage, Room, RoomImage, Bed, BedImage, Organization
 from dorm.verify import verify_city
 from dorm.utils import get_organization
 from dorm.serializer import serializer_organization, serializer_dorm, serializer_dorm_image, serializer_room, serializer_room_image, serializer_bed, serializer_bed_image
@@ -12,7 +11,7 @@ from order.models import Rent, Request, RequestAppendix, Order
 from order.serializer import serializer_rent, serializer_request, serializer_request_appendix, serializer_order
 
 from utils.auth import verify_token
-from utils.data import get_data, serializer_data
+from utils.data import get_data
 
 
 class RequestView(View):
