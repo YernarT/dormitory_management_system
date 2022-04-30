@@ -6,19 +6,19 @@ export default {
 
 	// common route
 	'route_/': 'Dormitory Management System',
-	'route_/404': '404 - DMS',
-	'route_/profile': 'Profile - DMS',
+	'route_/404': '404 - Dormitory Management System',
+	'route_/profile': 'Profile - Dormitory Management System',
 
 	// auth route
-	'route_/auth/login': 'Login - DMS',
-	'route_/auth/register': 'Register - DMS',
+	'route_/auth/login': 'Login - Dormitory Management System',
+	'route_/auth/register': 'Register - Dormitory Management System',
 
 	// Loading
 	commonLoadingHelpText: 'Loading...',
 	backToHome: 'Back to homepage',
 
 	// Header
-	'header_site_name_short': 'DMS',
+	'header_site_name_short': 'Dormitory Management System',
 	'header_publish': 'Dormitory publication',
 	'header_seek': 'Search dormitory',
 
@@ -72,7 +72,7 @@ export default {
 	'profile_new_password': 'New password',
 	'profile_logout': 'Bye~',
 	'profile_logout_btn': 'Logout',
-	'profile_other_title': 'DMS 1.0.0 version',
+	'profile_other_title': 'Dormitory Management System 1.0.0 version',
 	'profile_other_p1':
 		'Account {{createTime}} is registered, thank you for using it!',
 	'profile_other_feedback': 'Comments...',

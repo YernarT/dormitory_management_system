@@ -6,19 +6,19 @@ export default {
 
 	// common route
 	'route_/': 'Жатақхананы Басқару Жүйесі',
-	'route_/404': '404 - ЖБЖ',
-	'route_/profile': 'Жеке кабинет - ЖБЖ',
+	'route_/404': '404 - Жатақхананы Басқару Жүйесі',
+	'route_/profile': 'Жеке кабинет - Жатақхананы Басқару Жүйесі',
 
 	// auth route
-	'route_/auth/login': 'Кіру - ЖБЖ',
-	'route_/auth/register': 'Тіркелу - ЖБЖ',
+	'route_/auth/login': 'Кіру - Жатақхананы Басқару Жүйесі',
+	'route_/auth/register': 'Тіркелу - Жатақхананы Басқару Жүйесі',
 
 	// Loading
 	commonLoadingHelpText: 'Жүктелуде...',
 	backToHome: 'Басты бетке оралу',
 
 	// Header
-	'header_site_name_short': 'ЖБЖ',
+	'header_site_name_short': 'Жатақхананы Басқару Жүйесі',
 	'header_publish': 'Жатақхана жариялау',
 	'header_seek': 'Жатақхана іздеу',
 
@@ -72,7 +72,7 @@ export default {
 	'profile_new_password': 'Жаңа кұпия сөз',
 	'profile_logout': 'Cаубол~',
 	'profile_logout_btn': 'Шығу',
-	'profile_other_title': 'ЖБЖ 1.0.0 нұсқа',
+	'profile_other_title': 'Жатақхананы Басқару Жүйесі 1.0.0 нұсқа',
 	'profile_other_p1':
 		'Есептік жазба {{ createTime }} тіркелген, пайдаланғаныңыз үшін рахмет!',
 	'profile_other_feedback': 'Пікірлер...',
