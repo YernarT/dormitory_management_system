@@ -2,9 +2,12 @@ import React, { memo } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { pageAtom, userAtom } from '@/store';
 
-import { useRequest } from 'ahooks';
-import { reqHandleOrderResult } from '@/service/api/org-manager-api';
-import { fromNow } from '@/utils';
+import { useRequest, useSetState } from 'ahooks';
+import {
+	reqHandleOrderResult,
+	reqGetRooms,
+	reqGetBeds,
+} from '@/service/api/org-manager-api';
 
 import {
 	Card,
@@ -14,10 +17,15 @@ import {
 	Space,
 	Button,
 	message as antdMessage,
+	Select,
+	Modal,
 } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { RequestCard } from '@/components/dorm';
 import { OrderCardStyledBox } from './style';
+import { useUpdateEffect } from 'ahooks';
+
+const { Option } = Select;
 
 export default memo(function OrderCard({
 	order,
@@ -28,6 +36,16 @@ export default memo(function OrderCard({
 }) {
 	const setUser = useSetRecoilState(userAtom);
 	const page = useRecoilValue(pageAtom);
+
+	const [state, setState] = useSetState({
+		selectRoomBedModalVisibile: false,
+
+		rooms: [],
+		beds: [],
+
+		selectedRoom: null,
+		selectedBed: null,
+	});
 
 	const durationChange = duration => {
 		if (duration === 'month') {
@@ -47,7 +65,14 @@ export default memo(function OrderCard({
 
 	// 处理Order状态
 	const handleOrderResult = (solution, orderId) => {
-		runHanldeOrderResult({ solution, orderId })
+		let [roomId, bedId] = [state.selectedRoom, state.selectedBed];
+
+		if (solution && ![roomId, bedId].every(el => el)) {
+			antdMessage.warning('Бөлме және төсек орын таңдалу керек');
+			return;
+		}
+
+		runHanldeOrderResult({ solution, orderId, roomId, bedId })
 			.then(({ message, orders }) => {
 				antdMessage.success(message);
 				afterHandleResult(orders);
@@ -61,6 +86,31 @@ export default memo(function OrderCard({
 			});
 	};
 
+	// 获取房间，床位
+	const { loading: loadingGetRooms } = useRequest(reqGetRooms, {
+		pollingInterval: 3000,
+
+		onSuccess({ rooms }) {
+			setState({ rooms });
+		},
+	});
+
+	const { loading: loadingGetBeds } = useRequest(reqGetBeds, {
+		pollingInterval: 3000,
+
+		onSuccess({ beds }) {
+			setState(prevState => ({
+				beds: beds.filter(
+					bed => bed.room.id === prevState.selectedRoom && bed.owner === null,
+				),
+			}));
+		},
+	});
+
+	useUpdateEffect(() => {
+		setState({ selectedBed: null });
+	}, [state.selectedRoom]);
+
 	return (
 		<OrderCardStyledBox showDeleteBtn={showDeleteBtn}>
 			<Card>
@@ -72,18 +122,21 @@ export default memo(function OrderCard({
 						}}
 					/>
 					<Descriptions title={order.order_no} column={1}>
-						<Descriptions.Item label="Төсек орын">
-							<Space direction="vertical" size={0}>
-								<Space size={10}>
-									<p>{order.rent.bed.name || 'Атауы жоқ'}</p>
-									<p>
-										({durationChange(order.rent.duration)} / {order.rent.price})
-									</p>
-								</Space>
+						{order.rent && (
+							<Descriptions.Item label="Төсек орын">
+								<Space direction="vertical" size={0}>
+									<Space size={10}>
+										<p>{order.rent.bed.name || 'Атауы жоқ'}</p>
+										<p>
+											({durationChange(order.rent.duration)} /{' '}
+											{order.rent.price})
+										</p>
+									</Space>
 
-								<p>{order.rent.bed.description}</p>
-							</Space>
-						</Descriptions.Item>
+									<p>{order.rent.bed.description}</p>
+								</Space>
+							</Descriptions.Item>
+						)}
 
 						<Descriptions.Item>
 							<RequestCard request={order.request} showDeleteBtn={false} />
@@ -92,10 +145,9 @@ export default memo(function OrderCard({
 
 					<div style={{ display: 'flex', gap: '12px' }}>
 						<Button
-							loading={loadingHanleOrderResult}
 							style={{ width: '100%' }}
 							type="primary"
-							onClick={() => handleOrderResult(true, order.id)}>
+							onClick={() => setState({ selectRoomBedModalVisibile: true })}>
 							Рұқсат
 						</Button>
 						<Button
@@ -107,6 +159,38 @@ export default memo(function OrderCard({
 						</Button>
 					</div>
 				</Skeleton>
+
+				<Modal
+					title="Бөлме мен төсек орын меншіктеу"
+					visible={state.selectRoomBedModalVisibile}
+					onOk={() => handleOrderResult(true, order.id)}
+					onCancel={() => setState({ selectRoomBedModalVisibile: false })}>
+					<Space direction="vertical" style={{ width: '100%' }} size="large">
+						<Select
+							loading={loadingGetRooms || loadingGetBeds}
+							style={{ width: '100%' }}
+							placeholder="Бөлме"
+							onSelect={value => setState({ selectedRoom: value })}>
+							{state.rooms.map(room => (
+								<Option key={room.id} value={room.id}>
+									{room.name} ({room.floor}-ші қабат)
+								</Option>
+							))}
+						</Select>
+
+						<Select
+							loading={loadingGetRooms || loadingGetBeds}
+							style={{ width: '100%' }}
+							placeholder="Төсекорын"
+							onSelect={value => setState({ selectedBed: value })}>
+							{state.beds.map(bed => (
+								<Option key={bed.id} value={bed.id}>
+									{bed?.name || 'Атауы жоқ төсек орын'}
+								</Option>
+							))}
+						</Select>
+					</Space>
+				</Modal>
 			</Card>
 		</OrderCardStyledBox>
 	);

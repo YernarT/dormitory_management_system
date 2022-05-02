@@ -1,10 +1,20 @@
 import React, { memo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { pageAtom } from '@/store';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { pageAtom, userAtom } from '@/store';
 
+import { useRequest, useSetState } from 'ahooks';
+import { reqCreateOrder } from '@/service/api/tenant-api';
 import { fromNow } from '@/utils';
 
-import { Card, Skeleton, Descriptions, Image, Empty } from 'antd';
+import {
+	Card,
+	Skeleton,
+	Descriptions,
+	Image,
+	Empty,
+	Button,
+	message as antdMessage,
+} from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { DormCardStyledBox } from './style';
 
@@ -16,7 +26,29 @@ export default memo(function DormCard({
 	clickable = false,
 	onClick,
 }) {
+	const [user, setUser] = useRecoilState(userAtom);
 	const page = useRecoilValue(pageAtom);
+
+	// 入住请求的请求
+	const { runAsync: runReqCreateOrder, loading: loadingReqCreateOrder } =
+		useRequest(data => reqCreateOrder(data), {
+			manual: true,
+		});
+
+	// 处理发送入住请求
+	const handleSendRequest = () => {
+		runReqCreateOrder({ dormId: dorm.id })
+			.then(() => {
+				antdMessage.success('Өтініш жіберілді');
+			})
+			.catch(({ message, needExecuteLogout, initialUser }) => {
+				antdMessage.error(message);
+
+				if (needExecuteLogout) {
+					setUser(initialUser);
+				}
+			});
+	};
 
 	return (
 		<DormCardStyledBox
@@ -58,6 +90,15 @@ export default memo(function DormCard({
 							) : null}
 						</Descriptions.Item>
 					</Descriptions>
+
+					<Button
+						block
+						type="primary"
+						style={{ marginTop: '15px' }}
+						onClick={handleSendRequest}
+						loading={loadingReqCreateOrder}>
+						Өтініщ қалдыру
+					</Button>
 				</Skeleton>
 			</Card>
 		</DormCardStyledBox>

@@ -65,10 +65,10 @@ export default function Dormitory() {
 								dorm={dorm}
 								showDeleteBtn={false}
 								loading={loadingReqGetAllDorm}
-								clickable
-								onClick={() => {
-									history.push('/rooms', { dormId: dorm.id });
-								}}
+								// clickable
+								// onClick={() => {
+								// 	history.push('/rooms', { dormId: dorm.id });
+								// }}
 							/>
 						))}
 					</Space>
