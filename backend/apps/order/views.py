@@ -66,11 +66,12 @@ class RequestView(View):
             return JsonResponse(user_or_response_content, status=401)
 
         idn = request.POST.get('idn')
+        profession = request.POST.get('profession')
         supplementary_description = request.POST.get(
             'supplementary_description')
 
         request_model_obj = Request.objects.create(
-            tenant=user_or_response_content, idn=idn, supplementary_description=supplementary_description)
+            tenant=user_or_response_content, idn=idn,profession=profession, supplementary_description=supplementary_description)
         request_appendixs = []
 
         for file in request.FILES.values():

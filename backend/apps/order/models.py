@@ -39,6 +39,7 @@ class Request(models.Model):
     idn = models.CharField(max_length=12, verbose_name='ИИН нөмер')
     supplementary_description = models.CharField(
         max_length=512, verbose_name='Қосымша ақпарат')
+    profession = models.CharField(max_length=60, verbose_name='Мамандық атауы')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Жіберілген уақыт')
 
