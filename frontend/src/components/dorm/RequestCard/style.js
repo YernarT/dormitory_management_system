@@ -12,8 +12,6 @@ export const RequestCardStyledBox = styled.div`
 		color: ${({ theme }) => theme.palette.error};
 
 		display: ${({ showDeleteBtn }) => {
-			console.log(showDeleteBtn);
-
 			if (showDeleteBtn === true) {
 				return 'block';
 			}
