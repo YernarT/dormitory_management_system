@@ -32,7 +32,7 @@ export default memo(function Header({ className }) {
 		<HeaderStyledBox className={className}>
 			{/* public dom */}
 			<img src={favicon} alt="Logo" className="logo" />
-			<h2 className="title">{t('header_site_name_short')}</h2>
+			{/* <h2 className="title">{t('header_site_name_short')}</h2> */}
 
 			{role === 'guest' && <GuestHeader />}
 			{role === 'tenant' && <TenantHeader />}

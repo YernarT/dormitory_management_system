@@ -33,6 +33,7 @@ export default function Request() {
 		addRequestFormData: {
 			idn: '',
 			supplementary_description: '',
+			profession: '',
 			appendixs: [],
 		},
 	});
@@ -144,6 +145,21 @@ export default function Request() {
 								addRequestFormData: {
 									...prevState.addRequestFormData,
 									idn: value,
+								},
+							}))
+						}
+					/>
+
+					<Input
+						type="text"
+						placeholder="Мамандық атауы"
+						maxLength={60}
+						value={state.addRequestFormData.profession}
+						onChange={({ target: { value } }) =>
+							setState(prevState => ({
+								addRequestFormData: {
+									...prevState.addRequestFormData,
+									profession: value,
 								},
 							}))
 						}
