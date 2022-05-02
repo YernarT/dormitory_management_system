@@ -31,6 +31,10 @@ export default memo(function RequestCard({
 							{request.idn}
 						</Descriptions.Item>
 
+						<Descriptions.Item label="Мамандық атауы">
+							{request.profession}
+						</Descriptions.Item>
+
 						<Descriptions.Item label="Қосымша ақпарат">
 							{request.supplementary_description}
 						</Descriptions.Item>
