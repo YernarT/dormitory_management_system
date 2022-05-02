@@ -78,9 +78,10 @@ class Order(models.Model):
     order_no = models.CharField(max_length=40, verbose_name='Тапсырыс нөмері')
     request = models.ForeignKey(
         Request, on_delete=models.CASCADE, verbose_name='Өтініш')
+    dorm = models.ForeignKey('dorm.Dorm', on_delete=models.CASCADE, verbose_name='Жатақхана')
     rent = models.ForeignKey(
-        Rent, on_delete=models.CASCADE, verbose_name='Төлем ақы түрі')
-    rent_count = models.PositiveSmallIntegerField(verbose_name='Төлем жиілігі')
+        Rent, on_delete=models.CASCADE, null=True, verbose_name='Төлем ақы түрі')
+    # rent_count = models.PositiveSmallIntegerField(null=True, verbose_name='Төлем жиілігі')
     status = models.BooleanField(default=False, verbose_name='Өтініш күйі')
     create_time = models.DateTimeField(
         auto_now_add=True, verbose_name='Құрылған уақыт')

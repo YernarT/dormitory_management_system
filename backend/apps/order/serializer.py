@@ -34,6 +34,6 @@ def serializer_order(order_model_obj) -> dict:
         order_model_obj, {'is_multiple': False})
 
     serialized_order['request'] = serializer_request(order_model_obj.request)
-    serialized_order['rent'] = serializer_rent(order_model_obj.rent)
+    serialized_order['rent'] = serializer_rent(order_model_obj.rent) if order_model_obj.rent else None
 
     return serialized_order

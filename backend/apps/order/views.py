@@ -71,7 +71,7 @@ class RequestView(View):
             'supplementary_description')
 
         request_model_obj = Request.objects.create(
-            tenant=user_or_response_content, idn=idn,profession=profession, supplementary_description=supplementary_description)
+            tenant=user_or_response_content, idn=idn, profession=profession, supplementary_description=supplementary_description)
         request_appendixs = []
 
         for file in request.FILES.values():
@@ -108,19 +108,20 @@ class OrderView(View):
             dorms = org.dorm_set.all()
             order_list = []
             for dorm in dorms:
-                rooms = dorm.room_set.all()
-                for room in rooms:
-                    beds = room.bed_set.all()
-                    for bed in beds:
-                        rent = bed.rent_set.first()
-                        orders = rent.order_set.all()
+                for order in Order.objects.filter(dorm=dorm):
+                    order_list.append(order)
+                # rooms = dorm.room_set.all()
+                # for room in rooms:
+                #     beds = room.bed_set.all()
+                #     for bed in beds:
+                #         rent = bed.rent_set.first()
+                #         orders = rent.order_set.all()
 
-                        if orders.exists():
-                            for order in orders:
-                                order_list.append(order)
+                #         if orders.exists():
+                #             for order in orders:
+                #                 order_list.append(order)
 
-            serialized_orders = [serializer_order(
-                order) for order in order_list]
+            serialized_orders = [serializer_order(order) for order in order_list]
 
             # request add request_appendixs
             for idx, order in enumerate(order_list):
@@ -144,20 +145,14 @@ class OrderView(View):
             tenant=user_or_response_content).first()
         if request_model_obj:
             data = get_data(request)
-            bed_id = data['bedId']
-            rent_count = data['rentCount']
-            bed = Bed.objects.get(id=bed_id)
-
-            if bed.owner:
-                return JsonResponse({'message': 'Төсек орынның иесі бар', }, status=400)
+            dorm_id = data['dormId']
 
             from datetime import datetime
             order_no = str(datetime.now()).replace(' ', '').replace(
                 '-', '').replace(':', '').replace('.', '')+str(user_or_response_content.id)
-            rent = bed.rent_set.first()
 
             Order.objects.create(
-                order_no=order_no, request=request_model_obj, rent=rent, rent_count=rent_count)
+                order_no=order_no, request=request_model_obj, dorm=Dorm.objects.get(id=dorm_id))
 
             return JsonResponse({'message': 'Өтініш қалдырылды'}, status=201)
 
@@ -179,9 +174,12 @@ class OrderView(View):
             if solution:
                 order = Order.objects.get(id=order_id)
                 order.status = solution
+                bed = Bed.objects.get(id=data['bedId'])
+                rent = Rent.objects.get(bed=bed)
+                order.rent=rent
+                
                 order.save()
-
-                bed = order.rent.bed
+                
                 bed.owner = order.request.tenant
                 bed.save()
 
@@ -233,9 +231,9 @@ class StatisticView(View):
         for org in Organization.objects.all():
             serialized_org = serializer_organization(org)
             serialized_org['dormCount'] = org.dorm_set.all().count()
-            
+
             organizations.append(serialized_org)
-        
+
         users = [serializer_user(user) for user in User.objects.all().exclude(
             id=user_or_response_content.id)]
         orders = [serializer_order(order) for order in Order.objects.all()]
