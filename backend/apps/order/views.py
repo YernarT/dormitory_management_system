@@ -131,7 +131,15 @@ class OrderView(View):
                     request_appendix, request) for request_appendix in request_appendixs]
                 serialized_orders[idx]['request']['appendixs'] = request_appendixs
 
-            return JsonResponse({'message': 'success', 'orders': serialized_orders}, status=200)
+            # 排序, 有 appendix的排前面
+            sorted_orders = []
+            for field in serialized_orders:
+                if len(field['request']['appendixs']):
+                    sorted_orders.insert(0, field)
+                else:
+                    sorted_orders.append(field)
+
+            return JsonResponse({'message': 'success', 'orders': sorted_orders}, status=200)
 
         return JsonResponse({'message': 'success', 'orders': []}, status=200)
 
