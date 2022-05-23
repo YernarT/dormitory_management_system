@@ -31,6 +31,14 @@ export default memo(function RequestCard({
 							{request.idn}
 						</Descriptions.Item>
 
+						<Descriptions.Item label="Атауы">
+							{request.tenant.fullname}
+						</Descriptions.Item>
+
+						<Descriptions.Item label="Жынысы">
+							{request.tenant.gender ? 'Ұл' : 'Қыз'}
+						</Descriptions.Item>
+
 						<Descriptions.Item label="Мамандық атауы">
 							{request.profession}
 						</Descriptions.Item>
