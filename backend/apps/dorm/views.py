@@ -93,11 +93,27 @@ class DormView(View):
             dorm_obj) for dorm_obj in dorm_list]
 
         for idx, dorm in enumerate(dorm_list):
+            rooms = dorm.room_set.all()
+            if not rooms.exists():
+                    serialized_dorm_list[idx]['bed_count'] = 0
+                    serialized_dorm_list[idx]['free_bed_count'] = 0
+
+            for room in rooms:
+                beds = room.bed_set.all()
+
+                serialized_dorm_list[idx]['bed_count'] = beds.count()
+                serialized_dorm_list[idx]['free_bed_count'] = 0
+                for bed in beds:
+                    if bed.owner is None:
+                        serialized_dorm_list[idx]['free_bed_count'] += 1
+            
+
             serialized_dorm_list[idx]['images'] = []
             for dorm_image in DormImage.objects.filter(dorm=dorm):
                 serialized_dorm_list[idx]['images'].append(
                     serializer_dorm_image(dorm_image, request))
 
+        
         return JsonResponse({'dorms': serialized_dorm_list}, status=200)
 
     def post(self, request):

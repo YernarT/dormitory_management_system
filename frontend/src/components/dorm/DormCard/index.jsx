@@ -66,6 +66,13 @@ export default memo(function DormCard({
 						}}
 					/>
 					<Descriptions title={dorm.name} column={1}>
+						<Descriptions.Item label="Төсек орын">
+							<span>Жалпы орын: </span>
+							<strong>{dorm.bed_count}</strong>
+
+							<span style={{ marginLeft: '10px' }}>Бос орын: </span>
+							<strong>{dorm.free_bed_count}</strong>
+						</Descriptions.Item>
 						<Descriptions.Item label="Сипаттама">
 							{dorm.description}
 						</Descriptions.Item>
