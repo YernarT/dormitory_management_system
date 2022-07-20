@@ -1,0 +1,42 @@
+{
+	"name": "dormitory_management_system_api",
+	"version": "2.0.0",
+	"description": "Dormitory management system api.",
+	"main": "app.ts",
+	"scripts": {
+		"build": "npx tsc",
+		"runserver": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\" "
+	},
+	"keywords": [
+		"express",
+		"management system",
+		"dormitory management system"
+	],
+	"author": {
+		"name": "Yernar.T",
+		"email": "toktaryernar@gmail.com",
+		"url": "https://github.com/YernarT"
+	},
+	"bugs": {
+		"url": "https://github.com/YernarT/dormitory_management_system/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/YernarT/dormitory_management_system"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@types/express": "^4.17.13",
+		"@types/node": "^18.0.6",
+		"body-parser": "^1.20.0",
+		"cors": "^2.8.5",
+		"express": "^4.18.1",
+		"mongoose": "^6.4.5",
+		"typescript": "^4.7.4"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.12",
+		"concurrently": "^7.3.0",
+		"nodemon": "^2.0.19"
+	}
+}
