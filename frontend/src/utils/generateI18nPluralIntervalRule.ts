@@ -1,4 +1,6 @@
-export default function generateI18nPluralIntervalRule(options) {
+export default function generateI18nPluralIntervalRule(options: {
+	[key: string]: string;
+}) {
 	let intervalRule = '';
 
 	Object.entries(options).forEach(([key, value]) => {
