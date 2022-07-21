@@ -1,17 +1,36 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import vitePluginImp from 'vite-plugin-imp';
+import { resolve } from 'path';
 
-import path from 'path';
+function pathResolve(dir: string): string {
+	return resolve(process.cwd(), '.', dir);
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	resolve: {
-		alias: {
-			'@': path.resolve(path.resolve(), './src'),
-		},
+		alias: [
+			{
+				find: '@',
+				replacement: pathResolve('src') + '/',
+			},
+		],
 	},
 
-	plugins: [react()],
+	plugins: [
+		react(),
+		vitePluginImp({
+			optimize: true,
+			libList: [
+				{
+					libName: 'antd',
+					libDirectory: 'es',
+					style: name => `antd/es/${name}/style`,
+				},
+			],
+		}),
+	],
 
 	css: {
 		preprocessorOptions: {
@@ -32,7 +51,7 @@ export default defineConfig({
 					'@success-color': '#52c41a', // success state color
 					'@warning-color': '#faad14', // warning state color
 					'@error-color': ' #f5222d', // error state color
-					'@font-size-base': '1rem', // major text font size
+					'@font-size-base': '14px', // major text font size
 					'@heading-color': 'rgba(0, 0, 0, 0.85)', // heading text color
 					'@disabled-color': 'rgba(0, 0, 0, 0.25)', // disable state color
 					'@border-radius-base': '4px', // major border radius
@@ -46,6 +65,6 @@ export default defineConfig({
 
 	server: {
 		host: '0.0.0.0',
-		port: 3015,
+		port: 3000,
 	},
 });
