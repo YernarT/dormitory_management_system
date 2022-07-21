@@ -10,7 +10,7 @@ export const apiServerInstance = axios.create({
 // Request interceptor
 apiServerInstance.interceptors.request.use(config => {
 	// Every time the token is updated in the page, the localstorage needs to be updated together
-	const { token } = localStorage.get('user');
+	const { token } = localStorage.get('user', defaultUserState);
 
 	if (token && config.headers) {
 		config.headers['X-AUTH-TOKEN'] = token;
