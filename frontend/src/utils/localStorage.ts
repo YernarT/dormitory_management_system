@@ -78,8 +78,8 @@ export const localStorage: localStorageProperties = {
 		window.localStorage.setItem(key, serializedData);
 	},
 
-	_DATA_PREFIX: 'ORM社区',
-	_DATA_VERSION: '1.0.0',
+	_DATA_PREFIX: 'DMS',
+	_DATA_VERSION: '2.0.0',
 
 	get _VERSION_MARK_RegExp() {
 		return new RegExp(
