@@ -1,8 +1,23 @@
-import styled, { createGlobalStyle } from 'styled-components';
+// React
+import { memo } from 'react';
+// 业务库
+import { createGlobalStyle, css } from 'styled-components';
 
-// 自定义样式 ↓
-const customizeStyle = createGlobalStyle`
-	// 全局滚动条样式
+// message 组件样式
+const messageStyle = css`
+	.dms-message-notice-content {
+		/* 就酱按需重写任意组件的样式 */
+	}
+`;
+
+/**
+ * 配置 CSS 基本样式
+ * 基于 theme 对象
+ * @returns {FC} 自定义全局样式
+ */
+export default memo(createGlobalStyle`
+
+// 全局滚动条样式
 	* {
 		// 丝滑滚动
 		scroll-behavior: smooth;
@@ -38,7 +53,24 @@ const customizeStyle = createGlobalStyle`
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	
+	// 全局字体
+	body {
+		overflow: hidden;
+
+		font-family: Roboto, -apple-system, BlinkMacSystemFont, Ubuntu, 'Segoe UI',
+			Arial, sans-serif;
+		font-size: 1rem;
+		font-stretch: normal;
+		font-variant: normal;
+		font-weight: normal;
+		line-height: normal;
+	}
+
+	// 去除列表项 默认样式
+	li {
+		list-style: none;
+	}
+
 	// 某些资源标签 不可选择
 	img,
 	video,
@@ -89,8 +121,7 @@ const customizeStyle = createGlobalStyle`
 			}
 		}
 	}
-`;
 
-export const CssBaseLineBox = styled.div`
-	${customizeStyle};
-`;
+	/* 重写 antd 组件样式 */
+	${messageStyle}
+`);
