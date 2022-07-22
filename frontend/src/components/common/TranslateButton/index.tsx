@@ -33,7 +33,10 @@ export default memo(function TranslateButton() {
 	return (
 		<TranslateButtonStyled
 			type="primary"
-			onClick={handleTranslate}
+			onClick={e => {
+				e.stopPropagation();
+				handleTranslate();
+			}}
 			icon={<AiOutlineTranslation className="icon" />}
 		/>
 	);
