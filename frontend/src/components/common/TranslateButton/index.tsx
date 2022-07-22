@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import i18next from 'i18next';
 
 import { useSetRecoilState } from 'recoil';
@@ -6,12 +6,16 @@ import { pageAtom } from '@/store';
 
 import { getHtmlLang } from '@/utils';
 
-import { Button } from 'antd';
-import { TranslationOutlined } from '@ant-design/icons';
+import { AiOutlineTranslation } from 'react-icons/ai';
+import { TranslateButtonStyled } from './style';
 
+/**
+ * 切换语言
+ */
 export default memo(function TranslateButton() {
 	const setPage = useSetRecoilState(pageAtom);
 
+	// 处理 切换语言
 	const handleTranslate = () => {
 		setPage(prevState => {
 			if (prevState.locale === 'kkKZ') {
@@ -27,8 +31,10 @@ export default memo(function TranslateButton() {
 	};
 
 	return (
-		<Button onClick={handleTranslate}>
-			<TranslationOutlined />
-		</Button>
+		<TranslateButtonStyled
+			type="primary"
+			onClick={handleTranslate}
+			icon={<AiOutlineTranslation className="icon" />}
+		/>
 	);
 });
