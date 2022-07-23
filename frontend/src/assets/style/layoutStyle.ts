@@ -7,5 +7,5 @@ import { css } from 'styled-components';
 export default css`
 	position: relative;
 	height: 100%;
-	overflow: hidden auto;
+	overflow: hidden;
 `;
