@@ -9,8 +9,12 @@ export const GuestLayoutStyled = styled.div`
 		/* 减掉 Header 高度 */
 		height: calc(100% - 64px);
 
+		position: relative;
+		overflow: hidden;
+
 		> * {
 			height: 100%;
+			overflow: hidden auto;
 		}
 	}
 `;
