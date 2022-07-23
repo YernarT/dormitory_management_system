@@ -9,13 +9,14 @@ type containerAttrType = 'width' | 'padding';
 export default (attr: containerAttrType) => {
 	if (attr === 'width') {
 		return css`
-			width: calc(100% - max(8%, 50px));
+			width: calc(100% - calc(max(8%, 50px) * 2));
+			margin: auto;
 
 			@media screen and (max-width: 768px) {
-				width: calc(100% - 6%);
+				width: calc(100% - calc(6% * 2));
 			}
 			@media screen and (max-width: 576px) {
-				width: calc(100% - 4%);
+				width: calc(100% - calc(4% * 2));
 			}
 		`;
 	}
