@@ -21,7 +21,10 @@ apiServerInstance.interceptors.request.use(config => {
 
 // Response interceptor
 apiServerInstance.interceptors.response.use(
-	response => response.data,
+	value => {
+		return value.data;
+	},
+
 	error => {
 		if (error.response && error.response.status) {
 			let { status } = error.response;
@@ -36,23 +39,27 @@ apiServerInstance.interceptors.response.use(
 			}
 
 			if (status >= 400) {
-				return Promise.reject(error.response.data);
-			}
-
-			if (status >= 500) {
 				return Promise.reject({
-					message: 'The server crashed...',
+					...error.response.data,
+					needExecuteLogout: false,
+					initialUser: undefined,
 				});
 			}
 		}
 
 		if (error.message === 'Network Error') {
 			return Promise.reject({
-				message: 'Server failed, try again later',
+				message: 'Network lost connection',
+				needExecuteLogout: false,
+				initialUser: undefined,
 			});
 		}
 
 		console.error('Error in request: ', error);
-		return Promise.reject(error);
+		return Promise.reject({
+			message: 'The server crashed',
+			needExecuteLogout: false,
+			initialUser: undefined,
+		});
 	},
 );
