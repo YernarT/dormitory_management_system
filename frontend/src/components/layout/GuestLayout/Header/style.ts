@@ -12,6 +12,7 @@ export const HeaderStyled = styled.header`
 	align-items: center;
 
 	position: relative;
+	z-index: 900;
 	user-select: none;
 
 	/* Logo */
@@ -126,8 +127,8 @@ export const MenuBarStyled = styled.nav<MenuBarStyledProps>`
 		z-index: 900;
 
 		width: 100%;
-		/* 减掉 Header, Footer 高度 */
-		height: calc(100vh - 100% - 24px);
+		/* 减掉 Header 高度 */
+		height: calc(100vh - 100%);
 		padding: 0;
 		background: #fff;
 

@@ -1,6 +1,5 @@
 // 组件
 import Header from './Header';
-import { Footer } from '@/components/common';
 // 样式组件
 import { GuestLayoutStyled } from './style';
 
@@ -13,7 +12,6 @@ export default function GuestLayout({ children }: GuestLayoutProps) {
 		<GuestLayoutStyled>
 			<Header />
 			<main className="content">{children}</main>
-			<Footer />
 		</GuestLayoutStyled>
 	);
 }
