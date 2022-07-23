@@ -70,14 +70,14 @@ const theme: DefaultTheme = {
 
 		// 通用的(常用的) 外观样式
 		generalApperance: {
-			padding: '20px',
+			padding: '24px',
 
 			border: '1px solid #e5e5e5',
 			borderRadius: '6px',
 			backgroundColor: '#fff',
 
 			apply: () => css`
-				padding: 20px;
+				padding: 24px;
 
 				border: 1px solid #e5e5e5;
 				border-radius: 6px;
