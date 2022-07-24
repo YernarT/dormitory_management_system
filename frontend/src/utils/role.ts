@@ -9,7 +9,7 @@ export const role: {
 	ADMIN: 'ADMIN';
 
 	// 所有角色
-	all: () => ['GUEST', 'TENANT', 'DORM MANAGER', 'ADMIN'];
+	all: () => allowedRole[];
 } = {
 	GUEST: 'GUEST',
 	TENANT: 'TENANT',
