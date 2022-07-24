@@ -1,9 +1,11 @@
-import React, { lazy } from 'react';
-import { sleep } from '@/utils';
+import type { RouteProps } from './index';
 
-import { CommonLoading } from '@/loading';
+import { lazy } from 'react';
+import { sleep, role } from '@/utils';
 
-const authRoutes = [
+import { CommonLoading } from '@/components/loading';
+
+const authRoutes: RouteProps[] = [
 	{
 		path: '/auth/login',
 		component: lazy(async () => {
@@ -12,7 +14,7 @@ const authRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: false,
-		role: ['guest'],
+		role: [role.GUEST],
 		title: 'route_/auth/login',
 	},
 
@@ -24,7 +26,7 @@ const authRoutes = [
 		}),
 		fallback: <CommonLoading />,
 		auth: false,
-		role: ['guest'],
+		role: [role.GUEST],
 		title: 'route_/auth/register',
 	},
 ];
