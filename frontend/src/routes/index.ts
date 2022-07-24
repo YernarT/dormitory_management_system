@@ -24,18 +24,12 @@ export interface RouteProps {
 import commonRoutes from './common-routes';
 import dynamicRoutes from './dynamic-routes';
 import guestRoutes from './guest-routers';
-import tenantRoutes from './tenant-routes';
-import orgManagerRoutes from './org-manager-routers';
-import siteAdminRoutes from './site-admin-routers';
 import authRoutes from './auth-routes';
 
 const routes: RouteProps[] = [
 	...commonRoutes,
 	...dynamicRoutes,
 	...guestRoutes,
-	...tenantRoutes,
-	...orgManagerRoutes,
-	...siteAdminRoutes,
 	...authRoutes,
 ];
 
