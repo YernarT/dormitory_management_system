@@ -12,7 +12,7 @@ import { userAtom } from '@/store';
 import { useCreation } from 'ahooks';
 
 // 组件
-import { Form, Button, Typography } from 'antd';
+import { Form, Button, Typography, Divider } from 'antd';
 import { GuestLayout } from '@/components/layout';
 // 样式组件
 import { AuthLayoutStyled } from './style';
@@ -79,7 +79,9 @@ export default function AuthLayout({
 							{scenes === 'REGISTER' && translatedText.register}
 						</Button>
 
-						<span>{translatedText.or}</span>
+						<Divider plain className="divider">
+							{translatedText.or}
+						</Divider>
 
 						<a
 							href={footerJumpLink}
