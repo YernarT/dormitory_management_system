@@ -1,5 +1,6 @@
 // React & 周边库
 import { memo, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // 业务库
@@ -42,6 +43,7 @@ export default memo(function Header(props: HeaderProps) {
 });
 
 function MenuBar() {
+	const history = useHistory();
 	const { t } = useTranslation();
 	const translatedText = {
 		publish: t('header_publish'),
@@ -51,9 +53,11 @@ function MenuBar() {
 	type menuTargetType = 'SEEK' | 'PUBLISH';
 	const handleMenuClick = (target: menuTargetType) => {
 		if (target === 'PUBLISH') {
+			history.push('/auth/login');
 		}
 
 		if (target === 'SEEK') {
+			history.push('/dormitories');
 		}
 	};
 
