@@ -58,6 +58,17 @@ export default memo(function RouteGuard({ routes }: RouteGuardProps) {
 			return <Redirect to="/404" />;
 		}
 
+		// 处理 动态组件
+		if (targetConfig.isDynamicComponent) {
+			let component = targetConfig.getComponent?.(user.role);
+
+			return (
+				<Suspense fallback={targetConfig.fallback}>
+					<Route exact path={targetConfig.path} component={component} />
+				</Suspense>
+			);
+		}
+
 		// Everything is ok
 		return (
 			<Suspense fallback={targetConfig.fallback}>
