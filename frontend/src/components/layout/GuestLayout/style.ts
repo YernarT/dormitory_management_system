@@ -7,13 +7,13 @@ export const GuestLayoutStyled = styled.div`
 
 	.content {
 		/* 减掉 Header 高度 */
-		${container('width')}
 		height: calc(100% - 64px);
 
 		position: relative;
 		overflow: hidden;
 
 		> * {
+			${container('width')}
 			height: 100%;
 			overflow: hidden auto;
 		}

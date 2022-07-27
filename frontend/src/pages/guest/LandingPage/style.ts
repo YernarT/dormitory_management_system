@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const LandingPageStyledBox = styled.div`
+	width: 100% !important;
 	position: relative;
 
 	img {

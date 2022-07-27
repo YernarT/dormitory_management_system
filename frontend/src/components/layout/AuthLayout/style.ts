@@ -12,7 +12,7 @@ interface AuthLayoutStyledProps {
 }
 
 export const AuthLayoutStyled = styled(Form)<AuthLayoutStyledProps>`
-	width: 365px;
+	max-width: 365px;
 	/* 强覆盖 GuestLayout 组件样式 */
 	height: auto !important;
 	/* 强覆盖 antd Form 组件样式 */
