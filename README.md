@@ -80,7 +80,7 @@
 
 ## bugs & todos
 
-- 暂无
+- 前端: 丰富 Landing Page 内容
 
 ## License
 
