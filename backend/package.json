@@ -4,7 +4,7 @@
 	"description": "Dormitory management system api.",
 	"main": "app.ts",
 	"scripts": {
-		"build": "npx tsc",
+		"build": "npx tsc && node moduleAlias.js",
 		"runserver": "concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\" "
 	},
 	"keywords": [
