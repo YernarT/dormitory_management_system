@@ -1,8 +1,10 @@
 /**
- * 用于把 @/api, @/db 等别名转换为正确路径
+ * 此模块用于把 @/api, @/db 等别名转换为正确路径
  */
 
 const fs = require('fs');
+
+const BASE_URL = 'dist';
 
 /**
  * 获取指定目录下 所有文件路径
@@ -13,7 +15,12 @@ const fs = require('fs');
  * @return { string[] } 所有文件路径列表
  */
 function walk(entry, fileList = []) {
-	const files = fs.readdirSync(entry);
+	let files;
+	try {
+		files = fs.readdirSync(entry);
+	} catch (_) {
+		files = [];
+	}
 
 	files.forEach(file => {
 		let fullPath = `${entry}/${file}`;
@@ -31,22 +38,40 @@ function walk(entry, fileList = []) {
 	return fileList;
 }
 
-// 入口, 根目录路径
-const BASE_URL = 'dist';
-// 所有文件路径列表
-const fileList = walk(BASE_URL);
+/**
+ * 替换别名
+ *
+ * @param { string } entry 入口, 根目录路径
+ *
+ * @return { void }
+ */
+function replaceAlias(entry) {
+	// 所有文件路径列表
+	const fileList = walk(entry);
 
-fileList.forEach(file => {
-	let structure = file.split('/');
-	let content = fs.readFileSync(file).toString();
+	fileList.forEach(file => {
+		let structure = file.split('/');
+		let content = fs.readFileSync(file).toString();
 
-	if (content.includes('require("@')) {
-		fs.writeFileSync(
-			file,
-			content.replaceAll(
-				'require("@',
-				`require("${'.'.repeat(structure.length - 1)}`,
-			),
-		);
-	}
-});
+		if (content.includes('require("@')) {
+			fs.writeFileSync(
+				file,
+				content.replaceAll(
+					'require("@',
+					`require("${'.'.repeat(structure.length - 1)}`,
+				),
+			);
+		}
+	});
+}
+
+/**
+ * 主函数
+ *
+ * @return { void }
+ */
+function main() {
+	replaceAlias(BASE_URL);
+}
+
+main();
