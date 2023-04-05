@@ -10,12 +10,15 @@ import intervalPlural from 'i18next-intervalplural-postprocessor';
 import { kkKZ, enUS } from '@/i18n';
 
 // 工具函数
-import { localStorage, getHtmlLang } from '@/utils';
+import { localStorage } from '@/utils';
 import { defaultPageState } from '@/store';
 
 // 组件
-import { SafeArea } from './components/common';
-import App from './App';
+import App from '@/components/App';
+
+// Global CSS Files
+import '@/assets/style/variable.css';
+import '@/assets/style/reset.css';
 
 // Initialize language, get it from LocalStorage
 const page = localStorage.get('page', defaultPageState);
@@ -40,13 +43,8 @@ i18next
 render(
 	<StrictMode>
 		<RecoilRoot>
-			<SafeArea>
-				<App />
-			</SafeArea>
+			<App />
 		</RecoilRoot>
 	</StrictMode>,
 	document.getElementById('root'),
-	() => {
-		document.documentElement.lang = getHtmlLang(page.locale);
-	},
 );
