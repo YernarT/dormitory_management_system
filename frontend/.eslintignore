@@ -1,9 +1,0 @@
-# /node_modules/* ignored by default
-build/*
-dist/*
-dist-ssr/*
-
-# other
-# .eslintrc.js
-# commitlint.config.js
-# craco.config.js
