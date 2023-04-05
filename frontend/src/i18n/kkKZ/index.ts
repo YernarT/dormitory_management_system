@@ -5,25 +5,25 @@ export default {
 	'enUS': 'Ағылшынша',
 
 	// common route
-	'route_/': 'Жатақхананы Басқару Жүйесі',
-	'route_/404': '404 - Жатақхананы Басқару Жүйесі',
-	'route_/profile': 'Жеке кабинет - Жатақхананы Басқару Жүйесі',
+	'route_/': 'Жатақхана Басқару Жүйесі',
+	'route_/404': '404 - Жатақхана Басқару Жүйесі',
+	'route_/profile': 'Жеке кабинет - Жатақхана Басқару Жүйесі',
 
 	// auth route
-	'route_/auth/login': 'Кіру - Жатақхананы Басқару Жүйесі',
-	'route_/auth/register': 'Тіркелу - Жатақхананы Басқару Жүйесі',
+	'route_/auth/login': 'Кіру - Жатақхана Басқару Жүйесі',
+	'route_/auth/register': 'Тіркелу - Жатақхана Басқару Жүйесі',
 
 	// Loading
 	commonLoadingHelpText: 'Жүктелуде...',
 	backToHome: 'Басты бетке оралу',
 
 	// Header
-	'header_site_name_short': 'Жатақхананы Басқару Жүйесі',
+	'header_site_name_short': 'Жатақхана Басқару Жүйесі',
 	'header_publish': 'Жатақхана жариялау',
 	'header_seek': 'Жатақхана іздеу',
 
 	// Footer
-	'footer_site_name': 'Жатақхананы Басқару Жүйесі',
+	'footer_site_name': 'Жатақхана Басқару Жүйесі',
 
 	// Landing Page
 	'landingP_welcome_subTitle':
@@ -72,7 +72,7 @@ export default {
 	'profile_new_password': 'Жаңа кұпия сөз',
 	'profile_logout': 'Cаубол~',
 	'profile_logout_btn': 'Шығу',
-	'profile_other_title': 'Жатақхананы Басқару Жүйесі 1.0.0 нұсқа',
+	'profile_other_title': 'Жатақхана Басқару Жүйесі 1.0.0 нұсқа',
 	'profile_other_p1':
 		'Есептік жазба {{ createTime }} тіркелген, пайдаланғаныңыз үшін рахмет!',
 	'profile_other_feedback': 'Пікірлер...',
@@ -85,14 +85,14 @@ export default {
 
 	// org manager
 	'org_manager_tabName_organization': 'Ұйым',
-	'org_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'org_manager_tabName_dormitory_management': 'Жатақхана басқару',
 	'org_manager_tabName_room_management': 'Бөлме басқару',
 	'org_manager_tabName_bed_management': 'Төсек орын басқару',
 	'org_manager_tabName_process_request': 'Өтінішті өңдеу',
 	'org_manager_tabName_dormitory_manager': 'Жатақ басқарушы',
 
 	// dorm manager
-	'dorm_manager_tabName_dormitory_management': 'Жатақхананы басқару',
+	'dorm_manager_tabName_dormitory_management': 'Жатақхана басқару',
 	'dorm_manager_tabName_room_management': 'Бөлме басқару',
 	'dorm_manager_tabName_bed_management': 'Төсек орын басқару',
 	'dorm_manager_tabName_process_request': 'Өтінішті өңдеу',
