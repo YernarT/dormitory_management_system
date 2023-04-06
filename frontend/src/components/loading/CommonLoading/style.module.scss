@@ -1,0 +1,30 @@
+@import '@/assets/style/mixins.scss';
+
+.commonLoading {
+	width: 200px;
+	height: 200px;
+
+	@include flexCenter($direction: column, $gap: 16px);
+	@include absoluteCenter();
+
+	user-select: none;
+	pointer-events: none;
+
+	:global .help-text {
+		font-size: 32px;
+	}
+}
+
+.favicon {
+	@keyframes changeSize {
+		from {
+			transform: scale(0.7);
+		}
+
+		to {
+			transform: scale(1.1);
+		}
+	}
+
+	animation: changeSize 0.7s ease alternate-reverse infinite;
+}

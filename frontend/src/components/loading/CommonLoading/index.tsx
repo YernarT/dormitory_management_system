@@ -1,8 +1,10 @@
+// i18n
 import { useTranslation } from 'react-i18next';
 
-import { Typography } from 'antd';
-import { CommonLoadingStyledBox } from './style';
+// Scoped style
+import classes from './style.module.scss';
 
+// Resource
 import { favicon } from '@/assets/image';
 
 export default function CommonLoading() {
@@ -12,12 +14,10 @@ export default function CommonLoading() {
 	};
 
 	return (
-		<CommonLoadingStyledBox>
-			<img className="favicon" src={favicon} alt="favicon" />
+		<div className={classes.commonLoading}>
+			<img className={classes.favicon} src={favicon} alt="DMS LOGO" />
 
-			<Typography.Title level={3} className="help-text">
-				{translatedText.loadingHelpText}
-			</Typography.Title>
-		</CommonLoadingStyledBox>
+			<p className="help-text">{translatedText.loadingHelpText}</p>
+		</div>
 	);
 }
