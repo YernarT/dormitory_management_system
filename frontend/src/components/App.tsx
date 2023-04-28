@@ -13,7 +13,7 @@ import {
 	message,
 	notification,
 } from 'antd';
-import { LayoutTemplate } from '@/components/common';
+import { Layout } from '@/components/layout';
 
 // global config for antd message
 message.config({
@@ -48,7 +48,7 @@ export default function App() {
 			locale={antdLocale}>
 			<BrowserRouter>
 				{/* 路由守卫 */}
-				<LayoutTemplate />
+				<Layout />
 			</BrowserRouter>
 		</AntdConfigProvider>
 	);

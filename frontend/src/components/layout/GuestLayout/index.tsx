@@ -1,17 +1,21 @@
-// 组件
+// common component
+import { RouteGuard } from '@/components/common';
+// Inner component
 import Header from './Header';
-// 样式组件
-import { GuestLayoutStyled } from './style';
 
-interface GuestLayoutProps {
-	children: React.ReactNode;
-}
+// Scoped style
+import classes from './style.module.scss';
 
-export default function GuestLayout({ children }: GuestLayoutProps) {
+// routes
+import routes from '@/routes';
+
+export default function GuestLayout() {
 	return (
-		<GuestLayoutStyled>
+		<div className={classes.guestLayout}>
 			<Header />
-			<main className="content">{children}</main>
-		</GuestLayoutStyled>
+			<div className="content-block">
+				<RouteGuard routes={routes} />
+			</div>
+		</div>
 	);
 }

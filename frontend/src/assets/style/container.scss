@@ -1,0 +1,27 @@
+/**
+ * 借鉴 Bootstrap 的 container 样式研发
+ */
+
+.itisit-container {
+	padding: 0 22%;
+
+	@media screen and (max-width: 1440px) {
+		padding: 0 12%;
+	}
+
+	@media screen and (max-width: 1290px) {
+		padding: 0 10%;
+	}
+
+	@media screen and (max-width: 992px) {
+		padding: 0 8%;
+	}
+
+	@media screen and (max-width: 768px) {
+		padding: 0 6%;
+	}
+
+	@media screen and (max-width: 576px) {
+		padding: 0 4%;
+	}
+}

@@ -1,103 +1,42 @@
-// React & 周边库
+// React
 import { memo, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+
+// i18n
 import { useTranslation } from 'react-i18next';
 
 // 业务库
 import { useBoolean, useClickAway } from 'ahooks';
 
-// 组件
-import { Typography } from 'antd';
+// Icons
 import { AiOutlineNotification, AiOutlineCompass } from 'react-icons/ai';
 import { RiMenu4Line } from 'react-icons/ri';
-import { TranslateButton } from '@/components/common';
-// 样式组件
-import { HeaderStyled, MenuBarStyled } from './style';
-// 资源文件
+// import { TranslateButton } from '@/components/common';
+
+// Scoped style
+import classes from './style.module.scss';
+// Resouce
 import { favicon } from '@/assets/image';
 
-interface HeaderProps {
-	className?: string;
-}
-
-export default memo(function Header(props: HeaderProps) {
+export default memo(function Header() {
 	const { t } = useTranslation();
+
 	const translatedText = {
 		siteTitle: t('header_site_name_short'),
 	};
 
 	return (
-		<HeaderStyled {...props}>
-			{/* Logo */}
-			<img src={favicon} alt="Logo" className="logo" />
-			{/* Site title */}
-			<Typography.Title level={2} className="title">
-				{translatedText.siteTitle}
-			</Typography.Title>
+		<header className={`itisit-container ${classes.header}`}>
+			{/* Brand */}
+			<div className="brand">
+				{/* Logo */}
+				<img src={favicon} alt="DMS LOGO" className="logo" />
+				{/* Site title */}
+				<span className="title">{translatedText.siteTitle}</span>
+			</div>
 
-			<MenuBar />
+			{/* <MenuBar /> */}
 
-			<TranslateButton />
-		</HeaderStyled>
+			{/* <TranslateButton /> */}
+		</header>
 	);
 });
-
-function MenuBar() {
-	const history = useHistory();
-	const { t } = useTranslation();
-	const translatedText = {
-		publish: t('header_publish'),
-		seek: t('header_seek'),
-	};
-
-	type menuTargetType = 'SEEK' | 'PUBLISH';
-	const handleMenuClick = (target: menuTargetType) => {
-		if (target === 'PUBLISH') {
-			history.push('/auth/login');
-		}
-
-		if (target === 'SEEK') {
-			history.push('/dormitories');
-		}
-	};
-
-	const [navListVisible, { setFalse: closeNavList, toggle: toggleNavList }] =
-		useBoolean(false);
-
-	const navListRef = useRef<HTMLUListElement>(null);
-	useClickAway(closeNavList, navListRef);
-
-	return (
-		<MenuBarStyled navListVisible={navListVisible}>
-			<div className="item" onClick={() => handleMenuClick('PUBLISH')}>
-				<AiOutlineNotification className="icon" />
-				<span className="text">{translatedText.publish}</span>
-			</div>
-
-			<div className="item" onClick={() => handleMenuClick('SEEK')}>
-				<AiOutlineCompass className="icon" />
-				<span className="text">{translatedText.seek}</span>
-			</div>
-
-			<RiMenu4Line
-				className="burger-btn"
-				onClick={e => {
-					e.stopPropagation();
-					toggleNavList();
-				}}
-			/>
-
-			<ul className="navlist" ref={navListRef}>
-				<li className="item" onClick={() => handleMenuClick('PUBLISH')}>
-					<AiOutlineNotification className="icon" />
-					<span className="text">{translatedText.publish}</span>
-				</li>
-
-				<li className="item" onClick={() => handleMenuClick('SEEK')}>
-					<AiOutlineCompass className="icon" />
-					<span className="text">{translatedText.seek}</span>
-				</li>
-			</ul>
-		</MenuBarStyled>
-	);
-}

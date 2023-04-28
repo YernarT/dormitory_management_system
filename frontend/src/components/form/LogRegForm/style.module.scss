@@ -1,0 +1,42 @@
+.logRegForm {
+	max-width: 365px;
+	padding: 24px;
+
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translateX(-50%);
+
+	@media screen and (max-width: 576px) {
+		top: 10%;
+	}
+
+	.title {
+		text-align: center;
+	}
+
+	.last-form-item {
+		margin: 0;
+	}
+
+	.form-footer {
+		@include flexCenter($direction: column, $gap: 8px);
+
+		.divider {
+			margin: 0;
+		}
+	}
+}
+
+// export const AuthLayoutStyled = styled(Form)<AuthLayoutStyledProps>`
+
+// 	/* 强覆盖 GuestLayout 组件样式 */
+// 	height: auto !important;
+// 	/* 强覆盖 antd Form 组件样式 */
+// 	margin: auto !important;
+
+// 	${({ theme }) => theme.shape.generalApperance.apply};
+// 	/* 强覆盖 antd Form 组件样式 */
+// 	padding: 24px !important;
+
+// 	${({ customStyle }) => customStyle}

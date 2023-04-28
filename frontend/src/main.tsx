@@ -16,9 +16,10 @@ import { defaultPageState } from '@/store';
 // 组件
 import App from '@/components/App';
 
-// Global CSS Files
+// Global Style Files
 import '@/assets/style/variable.css';
 import '@/assets/style/reset.css';
+import '@/assets/style/container.scss';
 
 // Initialize language, get it from LocalStorage
 const page = localStorage.get('page', defaultPageState);
